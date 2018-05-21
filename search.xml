@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Markdow:Basics(快速入门)]]></title>
+    <url>%2F2018%2F05%2F22%2FMarkdown_Basics%2F</url>
+    <content type="text"><![CDATA[Getting the Gist of Markdown’s Formatting Syntax此页提供了Markdown的简单概念，语法说明页提供了完整详细的文档，说明了每项功能。但是Markdown其实很简单就可以上手，册页文档提供了一些范例，并且每个范例都会提供输出的HTML结果。 段落、标题、区块代码一个段落是由一个以上的连接语句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显示上看起来像是空行，就被视为空行，例如有一行只有空白和tab，那该行业会被视为空行)，一般的段落不需要用空白或换行缩进。 Markdown支持两种标题的语法，Setext和atx形式。Setext形式使用底线的形式，利用 =（最高阶标题）和 -（第二阶标题），Atx形式在行首插入1到6个#，对应到标题1到6阶。 区块引用则使用email形式的’&gt;’角括号。 Markdown语法： 列表 Candy Gum Booze减号 Candy Gum Booze加号 Candy Gum Booze有序列表 Red Green Blue在项目间插入空行 A list item With multiple paragraphs. Another item in the list. 链接Markdown支持两种形式的链接语法：行内和参考两种形式，两种都是使用角括号来把文字转成连接。 行内形式是直接在后面用括号直接接上链接:This is an [example link](http://example.com/)你也可以选择性的加上title属性：This is an [example link](http://example.com/ &quot;With a Title&quot;) 参考形式的链接让你可以为链接定一个名称，之后你可以在文件的其他地方定义该链接的内容：I get 10 times more traffic from Google than fromYahoo or MSN.]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[Hello World]]></title>
     <url>%2F2018%2F05%2F19%2Fhello-world%2F</url>
     <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
