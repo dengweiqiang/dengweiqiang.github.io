@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="邓伟强">
 <meta property="og:description" content="Getting the Gist of Markdown’s Formatting Syntax此页提供了Markdown的简单概念，语法说明页提供了完整详细的文档，说明了每项功能。但是Markdown其实很简单就可以上手，册页文档提供了一些范例，并且每个范例都会提供输出的HTML结果。  段落、标题、区块代码一个段落是由一个以上的连接语句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-21T17:06:12.477Z">
+<meta property="og:updated_time" content="2018-05-21T17:25:30.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Markdow:Basics(快速入门)">
 <meta name="twitter:description" content="Getting the Gist of Markdown’s Formatting Syntax此页提供了Markdown的简单概念，语法说明页提供了完整详细的文档，说明了每项功能。但是Markdown其实很简单就可以上手，册页文档提供了一些范例，并且每个范例都会提供输出的HTML结果。  段落、标题、区块代码一个段落是由一个以上的连接语句组成，而一个以上的空行则会划分出不同的段落（空行的定义是显">
@@ -349,7 +349,7 @@
 <p>Markdown支持两种标题的语法，Setext和atx形式。Setext形式使用底线的形式，利用 =（最高阶标题）和 -（第二阶标题），Atx形式在行首插入1到6个#，对应到标题1到6阶。</p>
 <p>区块引用则使用email形式的’&gt;’角括号。</p>
 <p>Markdown语法：  </p>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><ul>
 <li>Candy</li>
 <li>Gum</li>
 <li>Booze<h3 id="减号"><a href="#减号" class="headerlink" title="减号"></a>减号</h3></li>
@@ -376,10 +376,17 @@
 <li><p>Another item in the list.</p>
 </li>
 </ul>
-<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>Markdown支持两种形式的链接语法：行内和参考两种形式，两种都是使用角括号来把文字转成连接。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p>Markdown支持两种形式的链接语法：行内和参考两种形式，两种都是使用角括号来把文字转成连接。</p>
 <p>行内形式是直接在后面用括号直接接上链接:<br><code>This is an [example link](http://example.com/)</code><br>你也可以选择性的加上title属性：<br><code>This is an [example link](http://example.com/ &quot;With a Title&quot;)</code></p>
-<p>参考形式的链接让你可以为链接定一个名称，之后你可以在文件的其他地方定义该链接的内容：<br>I get 10 times more traffic from <a href="http://google.com/" title="Google" target="_blank" rel="noopener">Google</a> than from<br><a href="http://search.yahoo.com/" title="Yahoo Search" target="_blank" rel="noopener">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search" target="_blank" rel="noopener">MSN</a>.</p>
+<p>参考形式的链接让你可以为链接定一个名称，之后你可以在文件的其他地方定义该链接的内容：   </p>
+<pre>
+I get 10 times more traffic from [Google][1] than from
+[Yahoo][2] or [MSN][3].
 
+[1]: http://google.com/ "Google"
+[2]: http://search.yahoo.com/ "Yahoo Search"
+[3]: http://search.msn.com/ "MSN Search"
+</pre>
       
     </div>
     
@@ -412,6 +419,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/23/RegexSkill/" rel="prev" title="8个正则表达式技巧">
+                8个正则表达式技巧 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -488,7 +499,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -525,7 +536,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-the-Gist-of-Markdown’s-Formatting-Syntax"><span class="nav-number">1.</span> <span class="nav-text">Getting the Gist of Markdown’s Formatting Syntax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#段落、标题、区块代码"><span class="nav-number">2.</span> <span class="nav-text">段落、标题、区块代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.1.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减号"><span class="nav-number">2.2.</span> <span class="nav-text">减号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加号"><span class="nav-number">2.3.</span> <span class="nav-text">加号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序列表"><span class="nav-number">2.4.</span> <span class="nav-text">有序列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在项目间插入空行"><span class="nav-number">2.4.1.</span> <span class="nav-text">在项目间插入空行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">2.5.</span> <span class="nav-text">链接</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-the-Gist-of-Markdown’s-Formatting-Syntax"><span class="nav-number">1.</span> <span class="nav-text">Getting the Gist of Markdown’s Formatting Syntax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#段落、标题、区块代码"><span class="nav-number">2.</span> <span class="nav-text">段落、标题、区块代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表"><span class="nav-number">3.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#减号"><span class="nav-number">3.1.</span> <span class="nav-text">减号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加号"><span class="nav-number">3.2.</span> <span class="nav-text">加号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序列表"><span class="nav-number">3.3.</span> <span class="nav-text">有序列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在项目间插入空行"><span class="nav-number">3.3.1.</span> <span class="nav-text">在项目间插入空行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接"><span class="nav-number">4.</span> <span class="nav-text">链接</span></a></li></ol></div>
             
 
           </div>
