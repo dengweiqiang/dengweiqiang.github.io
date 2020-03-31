@@ -5,10 +5,10 @@
 # Site
 title: DengWeiQiang'Blog #网站标题
 subtitle: #网站副标题
-description: 我的地盘，听我安排 #网站描述
+description: 彬彬有礼，有情有义；人生在世，要有志气。 #网站描述
 keywords:
 author: 邓伟强 #你的名字
-language: zh-CN #网站使用的语言
+language: zh-Hans #网站使用的语言
 timezone: Asia/Shanghai #网站时区
 
 # URL #可以不用配置
@@ -80,6 +80,15 @@ search:
   field: post
   format: html
   limit: 10000
+# RSS订阅
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
 # algolia:
 #   applicationID: 'K7AS38KKM8'
 #   apiKey: '8343e5577d65f3c7980ef9933e15406c'
@@ -88,6 +97,7 @@ search:
 
 ## Themes: https://hexo.io/themes/  主题
 theme: next #当前主题名称
+
 
 # 设置首页显示篇数
 archive_generator: 
