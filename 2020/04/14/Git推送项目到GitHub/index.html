@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="随笔,">
+  <meta name="keywords" content="学习,">
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。">
-<meta name="keywords" content="随笔">
+<meta name="description" content="使用Git推送项目到Github，这个功能非常常用，所以记录下来。">
+<meta name="keywords" content="学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="红雀大战游骑兵">
-<meta property="og:url" content="https://dengwq.top/2018/09/16/红雀大战游骑兵/index.html">
+<meta property="og:title" content="Git推送项目到GitHub">
+<meta property="og:url" content="https://dengwq.top/2020/04/14/Git推送项目到GitHub/index.html">
 <meta property="og:site_name" content="DengWeiQiang&#39;Blog">
-<meta property="og:description" content="常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。">
+<meta property="og:description" content="使用Git推送项目到Github，这个功能非常常用，所以记录下来。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg">
-<meta property="og:updated_time" content="2020-03-31T03:53:53.204Z">
+<meta property="og:updated_time" content="2020-04-14T13:07:28.775Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="红雀大战游骑兵">
-<meta name="twitter:description" content="常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。">
-<meta name="twitter:image" content="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg">
+<meta name="twitter:title" content="Git推送项目到GitHub">
+<meta name="twitter:description" content="使用Git推送项目到Github，这个功能非常常用，所以记录下来。">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://dengwq.top/2018/09/16/红雀大战游骑兵/">
+  <link rel="canonical" href="https://dengwq.top/2020/04/14/Git推送项目到GitHub/">
 
 
 
 
 
-  <title>红雀大战游骑兵 | DengWeiQiang'Blog</title>
+  <title>Git推送项目到GitHub | DengWeiQiang'Blog</title>
   
 
 
@@ -277,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dengwq.top/2018/09/16/红雀大战游骑兵/">
+    <link itemprop="mainEntityOfPage" href="https://dengwq.top/2020/04/14/Git推送项目到GitHub/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="邓伟强">
@@ -294,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">红雀大战游骑兵</h1>
+          <h1 class="post-title" itemprop="name headline">Git推送项目到GitHub</h1>
         
 
         <div class="post-meta">
@@ -306,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T03:34:24+08:00">
-                2018-09-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-14T21:03:29+08:00">
+                2020-04-14
               </time>
             
 
@@ -344,12 +342,12 @@
       
 
       
-        <p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg" alt></p>
-<p>常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。</p>
+        <p>使用Git推送项目到Github，这个功能非常常用，所以记录下来。</p>
 <a id="more"></a>
-<h2 id="点球成金"><a href="#点球成金" class="headerlink" title="点球成金"></a>点球成金</h2><p>昨天晚上看了布拉德皮特的电影《点球成金》，让我对棒球提起了兴趣。首先是了解棒球的规则，常用术语，以及棒球赛。</p>
-<p>根据哔哩哔哩UP主的推荐看了这场《红雀大战游骑兵》的第六场，其实2011赛季《红雀大战游骑兵》7场都相当精彩，但是这一场根据喜剧性，对于我这个入门小生而言看的也更加爽。</p>
-<p>红雀五次落后五次追平，两次被打到赛点，两次两次加时赛，长达四个小时的赛事，让人就如看了一场富有传奇色彩的电影。</p>
+<h3 id="…or-create-a-new-repository-on-the-command-line"><a href="#…or-create-a-new-repository-on-the-command-line" class="headerlink" title="…or create a new repository on the command line"></a>…or create a new repository on the command line</h3><p>从本地仓库推项目到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;# springboot_crud&quot; &gt;&gt; README.md</span><br><span class="line">git init  #初始化本地仓库</span><br><span class="line">git add . #添加全部已经修改</span><br><span class="line">git commit -m &quot;first commit&quot; #提交说明，将修改文件提到本地仓库</span><br><span class="line">git remote add origin https://github.com/dengweiqiang/springboot_crud.git  #连接到远程仓库</span><br><span class="line">git push -u origin master  #将本地代码强制推送到origin仓库中的master分支</span><br></pre></td></tr></table></figure>
+<h3 id="…or-push-an-existing-repository-from-the-command-line"><a href="#…or-push-an-existing-repository-from-the-command-line" class="headerlink" title="…or push an existing repository from the command line"></a>…or push an existing repository from the command line</h3><p>从命令行推送现有的库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/dengweiqiang/springboot_crud.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -367,7 +365,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+            <a href="/tags/学习/" rel="tag"># 学习</a>
           
         </div>
       
@@ -380,8 +378,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/10/东京爱情故事/" rel="next" title="东京爱情故事">
-                <i class="fa fa-chevron-left"></i> 东京爱情故事
+              <a href="/2020/04/14/SpringBoot项目CRUD实践/" rel="next" title="SpringBoot项目CRUD实践">
+                <i class="fa fa-chevron-left"></i> SpringBoot项目CRUD实践
               </a>
             
           </div>
@@ -390,8 +388,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/30/送给自己的礼物/" rel="prev" title="送给自己的礼物">
-                送给自己的礼物 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/04/14/Hexo常用命令小结/" rel="prev" title="Hexo常用命令小结">
+                Hexo常用命令小结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -515,7 +513,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#点球成金"><span class="nav-number">1.</span> <span class="nav-text">点球成金</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#…or-create-a-new-repository-on-the-command-line"><span class="nav-number">1.</span> <span class="nav-text">…or create a new repository on the command line</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#…or-push-an-existing-repository-from-the-command-line"><span class="nav-number">2.</span> <span class="nav-text">…or push an existing repository from the command line</span></a></li></ol></div>
             
 
           </div>
