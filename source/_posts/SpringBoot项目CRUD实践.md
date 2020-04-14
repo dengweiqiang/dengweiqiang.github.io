@@ -188,7 +188,14 @@ public class AccountController {
    </dependency>
    ```
 
-2. 明文加密
+2. 添加盐值
+
+   ```properties
+   # jasypt加密的盐值
+   jasypt.encryptor.password=erp
+   ```
+
+3. 明文加密
 
    ```java
    /**
@@ -205,7 +212,7 @@ public class AccountController {
    }
    ```
 
-3. 使用（application.properties）
+4. 使用（application.properties）
 
    ```java
    # ENC() 是数据库加密函数

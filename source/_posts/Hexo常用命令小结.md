@@ -16,6 +16,8 @@ hexo n "新的博客"	#新建博客
 hexo g & hexo s	   #编译并运行
 hexo g & hexo d	   #编译并部署
 ------------------------------------
+git add .          #添加所有修改的文件
+git commit -m ""   #提交说明
 git branch -a      #查看所有分支
 git push --set-upstream origin hexo_bak  #推送到指定分支
 ```
