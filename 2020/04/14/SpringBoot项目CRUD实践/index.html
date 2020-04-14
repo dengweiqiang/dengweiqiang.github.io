@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="DengWeiQiang&#39;Blog">
 <meta property="og:description" content="使用SpringBoot做的一个CRUD的手脚架，并且提供了数据库密码的加密功能。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-14T13:02:11.648Z">
+<meta property="og:updated_time" content="2020-04-14T13:35:05.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot项目CRUD实践">
 <meta name="twitter:description" content="使用SpringBoot做的一个CRUD的手脚架，并且提供了数据库密码的加密功能。">
@@ -366,6 +366,9 @@
 <h3 id="加密组件"><a href="#加密组件" class="headerlink" title="加密组件"></a>加密组件</h3><ol>
 <li><p>依赖</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.ulisesbocchio<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jasypt-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加盐值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># jasypt加密的盐值</span><br><span class="line">jasypt.encryptor.password=erp</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>明文加密</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* ulisesbocchio 加密组件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getPass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String name = encryptor.encrypt(<span class="string">"root"</span>);</span><br><span class="line">    String password = encryptor.encrypt(<span class="string">"123456"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Name加密后明文: "</span> + name);</span><br><span class="line">    System.out.println(<span class="string">"Password加密后明文: "</span> + password);</span><br><span class="line">    Assert.assertTrue(name.length() &gt; <span class="number">0</span>);</span><br><span class="line">    Assert.assertTrue(password.length() &gt; <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
