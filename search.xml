@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Hexo常用命令小结]]></title>
     <url>%2F2020%2F04%2F14%2FHexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B0%8F%E7%BB%93%2F</url>
-    <content type="text"><![CDATA[最近开始重新使用Hexo写博客，但是有一些常用的命令又时常想不起来，所以写下这篇文章总结一下Hexo常用的命令。 常用命令123456hexo n "新的博客" #新建博客hexo g &amp; hexo s #编译并运行hexo g &amp; hexo d #编译并部署------------------------------------git branch -a #查看所有分支git push --set-upstream origin hexo_bak #推送到指定分支 简写12345hexo n "我的博客" =&gt; hexo new "我的博客" #新建文章hexo p =&gt; hexo publishhexo g =&gt; hexo generate#生成hexo s =&gt; hexo server #启动服务预览hexo d =&gt; hexo deploy#部署 服务器12345678hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。hexo server -s #静态模式hexo server -p 5000 #更改端口hexo server -i 192.168.1.1 #自定义 IPhexo clean #清除缓存 网页正常情况下可以忽略此条命令hexo g #生成静态网页hexo d #开始部署 设置文章摘要1以上是文章摘要 &lt;!--more--&gt; 以下是余下全文]]></content>
+    <content type="text"><![CDATA[最近开始重新使用Hexo写博客，但是有一些常用的命令又时常想不起来，所以写下这篇文章总结一下Hexo常用的命令。 常用命令12345678hexo n "新的博客" #新建博客hexo g &amp; hexo s #编译并运行hexo g &amp; hexo d #编译并部署------------------------------------git add . #添加所有修改的文件git commit -m "" #提交说明git branch -a #查看所有分支git push --set-upstream origin hexo_bak #推送到指定分支 简写12345hexo n "我的博客" =&gt; hexo new "我的博客" #新建文章hexo p =&gt; hexo publishhexo g =&gt; hexo generate#生成hexo s =&gt; hexo server #启动服务预览hexo d =&gt; hexo deploy#部署 服务器12345678hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。hexo server -s #静态模式hexo server -p 5000 #更改端口hexo server -i 192.168.1.1 #自定义 IPhexo clean #清除缓存 网页正常情况下可以忽略此条命令hexo g #生成静态网页hexo d #开始部署 设置文章摘要1以上是文章摘要 &lt;!--more--&gt; 以下是余下全文]]></content>
       <tags>
         <tag>工具</tag>
       </tags>
