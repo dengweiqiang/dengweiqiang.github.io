@@ -1,123 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[Hexo常用命令小结]]></title>
-    <url>%2F2020%2F04%2F14%2FHexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B0%8F%E7%BB%93%2F</url>
-    <content type="text"><![CDATA[最近开始重新使用Hexo写博客，但是有一些常用的命令又时常想不起来，所以写下这篇文章总结一下Hexo常用的命令。 常用命令12345678hexo n "新的博客" #新建博客hexo g &amp; hexo s #编译并运行hexo g &amp; hexo d #编译并部署------------------------------------git add . #添加所有修改的文件git commit -m "" #提交说明git branch -a #查看所有分支git push --set-upstream origin hexo_bak #推送到指定分支 简写12345hexo n "我的博客" =&gt; hexo new "我的博客" #新建文章hexo p =&gt; hexo publishhexo g =&gt; hexo generate#生成hexo s =&gt; hexo server #启动服务预览hexo d =&gt; hexo deploy#部署 服务器12345678hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。hexo server -s #静态模式hexo server -p 5000 #更改端口hexo server -i 192.168.1.1 #自定义 IPhexo clean #清除缓存 网页正常情况下可以忽略此条命令hexo g #生成静态网页hexo d #开始部署 设置文章摘要1以上是文章摘要 &lt;!--more--&gt; 以下是余下全文]]></content>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Git推送项目到GitHub]]></title>
-    <url>%2F2020%2F04%2F14%2FGit%E6%8E%A8%E9%80%81%E9%A1%B9%E7%9B%AE%E5%88%B0GitHub%2F</url>
-    <content type="text"><![CDATA[使用Git推送项目到Github，这个功能非常常用，所以记录下来。 …or create a new repository on the command line从本地仓库推项目到远程仓库 123456echo &quot;# springboot_crud&quot; &gt;&gt; README.mdgit init #初始化本地仓库git add . #添加全部已经修改git commit -m &quot;first commit&quot; #提交说明，将修改文件提到本地仓库git remote add origin https://github.com/dengweiqiang/springboot_crud.git #连接到远程仓库git push -u origin master #将本地代码强制推送到origin仓库中的master分支 …or push an existing repository from the command line从命令行推送现有的库 12git remote add origin https://github.com/dengweiqiang/springboot_crud.gitgit push -u origin master]]></content>
-      <tags>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[SpringBoot项目CRUD实践]]></title>
-    <url>%2F2020%2F04%2F14%2FSpringBoot%E9%A1%B9%E7%9B%AECRUD%E5%AE%9E%E8%B7%B5%2F</url>
-    <content type="text"><![CDATA[使用SpringBoot做的一个CRUD的手脚架，并且提供了数据库密码的加密功能。 项目准备 进入“https://start.spring.io/”构建SpringBoot项目； 选择“Web”、“MySQL”、“Mybatis”模块； 导入项目到idea； 配置数据库 新建数据库； 12create database test;use test; 新建表 1234567891011-- create table `account`DROP TABLE `account`;CREATE TABLE `account` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `money` double DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;INSERT INTO `account` VALUES ('1', 'aaa', '1000');INSERT INTO `account` VALUES ('2', 'bbb', '1000');INSERT INTO `account` VALUES ('3', 'ccc', '1000'); 配置数据库连接application.properties文件 1234567891011spring.datasource.url=jdbc:mysql://localhost:3306/test?serverTimezone=UTC# ENC() 是数据库加密函数spring.datasource.username=ENC(YMoG7LZvcKq3DbW3dc9Ltg==)spring.datasource.password=ENC(RgqVyviuib6ScIcgcQr9SA==)spring.datasource.driver-class-name=com.mysql.jdbc.Driver# jasypt加密的盐值jasypt.encryptor.password=erp# 开启debugdebug=true# 控制台打印SQLlogging.level.top.dengwq.springboot_crud.mapper=debug Entity12345678@Data@ToString@EqualsAndHashCodepublic class Account &#123; private int id ; private String name ; private double money;&#125; Mapper1234567891011121314151617@Mapperpublic interface AccountMapper &#123; @Insert("insert into account(name, money) values(#&#123;name&#125;, #&#123;money&#125;)") int add(@Param("name") String name, @Param("money") double money); @Update("update account set name = #&#123;name&#125;, money = #&#123;money&#125; where id = #&#123;id&#125;") int update(@Param("name") String name, @Param("money") double money, @Param("id") int id); @Delete("delete from account where id = #&#123;id&#125;") int delete(int id); @Select("select id, name as name, money as money from account where id = #&#123;id&#125;") Account findAccount(@Param("id") int id); @Select("select id, name as name, money as money from account") List&lt;Account&gt; findAccountList();&#125; Service123456789101112131415161718192021@Servicepublic class AccountService &#123; @Autowired private AccountMapper accountMapper; public int add(String name, double money) &#123; return accountMapper.add(name, money); &#125; public int update(String name, double money, int id) &#123; return accountMapper.update(name, money, id); &#125; public int delete(int id) &#123; return accountMapper.delete(id); &#125; public Account findAccount(int id) &#123; return accountMapper.findAccount(id); &#125; public List&lt;Account&gt; findAccountList() &#123; return accountMapper.findAccountList(); &#125;&#125; Controller12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152@RestController@RequestMapping("/account")public class AccountController &#123; @Autowired AccountService accountService; @RequestMapping(value = "/list", method = RequestMethod.GET) public List&lt;Account&gt; getAccounts() &#123; return accountService.findAccountList(); &#125; @RequestMapping(value = "/&#123;id&#125;", method = RequestMethod.GET) public Account getAccountById(@PathVariable("id") int id) &#123; return accountService.findAccount(id); &#125; @RequestMapping(value = "/&#123;id&#125;", method = RequestMethod.PUT) public String updateAccount(@PathVariable("id") int id, @RequestParam(value = "name", required = true) String name, @RequestParam(value = "money", required = true) double money) &#123; int t= accountService.update(name,money,id); if(t==1) &#123; return "success"; &#125;else &#123; return "fail"; &#125; &#125; @RequestMapping(value = "/&#123;id&#125;", method = RequestMethod.DELETE) public String delete(@PathVariable(value = "id")int id) &#123; int t= accountService.delete(id); if(t==1) &#123; return "success"; &#125;else &#123; return "fail"; &#125; &#125; @RequestMapping(value = "", method = RequestMethod.POST) public String postAccount(@RequestParam(value = "name") String name, @RequestParam(value = "money") double money) &#123; int t= accountService.add(name,money); if(t==1) &#123; return "success"; &#125;else &#123; return "fail"; &#125; &#125;&#125; 加密组件 依赖 12345&lt;dependency&gt; &lt;groupId&gt;com.github.ulisesbocchio&lt;/groupId&gt; &lt;artifactId&gt;jasypt-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;2.1.1&lt;/version&gt;&lt;/dependency&gt; 添加盐值 12# jasypt加密的盐值jasypt.encryptor.password=erp 明文加密 123456789101112/*** ulisesbocchio 加密组件*/@Testpublic void getPass() &#123; String name = encryptor.encrypt("root"); String password = encryptor.encrypt("123456"); System.out.println("Name加密后明文: " + name); System.out.println("Password加密后明文: " + password); Assert.assertTrue(name.length() &gt; 0); Assert.assertTrue(password.length() &gt; 0);&#125; 使用（application.properties） 123# ENC() 是数据库加密函数spring.datasource.username=ENC(YMoG7LZvcKq3DbW3dc9Ltg==)spring.datasource.password=ENC(RgqVyviuib6ScIcgcQr9SA==)]]></content>
-      <tags>
-        <tag>学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[《黑镜》]]></title>
-    <url>%2F2020%2F03%2F31%2F%E3%80%8A%E9%BB%91%E9%95%9C%E3%80%8B%2F</url>
-    <content type="text"><![CDATA[这部剧吸引我的地方就是每一集都会引发你对剧中问题的思考，为什么他会这么做，这样对不对，现实中存在这种情况么，假如真的发生了这样的事情该怎么办。 第一季ep01这场艺术最后成功了么，如果他是想改变什么，应该说它失败了，如果他是想证明什么，那么他确实成功了。 一根断指的出现，使得民意发生了180度的转弯，民意真的正确么，真的应该完全跟随民意么。 为一个疯子套上艺术家的身份后，似乎一切都可以解释为行为艺术了，他死亡，是这件事情更为讽刺。（艺术的边界是什么） 对媒体的讽刺也极具讽刺，媒体为了报道可以不惜一切代价。 ep02下等的清洁工，中等的蹬单车，上等的做评委，上一等级的不把下一等级的当人看，下一等级的维护者上等人的生活，这就是一个物化了的真实社会。 个人的有意识行为，会被群体的无意识行为所代替。 评委时催眠师，观众是傀儡，它们的大脑是瘫痪的，都被催眠指引向了同一方向。 无论是喝了迷药的，还是没有喝迷药的，他们最终的结果都是一样的。（讽刺，对英雄更加尊敬了） 我们都成了我们最讨厌的样子。他曾那么想改变这个世界，确终于被这个世界所改变。 不忘初心，方得始终，你我共勉。 ep03当记忆不再是记忆，而是记录时，失忆成了一种解脱，遗忘成了一种自我保护。 只因记忆时生存的证明。（记忆粒广告语） 当一个人拥有着和我一样的记忆，那么这个人是我么？或者说，如果记忆可以复制，那么人是不是永生了呢？（思考） 找回记忆不难，那找回自我呢？ 第二季ep01画画都用电子的了么，而且画板和真的一样。 他死了，对他最大的尊重，就是让他死了吧，而不是找个人或东西来代替他。 你不说我也不说。（听起来好恐怖） 你好脆弱啊。（产生了同情，只有平等时，才会有这种情感，她已经迷失了，逐渐分不清这是人还是机器了） 我们有无数可机会可以在它弱小是摧毁它，可是我们却什么也没有做，任由欲望控制着我们。 有些东西是机器很难学会的，比如自主意识，要不要这样做，考虑要不要这样做的标准很多时候是感觉，而不是利害关系，更主要的是人与人之间的平等，很明显这个机器人不具备这一点，或者设计者不想让它具备这一点。 从某种意义上来说，是不是她把自己困在了里面，走不出来了，但可以感觉到她和她的女儿明白了某种界限。 ep02为什么都在窗口？ 女主不记得自己是谁了，小女孩拿着相机拍照。 人人都拿着相机，却无人拯救她，这是讽刺全民自媒体时代么。 围观是不是更恐怖呢？ 看着剧场围观的人，与女主有什么不一样呢，好人与坏人总要有点不一样吧。 ep03看这个儿童教育节目，也不怎么样么。 可怕的不是有政治立场的人，而是无政治立场虚拟人物，因为它什么也不会，也不能改变。 圣诞特别篇人们想要被关注，他们不想被排斥，不想让自己没有存在感。 就像当你准备跳进游泳池的时候，你会担心，水是不是太凉了，但你明白，等你跳下去之后一切都会没事，让你退缩不前的是对于刺激的恐惧。 人，总得找些什么事情做，总得去寻找“意义”，他无法忍受独自一人关禁闭般的生活，那样会使他彻底崩溃，陷入虚无。唯有通过日复一日的劳作，我们才能把自己的生活填满。 感觉被所有人屏蔽应该是最严酷的惩罚了。 第三季ep01给人打分，给所有人打分，所有人给对方打分，每个人都能看到你的分数，这是要干啥。 这是生活在真实世界中的，而不是生活在社交中，物化的对人类社会互联网的讽刺么。 人生不应该评分，每个人都是独一无二的，能给自己评分的只能是你自己。]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[《俗女养成记》]]></title>
-    <url>%2F2020%2F03%2F31%2F%E3%80%8A%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0%E3%80%8B%2F</url>
-    <content type="text"><![CDATA[19年真是台剧的丰收年，上半年《我们与恶的距离》，下半年《想见你》，现在再加上这部剧。很难想象一个女人到了四十岁依然能够这么勇敢，看到后面才一点一点理解她的决定，正是童年时爷爷奶奶，父母的悉心呵护才有如今勇敢的陈嘉玲。 我不是好人，也不是坏人，我只是需要一个爱我的人，好命跟歹命，春夏跟秋冬，跟他一人一半。 ep01有些时候，小孩子的求生意志是很惊人的。 我从来不曾想过，一个三十岁的女人不想结婚，竟然会掀起如此打的风暴，那力道之大，让我的二姑姑终生未嫁。 ep02大表姐每次来，妈妈都要我穿新衣，她自己也是。长大后，我才明白，竞争是女人一出生就会的功夫。 真的有必要什么都要比么，为什么要比呢。 自己人终究还是自己人，客人是客人，是不一样的。 ep03在那个时候我仿佛看到了我恐怖的后半生。（婆婆恐惧症） 干嘛这样，我们也是好意啊。（嘉玲似乎明白了什么） 谈恋爱的时候，你听歌的时候，歌都会变得很好听，树木，花朵，不管什么东西都会变得很漂亮。（这种形容很有意思） 世界上最远的距离，不是我不能说我爱你 而是想你痛彻心脾，却只能深埋心底 世界上最远的距离，不是我不能说我想你 而是彼此相爱，却不能够在一起 世界上最远的距离，不是彼此相爱却不能够在一起 而实明知道真爱无敌，却装作毫不在意 —- 片中阿娟写给阿诚的信 也许这件事情对于孩子的伤害是终生的，不仅影响了当事人，对于旁观者也是一种伤害。 父母对孩子不仅要有相对科学的性教育，应该还要要正确的爱教育。 ep04不必让孩子最好，不要让他最不一样是父母的责任。 你会发现，大人老是不愿意听小孩子的意见，以为他们什么都不懂，受苦的其实还是小孩子自己，知道错误后也不愿意公开承认错误，自己死要面子让家人活受罪。（小嘉玲咸鱼事件） 奶奶说，你要自己会想，妈妈说，你要自己会判断。 想起了孙杨听证会事件，想起了巨婴症，已经是两个孩子的爸爸了，对于从未学过医的母亲的话不敢反驳，我们的教育是不是出了什么问题。（帝爷公药方事件） 为什么遇到事情总是推卸自己的责任的，我也是如此么，我不要这个样子。 做一个聪明的孩子，也是有方法的，有的时候，你要找一个地方，毁尸灭迹；有的时候，你要算好时机，瞒天过海；更有的时候，你要心狠一点，辜负爸爸的爱。不听话会被人揍，听话也不一定有好下场。听话还是不听话，生存还是毁灭，这是个重大的问题。 ep05可能这就是成熟女性吧，勇于拒绝，多了许多魅力。 大人的一个玩笑，却被孩子深信不疑。 说话要抓重点，不要想说什么说什么，没人听得懂的，徒增笑料。 今天的风湿湿的 今天的天暗暗的 今天的我需要一个人 来陪我风吹雨淋 人生就像一场梦 你是我最美的梦 你是台风天 冒烟的泡面 你是我最爱的人 若是有你和我做伴 有钱贫穷我都没差 拿着雨伞等待雨散 我要牵你的手 牵到手红红 – 旺福的《等待雨散》 ep06悲伤五阶段：否认、愤怒、协商（讨价还价）、忧郁（抑郁）、接受。 ep07 这个年纪要奶奶替我安排相亲 妈妈帮我找工作 爸爸怕我…没钱 我是没用的人，让你们失望了 你知道你女儿很有天分吗？应该比我更有天分。（情商啊） ep08 生命会找到自己的出路。 ——《侏罗纪公园》 到底是命运决定了我们的方向，还是我们自己决定了命运。 ep09走到人生这个阶段，不再见不一定是坏事，有时候清清楚楚，轻轻放下或许更好。 ep10你觉得快乐是什么？你想过十年后的自己是什么样么？ 成熟男女就是干脆啊。 亲爱的陈嘉玲 你是从几时开始忘记了，忘记了这辈子其实很长，长到你可以跌倒再站起来，做梦有醒过来； 你又是从即使开始忘记了，这辈子其实很短，短到你没时间再去勉强自己，没时间再去讨厌你自己； 亲爱的陈嘉玲 从现在开始，从这里开始，不要再忘记了，我想要对你说：对不起，谢谢你，还有..我爱你。]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[《想见你》]]></title>
-    <url>%2F2020%2F03%2F31%2F%E3%80%8A%E6%83%B3%E8%A7%81%E4%BD%A0%E3%80%8B%2F</url>
-    <content type="text"><![CDATA[《想见你》里面的几个主题：面对失去，面对成长，面对爱情，面对自我，面对世界 莫俊杰，陈思源在面对困境时，都有人伸出援手，拯救了它们；假如有人在陈韶如，王诠胜他们遇到困境时伸出援手，是不是能够避免后面这些事情的发生呢。 第六集莫俊杰看到黄雨萱对那幅画的表情后，肯定明白了，她已经不是他心中喜欢的那个女孩了 你喜欢的人，一定是你见过，听过的，看过的，某些品质或人 大哥哥我叫黄雨萱，你不可以忘记我哦（瓦特，这编剧脑洞大开啊） 第七集女主的眼泪说流就流，演技可以 第八集一直都是李子维和黄雨萱，没其他两个人啥事情 第十集它们真的能够改变过去么，又会以什么方式来改变呢，还是一切回零，继续循环 她等了两年已经如此难熬，他等了十五年，思考这一切，最后决定什么也不要改变，该发生的就让他发生 我们在一起总是能互相体谅，总是能牵着手，朝同一个方向前进。但不管距离多远，我们的心都是在一起的 – Only if you asked to see me– Our meeting would be meaningful to me只有你想见我的时候，我们的相遇才有意义 第十一集两次离别，为何求死呢 原来哪些日记都是意有所指啊，做自己就好，不比学他人，邯郸学步，不如不学 这一切都是梦，我幻想一个我喜欢的人，刚好也喜欢我的梦 第十二集我跟你们一样，我也不喜欢以前的自己。（泪目，可能这就是梦醒来的后遗症吧） 想到了变形记，那些主人公，回到了原来的环境，会对他的未来产生什么影响 第十三集这就对了，历史根本不应该被改变 你想从这个世界消失，不是你对这个世界太失望，而是你对世界有太多的期望 被一个人放在心上，从来都不是理所当然的事情，不管那个人是谁，是家人，还是朋友，都是非常难得，应该被好好珍惜才对 最后这个场景，应该叫萝莉是怎样养成的 最后才知道，李子维的摩托为什么是那样的，原来是为了小黄雨萱啊]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[几本小说]]></title>
-    <url>%2F2018%2F10%2F30%2F%E5%87%A0%E6%9C%AC%E5%B0%8F%E8%AF%B4%2F</url>
-    <content type="text"><![CDATA[最近利用工作闲时的时间看了几本小说，这些都是久经时间考验的书籍！ 《1984》 战争就是和平，自由就是奴役，无知就是力量。 控制过去就能控制未来，控制现在就能控制过去。 世界有真理也有缪误，如果你坚持真理，即使你的对手是全世界，你也不是疯子。 寡头统治的精髓不是父子继承，二十死去的一代将某种世界观和生活方式施加给或者的一代，使之延续下去。 没有一种感情是纯粹的，因为一切都夹杂着恐惧和仇恨。他们的拥抱是一场战斗，高潮是一次胜利。这是给党的沉重的一击。这是一次政治行为。 1984虽已早过去，但是这本书里的景象，依然值得人们警醒。 《了不起的盖茨比》 她认为我懂很多，因为我懂的和她懂的不一样。 咱们大家都应当学会在朋友活着的时候讲交情，而不要等到他死了之后。 你说过一个开车不小心的人只有在碰上另一个开车不小心的人之前才安全吧？瞧，我碰上了另一个开车不小心的人了，是不是？ 在看同名电影的时候，时常想，盖茨比为什么了不起？了不起在哪里？ 在读完书之后，我觉得可以把罗曼罗兰的那句话用在盖茨比身上——世上只有一种真正英雄主义，那就是认识生活的真相后依然爱它。 从五年的等待到事故当晚在黛西窗外整整一夜的守候，以及到后来成为她的独独的牺牲品，尽管他的幻梦以死亡作为结局，但他却是按照幻梦指的方向一直走。 《基督山伯爵》 这世上无所谓幸福，也无所谓不幸，有的只是一种境况和另一种境况的比较如此而已。只有体验过极度不幸的人，才能品尝到极度的幸福。 有人说这本小说在一百多年前文学界的地位，就如同如今的网络小说，看完这本书之后，我对此毫不怀疑。 《白夜行》和《嫌疑人X的献身》 之所以放在一起是因为，我觉得这两本书完全一个套路，并无二致。 一个人对异性毫无保留的付出，人们打把这种事情叫做“爱”，因为爱，所以可以原谅！ 《小王子》 如果一个人爱上了一株花，而珠花只长在成千上万颗星星中的一颗上，那么观看星星就足以让这个人感到快乐。 只有心灵才能洞察一切，肉眼是看不到事物的本质的。 你要对你所有认熟过的事物永远负责，你要对你的那朵玫瑰花负责…… 这是给大人们的童话！ 应该没有人不喜欢狐狸吧，她是如此的勇敢！]]></content>
-      <tags>
-        <tag>读书</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[送给自己的礼物]]></title>
-    <url>%2F2018%2F10%2F30%2F%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A4%BC%E7%89%A9%2F</url>
-    <content type="text"><![CDATA[20岁了，在这之后的岁月里只能自己独自砥砺前行了，在这前方的路上，肯定不缺少挫折，愿自己如这场夜间慢跑一样咬牙坚持下去！]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[红雀大战游骑兵]]></title>
-    <url>%2F2018%2F09%2F16%2F%E7%BA%A2%E9%9B%80%E5%A4%A7%E6%88%98%E6%B8%B8%E9%AA%91%E5%85%B5%2F</url>
-    <content type="text"><![CDATA[常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。 点球成金昨天晚上看了布拉德皮特的电影《点球成金》，让我对棒球提起了兴趣。首先是了解棒球的规则，常用术语，以及棒球赛。 根据哔哩哔哩UP主的推荐看了这场《红雀大战游骑兵》的第六场，其实2011赛季《红雀大战游骑兵》7场都相当精彩，但是这一场根据喜剧性，对于我这个入门小生而言看的也更加爽。 红雀五次落后五次追平，两次被打到赛点，两次两次加时赛，长达四个小时的赛事，让人就如看了一场富有传奇色彩的电影。]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[东京爱情故事]]></title>
-    <url>%2F2018%2F09%2F10%2F%E4%B8%9C%E4%BA%AC%E7%88%B1%E6%83%85%E6%95%85%E4%BA%8B%2F</url>
-    <content type="text"><![CDATA[正是因为不知道明天会发生什么事，才会充满希望不是吗？ – 赤名莉香 初见之前就从各种渠道听人推荐这部电视剧，豆瓣评分也保持着傲人的9.4分，但网上资源很少，各种百度云的链接大多早已失效，日剧的资源不知道为什么被查禁的很厉害。最近终于找到了这部电视剧的资源，所以连着三天就刷完了，不是我想看这么快，而是被剧情所吸引。 找到的资源说是720P的，可是年代久远，画面依然有些模糊不清。看多了现在电视电影的男女主角，不禁觉得30年前的靓男婧女们真是朴素到家了，好在这部久经时间考验的“青春偶像剧”不是光靠脸吃饭的。 最好的开始，最好的结局有时候再努力又如何，那扇门是不会仅仅因为你的努力而打开的，剧情里埋了很多莉香和完治最终会分手的伏笔，但最重要的原因恐怕就是，那份爱来的太容易了吧。 三上和长崎的结局，恐怕是最具童话气息的了。你来我往，一来二去，不知不觉就真的爱上了；三上像《毕业生》里的本恩那样，想带她从婚礼上离开;长崎也勇敢的放下所有，回来寻找三上， 加上之前人物的铺垫，让人不禁会相信他们会永远幸福。 完治和里美最终走到一起，恐怕是最好的结局了，就如《一一》里面南骏那样，他和阿瑞的那份爱只要放在心底，才是最美好的。 高中时代的好朋友，都有点喜欢对方，外加五年的等候，中间的艰难抉择，终于修成正果，这不管在哪里都是大圆满的结局了。奈何半路遇到个赤名莉香，莉香那对生活的态度，那份真挚的笑容，以及在爱情中的勇敢付出，都令我们心生向往，更深层的原因可能是深埋我们心底里那份信念——有付出，应该有回报！莉香应该拥有这份感情。 所以对于里美算不上讨厌，但是对是莉香慢慢的总是慢慢的可惜，就算我知道，结局就是这样，这也是最好的结局，但还是有些失落，感谢网络上的UP主们，让我在这部电视诞生30年后依然能欣赏它，谢谢 PS：但是日本的吃瓜群众在现实中向里美扔石头这种事情还是看不过去的；可要是在东京的街头碰见莉香请代我向她问好 莉香那份真挚的笑容已经刻在了我的心里，相信短时间不会被抹去，不知道何时再看《东爱》，但希望是和那个她一起看。]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[我曾七次鄙视自己的灵魂]]></title>
-    <url>%2F2018%2F08%2F22%2F%E6%88%91%E6%9B%BE%E4%B8%83%E6%AC%A1%E9%84%99%E8%A7%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%81%B5%E9%AD%82%2F</url>
-    <content type="text"><![CDATA[良多一直想成为自己理想中的那个人，但理想很丰满，现实很骨感，最终他变成了他最讨厌的那种人！良多：“你以为可以很容易成为想象中的人，那就大错特错了！” 《我曾七次鄙视自己的灵魂》 第一次，当他本可进取时，却故作谦卑； 第二次，当它空虚时，用爱欲来填充； 第三次，在困难和容易之间，它选择了容易； 第四次，它犯了错，却借由别人也会犯错来宽慰自己； 第五次，它自由软弱，却把它认为是生命的坚韧； 第六次，当它鄙夷一张丑恶的嘴脸时，却不知那正是自己面具中的一副； 第七次，它侧身于生活的污泥中虽不甘心，却又畏首畏尾。]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[23种设计模式解析]]></title>
-    <url>%2F2018%2F08%2F22%2F23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90%2F</url>
-    <content type="text"><![CDATA[设计模式(Design Pattern)是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。 使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。 设计模式的分类总体来说设计模式分为三大类： 创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。 结构型模式，共七种：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。 行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。 其实还有两类：并发型模式和线程模式。用一个图片来整体描述一下： 设计模式的六大原则总原则：开闭原则(Open Close Principle)开闭原则就是说对扩展开放，对修改关闭。在程序需要进行拓展的时候，不能去修改原有的代码，而是要扩展原有代码，实现一个热插拔的效果。所以一句话概括就是：为了使程序的扩展性号，易于维护和升级。想要达到这样的效果，我们需要使用接口和抽象类等，后面具体设计中我们会提到这点。]]></content>
-      <tags>
-        <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[idea的使用技巧]]></title>
-    <url>%2F2018%2F08%2F20%2Fidea%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%2F</url>
-    <content type="text"><![CDATA[idea在Java领域的强大编辑能力是毋庸置疑的，这是我近期学习idea的一些总结！ 高效定位代码无处不在的跳转项目间的跳转 功能 快捷键 跳转到下一个项目窗口 Ctrl + Atl + ] 返回到上一个项目窗口 Ctrl + Atl + [ 文件间的跳转 功能 快捷键 最近的文件 Ctrl + E 最近编辑的文件 Ctrl + Shift + E 浏览修改位置的跳转 功能 快捷键 最后一个修改位置 Ctrl + Shift + backspace 上一个浏览位置 Ctrl + Alt + 左箭头 下一个浏览位置 Ctrl + Alt + 右箭头 利用书签跳转 功能 快捷键 添加书签 F11 添加带有标记的书签 Ctrl + F11 添加带有标记的书签 Ctrl + Shift + 数字或字母 跳转到带有标记的书签 Ctrl + 书签编号（见上一条） 书签总览 Shift + F11 字符串跳转之插件emacsIdea首先到idear商店安装emacsIdea插件，设置emacsIDEAS插件的快捷键：打开搜索功能，输入keymap，右边搜索框输入acejumpword，新增一个快捷键。 功能 快捷键 跳转需要查找的字符位置 Alt + J + 需要查找的字母 导航窗口的跳转 功能 快捷键 快速寻找功能快捷键 Ctrl + Shift + A 编辑区和文件区来回跳转 Alt + 1 &amp; Esc 精准搜索快捷键按两次可以全局搜索 功能 快捷键 查找类 Ctrl + N 查找文件 Ctrl + Shift + N 查找符号 Chrl + Alt + Shift + N 查找字符串 Ctrl + Shift + F 代码小助手列操作示例：使用建表语句快速创建枚举类 选中单词 ==Ctrl + &gt;== 英文大小写切换 ==Ctrl + Shift + U== 对所有选中单词进行操作 ==Ctrl + Alt + Shift +J== live template示例： main方法模板 位置：菜单 –&gt; File –&gt; Setting –&gt; Editor –&gt; Live Templates 功能：定义模板，使用特定 “字符串” 快速敲击出某段代码 举例： psvm 敲出 public static void main(String[] args){ … } postfix示例：100.for 位置： 菜单 –&gt; File –&gt; Setting –&gt; Editor –&gt; General –&gt; Postfix Completion 功能： 使用后缀，快速敲出代码块 举例： 100.fori 敲出 for(int i=0; i&lt;100; i++) {…} alter + enter 自动创建函数 自动生成参数化 String.format 实现接口 单词拼写，单词建议 导包 编译高质量代码重构 重构变量： Shift + F6 重构方法： Ctrl + F6 抽取 抽取变量：Ctrl + Alt + V 抽取静态变量： Ctrl + Alt + C 抽取成员变量： Ctrl + Alt + F 抽取方法参数： Ctrl + Alt + P 抽取函数: Ctrl + Alt + M 关联一切Spring的关联示例： 导入Spring的引用，通过bean查找实现类 位置： 菜单 –&gt; File –&gt; Project Structure –&gt; Facets 功能： 帮助管理Spring容器。还提供了很多其他的管理，比如EJB 使用： 点击 + 号，选择Spring，选择模块 在Spring中，点击 + 号，起一个名字，选择Spring配置文件。(SpringBoot中，选择类文件) 项目的各个文件中会出现Spring的Logo，其提供了很多功能。比如：查看该Bean是在哪里提供的。 与数据库的关联关联了数据库之后，如果需要重构字段或表名，不仅可以更改当前页面，还可以更改所有引用到该表的SQL以及数据库表名或字段。 调试程序断点调试 功能 快捷键 添加/取消断点 Ctrl + F8 调试当前类 Shift + F9 运行 Shift + F10 单步运行 F8 步入代码里面 F7 强制进入代码 Alt + Shift + F7 跳到下一个断点 F9 运行到光标出 Alt + F9 debug时查看选中值 Alt + F8 正常运行Java类 Ctrl + Shift + F10 debug运行Java类 Ctrl + Shift + F9]]></content>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[婉婷，Welcome]]></title>
-    <url>%2F2018%2F08%2F20%2F%E5%A9%89%E5%A9%B7%EF%BC%8CWelcome%2F</url>
-    <content type="text"><![CDATA[婉婷，你是我的第一个访客，欢迎你！ 从昨儿下午忙活到现在，我的博客上线了，还没想好写些什么，网站也还有很多问题，但算是架子搭起来了，晚安，好梦！]]></content>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Git常用指令]]></title>
-    <url>%2F2018%2F08%2F19%2FGit%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[Git常用指令（20180819初始版本）]]></content>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
+<search> 
+  
+    
+    <entry>
+      <title>别忘记那些人那些事</title>
+      <link href="/2020/04/24/%E5%88%AB%E5%BF%98%E8%AE%B0%E9%82%A3%E4%BA%9B%E4%BA%BA%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
+      <url>/2020/04/24/%E5%88%AB%E5%BF%98%E8%AE%B0%E9%82%A3%E4%BA%9B%E4%BA%BA%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p>11 武汉疫情慢慢结束，但是疫情中发生的一些事情不应该就这么被忘记，所以转载这篇文章记录一下。</p><p>在四月底的这个时间点来看，有几个事情也应该被记住，疫情大爆发时的以李文亮为代表的几个“造谣”医生被传唤，到大爆发后（这篇文章所说的事情基本在这个时间段），疫情趋于结束时对“方方”的可耻批判。（几乎是对所有读过方方日记的人的愚弄，想过他们坏，没想到这么坏，指鹿为马很有意思么，fuck）</p><p>转载自：@玛丽莲梦六，网传作者被请去喝茶了。</p><a id="more"></a><p>那个坐在阳台上敲锣鸣病的人。</p><p>那个深夜追着殡车凄厉地喊着“妈妈”的人。</p><p>那个开着货车在高速路上流离失所没有归处的人。</p><p>那个坐着死去被家人抱住头等待殡葬车的人。</p><p>那个隔离在家中被饿死的人。</p><p>那个怀有身孕花了20万最终因无力承担而被放弃治疗的人。</p><p>那个怕传染给家人而给自己挖好坟偷偷上吊的人。</p><p>那个无处就医又怕传染妻小从桥上一跃而下自我了断的人。</p><p>那个90岁高龄为60多岁儿子排到一张床位而在医院守了五天五夜的人。</p><p>那个在求医院床位的微博下评论：“我家人刚过世了，空出一个床位，希望能帮到你”的人。</p><p>那个先是骂着求助者嚎丧影响心情随后又只能以同样方式呼救的人。</p><p>那个为求助而现学会用微博发了一句你好的人。</p><p>那个被盘查时用围巾捂住嘴，因买不到口罩而羞愧哭泣的人。</p><p>那个用橘子皮当口罩的人。</p><p>那个爸爸妈妈爷爷奶奶全家都死了只好孤身一人去民政局报到的人。</p><p>那个把抵工钱的口罩全部捐出去的人。</p><p>那个写下“安心赴死”“是时候奉献出自己”的人。</p><p>那个写下“能、明白”并印上红手印死了两次的人。</p><p>那个不眠不休建设完火神山医院返回村里，却被自己村人视为瘟神的人。</p><p>那个身患白血病需要去北京进行骨髓移植，却没有途径出城，痛到想要安乐死的人。</p><p>那个穿着寿衣打电话求一张床位未果，崩溃倒下的人。</p><p>那个因疫情做不了血液透析，在社区门口哀求无果跳楼自杀，自杀后6小时遗体才被拉走的人。</p><p>那个被派出所罚写100遍《出门一定要戴口罩》的人。</p><p>那个未戴口罩被扇巴掌扇出血的人。</p><p>那个喊着我饿啊我要饿死了，老婆孩子都在家挨饿，想必你们肚子是饱的吧的人。</p><p>那个以养蜂为生、因疫情导致蜜蜂无法转场最后自杀的人。</p><p>那个为了外出谋生，长途跋涉13天，徒步700多公里，睡桥洞睡草窝，打工的地方是煤矿人。</p><p>那个无处收治怕感染老婆孩子，写下遗书想将自己的遗体用于科学研究，愿天下人不再受病痛折磨，而后留下钥匙和手机离家出走，最后死在回老家途中的人。</p><p>那个写下“死后遗体捐给国家。我老婆呢？”的人。</p><p>那个因为封城禁车只好背着妈妈四处问诊，一路走了三个小时的人。</p><p>那个把刚出生的孩子托付给医院，写下“生孩子已花光仅有的积蓄，走投无路流落至此”的人。</p><p>那个为了出门买肉，从10楼爬下来的人。</p><p>那个守着爷爷的尸体过了5天，并给爷爷盖上被子的孩子。</p><p>那个重症被治愈后回家发现家人都去世了，在楼顶上吊自杀了。</p><p>那个60多岁独自一人承担派出所60多个警察的采购、洗菜、做菜、洗碗、打扫厨房，最后累到在走廊里哭的人。</p><p>那个在武汉街头流浪了20多天，头发白了一半的人。</p><p>那个没钱买手机上网课，而将妈妈治疗精神疾病的药物一把吞下的人。</p><p>那个25岁从央视辞职，在最危险的时候去武汉直播，对着门外将要把他带走的人，背诵少年强则国强，少年弱则国弱的人。</p><p>那个在领导检查时，在楼上大喊“都是假的”的人。</p><p>那个从坍塌的泉州酒店救出三个孩子尸体后大哭的人。</p><p>那个写下60篇封城日记，被封号数次，被群氓围殴谩骂的人。</p><p>那个只有七八岁懵懂跟随大人队伍里为父母领取骨灰的人。</p><p>那个苦口婆心有理有据给政府公务人员打电话说病毒要防、人也要吃饭，最后轻轻叹了口气的人。</p><p>那个深受病人爱戴，因戴口罩而被医院训斥，后感染病毒死去的人。</p><p>那个说出“早知道有今天，我管他批评不批评，老子到处说”的人。</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Hexo常用命令小结</title>
+      <link href="/2020/04/14/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B0%8F%E7%BB%93/"/>
+      <url>/2020/04/14/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B0%8F%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>最近开始重新使用Hexo写博客，但是有一些常用的命令又时常想不起来，所以写下这篇文章总结一下Hexo常用的命令。</p><a id="more"></a><h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo n "新的博客"#新建博客</span><br><span class="line">hexo g &amp; hexo s   #编译并运行</span><br><span class="line">hexo g &amp; hexo d   #编译并部署</span><br><span class="line">------------------------------------</span><br><span class="line">git add .          #添加所有修改的文件</span><br><span class="line">git commit -m ""   #提交说明</span><br><span class="line">git branch -a      #查看所有分支</span><br><span class="line">git push --set-upstream origin hexo_bak  #推送到指定分支</span><br></pre></td></tr></table></figure><h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo n <span class="string">"我的博客"</span> =&gt; hexo new <span class="string">"我的博客"</span> <span class="comment">#新建文章</span></span><br><span class="line">hexo p =&gt; hexo publish</span><br><span class="line">hexo g =&gt; hexo generate<span class="comment">#生成</span></span><br><span class="line">hexo s =&gt; hexo server <span class="comment">#启动服务预览</span></span><br><span class="line">hexo d =&gt; hexo deploy<span class="comment">#部署</span></span><br></pre></td></tr></table></figure><h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。</span><br><span class="line">hexo server -s #静态模式</span><br><span class="line">hexo server -p 5000 #更改端口</span><br><span class="line">hexo server -i 192.168.1.1 #自定义 IP</span><br><span class="line"></span><br><span class="line">hexo clean #清除缓存 网页正常情况下可以忽略此条命令</span><br><span class="line">hexo g #生成静态网页</span><br><span class="line">hexo d #开始部署</span><br></pre></td></tr></table></figure><h3 id="设置文章摘要"><a href="#设置文章摘要" class="headerlink" title="设置文章摘要"></a>设置文章摘要</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以上是文章摘要 &lt;!--more--&gt; 以下是余下全文</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Git推送项目到GitHub</title>
+      <link href="/2020/04/14/Git%E6%8E%A8%E9%80%81%E9%A1%B9%E7%9B%AE%E5%88%B0GitHub/"/>
+      <url>/2020/04/14/Git%E6%8E%A8%E9%80%81%E9%A1%B9%E7%9B%AE%E5%88%B0GitHub/</url>
+      <content type="html"><![CDATA[<p>使用Git推送项目到Github，这个功能非常常用，所以记录下来。</p><a id="more"></a><h3 id="…or-create-a-new-repository-on-the-command-line"><a href="#…or-create-a-new-repository-on-the-command-line" class="headerlink" title="…or create a new repository on the command line"></a>…or create a new repository on the command line</h3><p>从本地仓库推项目到远程仓库</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;# springboot_crud&quot; &gt;&gt; README.md</span><br><span class="line">git init  #初始化本地仓库</span><br><span class="line">git add . #添加全部已经修改</span><br><span class="line">git commit -m &quot;first commit&quot; #提交说明，将修改文件提到本地仓库</span><br><span class="line">git remote add origin https://github.com/dengweiqiang/springboot_crud.git  #连接到远程仓库</span><br><span class="line">git push -u origin master  #将本地代码强制推送到origin仓库中的master分支</span><br></pre></td></tr></table></figure><h3 id="…or-push-an-existing-repository-from-the-command-line"><a href="#…or-push-an-existing-repository-from-the-command-line" class="headerlink" title="…or push an existing repository from the command line"></a>…or push an existing repository from the command line</h3><p>从命令行推送现有的库</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/dengweiqiang/springboot_crud.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>SpringBoot项目CRUD实践</title>
+      <link href="/2020/04/14/SpringBoot%E9%A1%B9%E7%9B%AECRUD%E5%AE%9E%E8%B7%B5/"/>
+      <url>/2020/04/14/SpringBoot%E9%A1%B9%E7%9B%AECRUD%E5%AE%9E%E8%B7%B5/</url>
+      <content type="html"><![CDATA[<p>使用SpringBoot做的一个CRUD的手脚架，并且提供了数据库密码的加密功能。</p><a id="more"></a><h3 id="项目准备"><a href="#项目准备" class="headerlink" title="项目准备"></a>项目准备</h3><ol><li>进入“<a href="https://start.spring.io/”构建SpringBoot项目；" target="_blank" rel="noopener">https://start.spring.io/”构建SpringBoot项目；</a></li><li>选择“Web”、“MySQL”、“Mybatis”模块；</li><li>导入项目到idea；</li></ol><h2 id="配置数据库"><a href="#配置数据库" class="headerlink" title="配置数据库"></a>配置数据库</h2><ol><li><p>新建数据库；</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create database test;</span><br><span class="line">use test;</span><br></pre></td></tr></table></figure></li><li><p>新建表</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- create table `account`</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="string">`account`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`account`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`money`</span> <span class="keyword">double</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">4</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`account`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'aaa'</span>, <span class="string">'1000'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`account`</span> <span class="keyword">VALUES</span> (<span class="string">'2'</span>, <span class="string">'bbb'</span>, <span class="string">'1000'</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`account`</span> <span class="keyword">VALUES</span> (<span class="string">'3'</span>, <span class="string">'ccc'</span>, <span class="string">'1000'</span>);</span><br></pre></td></tr></table></figure></li></ol><h3 id="配置数据库连接"><a href="#配置数据库连接" class="headerlink" title="配置数据库连接"></a>配置数据库连接</h3><p>application.properties文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/test?serverTimezone=UTC</span><br><span class="line"># ENC() 是数据库加密函数</span><br><span class="line">spring.datasource.username=ENC(YMoG7LZvcKq3DbW3dc9Ltg==)</span><br><span class="line">spring.datasource.password=ENC(RgqVyviuib6ScIcgcQr9SA==)</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="line"># jasypt加密的盐值</span><br><span class="line">jasypt.encryptor.password=erp</span><br><span class="line"># 开启debug</span><br><span class="line">debug=true</span><br><span class="line"># 控制台打印SQL</span><br><span class="line">logging.level.top.dengwq.springboot_crud.mapper=debug</span><br></pre></td></tr></table></figure><h3 id="Entity"><a href="#Entity" class="headerlink" title="Entity"></a>Entity</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="meta">@EqualsAndHashCode</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id ;</span><br><span class="line">    <span class="keyword">private</span> String name ;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> money;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="Mapper"><a href="#Mapper" class="headerlink" title="Mapper"></a>Mapper</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AccountMapper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Insert</span>(<span class="string">"insert into account(name, money) values(#&#123;name&#125;, #&#123;money&#125;)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String name, @<span class="title">Param</span><span class="params">(<span class="string">"money"</span>)</span> <span class="keyword">double</span> money)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Update</span>(<span class="string">"update account set name = #&#123;name&#125;, money = #&#123;money&#125; where id = #&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String name, @<span class="title">Param</span><span class="params">(<span class="string">"money"</span>)</span> <span class="keyword">double</span> money, @<span class="title">Param</span><span class="params">(<span class="string">"id"</span>)</span> <span class="keyword">int</span>  id)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete</span>(<span class="string">"delete from account where id = #&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(<span class="keyword">int</span> id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"select id, name as name, money as money from account where id = #&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">Account <span class="title">findAccount</span><span class="params">(@Param(<span class="string">"id"</span>)</span> <span class="keyword">int</span> id)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Select</span>(<span class="string">"select id, name as name, money as money from account"</span>)</span><br><span class="line">    <span class="function">List&lt;Account&gt; <span class="title">findAccountList</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AccountMapper accountMapper;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(String name, <span class="keyword">double</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountMapper.add(name, money);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(String name, <span class="keyword">double</span> money, <span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountMapper.update(name, money, id);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">delete</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountMapper.delete(id);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">findAccount</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountMapper.findAccount(id);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">findAccountList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountMapper.findAccountList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/account"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    AccountService accountService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/list"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAccounts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountService.findAccountList();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">getAccountById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> <span class="keyword">int</span> id) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountService.findAccount(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.PUT)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">updateAccount</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> <span class="keyword">int</span> id, @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"name"</span>, required = <span class="keyword">true</span>)</span> String name,</span></span><br><span class="line"><span class="function">                                @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"money"</span>, required = <span class="keyword">true</span>)</span> <span class="keyword">double</span> money) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> t= accountService.update(name,money,id);</span><br><span class="line">        <span class="keyword">if</span>(t==<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"fail"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.DELETE)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">delete</span><span class="params">(@PathVariable(value = <span class="string">"id"</span>)</span><span class="keyword">int</span> id) </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> t= accountService.delete(id);</span><br><span class="line">        <span class="keyword">if</span>(t==<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"fail"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">""</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">postAccount</span><span class="params">(@RequestParam(value = <span class="string">"name"</span>)</span> String name,</span></span><br><span class="line"><span class="function">                              @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"money"</span>)</span> <span class="keyword">double</span> money) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> t= accountService.add(name,money);</span><br><span class="line">        <span class="keyword">if</span>(t==<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"fail"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="加密组件"><a href="#加密组件" class="headerlink" title="加密组件"></a>加密组件</h3><ol><li><p>依赖</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.ulisesbocchio<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jasypt-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li><li><p>添加盐值</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># jasypt加密的盐值</span><br><span class="line">jasypt.encryptor.password=erp</span><br></pre></td></tr></table></figure></li><li><p>明文加密</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* ulisesbocchio 加密组件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getPass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String name = encryptor.encrypt(<span class="string">"root"</span>);</span><br><span class="line">    String password = encryptor.encrypt(<span class="string">"123456"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Name加密后明文: "</span> + name);</span><br><span class="line">    System.out.println(<span class="string">"Password加密后明文: "</span> + password);</span><br><span class="line">    Assert.assertTrue(name.length() &gt; <span class="number">0</span>);</span><br><span class="line">    Assert.assertTrue(password.length() &gt; <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>使用（application.properties）</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ENC() 是数据库加密函数</span><br><span class="line">spring.datasource.username=ENC(YMoG7LZvcKq3DbW3dc9Ltg==)</span><br><span class="line">spring.datasource.password=ENC(RgqVyviuib6ScIcgcQr9SA==)</span><br></pre></td></tr></table></figure></li></ol>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>《黑镜》</title>
+      <link href="/2020/03/31/%E3%80%8A%E9%BB%91%E9%95%9C%E3%80%8B/"/>
+      <url>/2020/03/31/%E3%80%8A%E9%BB%91%E9%95%9C%E3%80%8B/</url>
+      <content type="html"><![CDATA[<p>这部剧吸引我的地方就是每一集都会引发你对剧中问题的思考，为什么他会这么做，这样对不对，现实中存在这种情况么，假如真的发生了这样的事情该怎么办。</p><a id="more"></a><h3 id="第一季"><a href="#第一季" class="headerlink" title="第一季"></a>第一季</h3><h4 id="ep01"><a href="#ep01" class="headerlink" title="ep01"></a>ep01</h4><p>这场艺术最后成功了么，如果他是想改变什么，应该说它失败了，如果他是想证明什么，那么他确实成功了。</p><p>一根断指的出现，使得民意发生了180度的转弯，民意真的正确么，真的应该完全跟随民意么。</p><p>为一个疯子套上艺术家的身份后，似乎一切都可以解释为行为艺术了，他死亡，是这件事情更为讽刺。（艺术的边界是什么）</p><p>对媒体的讽刺也极具讽刺，媒体为了报道可以不惜一切代价。</p><h4 id="ep02"><a href="#ep02" class="headerlink" title="ep02"></a>ep02</h4><p>下等的清洁工，中等的蹬单车，上等的做评委，上一等级的不把下一等级的当人看，下一等级的维护者上等人的生活，这就是一个物化了的真实社会。</p><p>个人的有意识行为，会被群体的无意识行为所代替。</p><p>评委时催眠师，观众是傀儡，它们的大脑是瘫痪的，都被催眠指引向了同一方向。</p><p>无论是喝了迷药的，还是没有喝迷药的，他们最终的结果都是一样的。（讽刺，对英雄更加尊敬了）</p><p>我们都成了我们最讨厌的样子。他曾那么想改变这个世界，确终于被这个世界所改变。</p><p>不忘初心，方得始终，你我共勉。</p><h4 id="ep03"><a href="#ep03" class="headerlink" title="ep03"></a>ep03</h4><p>当记忆不再是记忆，而是记录时，失忆成了一种解脱，遗忘成了一种自我保护。</p><p>只因记忆时生存的证明。（记忆粒广告语）</p><p>当一个人拥有着和我一样的记忆，那么这个人是我么？或者说，如果记忆可以复制，那么人是不是永生了呢？（思考）</p><p>找回记忆不难，那找回自我呢？</p><h3 id="第二季"><a href="#第二季" class="headerlink" title="第二季"></a>第二季</h3><h4 id="ep01-1"><a href="#ep01-1" class="headerlink" title="ep01"></a>ep01</h4><p>画画都用电子的了么，而且画板和真的一样。</p><p>他死了，对他最大的尊重，就是让他死了吧，而不是找个人或东西来代替他。</p><p>你不说我也不说。（听起来好恐怖）</p><p>你好脆弱啊。（产生了同情，只有平等时，才会有这种情感，她已经迷失了，逐渐分不清这是人还是机器了）</p><p>我们有无数可机会可以在它弱小是摧毁它，可是我们却什么也没有做，任由欲望控制着我们。</p><p>有些东西是机器很难学会的，比如自主意识，要不要这样做，考虑要不要这样做的标准很多时候是感觉，而不是利害关系，更主要的是人与人之间的平等，很明显这个机器人不具备这一点，或者设计者不想让它具备这一点。</p><p>从某种意义上来说，是不是她把自己困在了里面，走不出来了，但可以感觉到她和她的女儿明白了某种界限。</p><h4 id="ep02-1"><a href="#ep02-1" class="headerlink" title="ep02"></a>ep02</h4><p>为什么都在窗口？</p><p>女主不记得自己是谁了，小女孩拿着相机拍照。</p><p>人人都拿着相机，却无人拯救她，这是讽刺全民自媒体时代么。</p><p>围观是不是更恐怖呢？</p><p>看着剧场围观的人，与女主有什么不一样呢，好人与坏人总要有点不一样吧。</p><h4 id="ep03-1"><a href="#ep03-1" class="headerlink" title="ep03"></a>ep03</h4><p>看这个儿童教育节目，也不怎么样么。</p><p>可怕的不是有政治立场的人，而是无政治立场虚拟人物，因为它什么也不会，也不能改变。</p><h3 id="圣诞特别篇"><a href="#圣诞特别篇" class="headerlink" title="圣诞特别篇"></a>圣诞特别篇</h3><p>人们想要被关注，他们不想被排斥，不想让自己没有存在感。 </p><p>就像当你准备跳进游泳池的时候，你会担心，水是不是太凉了，但你明白，等你跳下去之后一切都会没事，让你退缩不前的是对于刺激的恐惧。</p><p>人，总得找些什么事情做，总得去寻找“意义”，他无法忍受独自一人关禁闭般的生活，那样会使他彻底崩溃，陷入虚无。唯有通过日复一日的劳作，我们才能把自己的生活填满。</p><p>感觉被所有人屏蔽应该是最严酷的惩罚了。</p><h3 id="第三季"><a href="#第三季" class="headerlink" title="第三季"></a>第三季</h3><h4 id="ep01-2"><a href="#ep01-2" class="headerlink" title="ep01"></a>ep01</h4><p>给人打分，给所有人打分，所有人给对方打分，每个人都能看到你的分数，这是要干啥。</p><p>这是生活在真实世界中的，而不是生活在社交中，物化的对人类社会互联网的讽刺么。</p><p>人生不应该评分，每个人都是独一无二的，能给自己评分的只能是你自己。</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>《俗女养成记》</title>
+      <link href="/2020/03/31/%E3%80%8A%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0%E3%80%8B/"/>
+      <url>/2020/03/31/%E3%80%8A%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0%E3%80%8B/</url>
+      <content type="html"><![CDATA[<p>19年真是台剧的丰收年，上半年《我们与恶的距离》，下半年《想见你》，现在再加上这部剧。很难想象一个女人到了四十岁依然能够这么勇敢，看到后面才一点一点理解她的决定，正是童年时爷爷奶奶，父母的悉心呵护才有如今勇敢的陈嘉玲。</p><blockquote><p>我不是好人，也不是坏人，我只是需要一个爱我的人，好命跟歹命，春夏跟秋冬，跟他一人一半。</p></blockquote><a id="more"></a><h3 id="ep01"><a href="#ep01" class="headerlink" title="ep01"></a>ep01</h3><p>有些时候，小孩子的求生意志是很惊人的。</p><p>我从来不曾想过，一个三十岁的女人不想结婚，竟然会掀起如此打的风暴，那力道之大，让我的二姑姑终生未嫁。</p><h3 id="ep02"><a href="#ep02" class="headerlink" title="ep02"></a>ep02</h3><p>大表姐每次来，妈妈都要我穿新衣，她自己也是。长大后，我才明白，竞争是女人一出生就会的功夫。</p><p>真的有必要什么都要比么，为什么要比呢。</p><p>自己人终究还是自己人，客人是客人，是不一样的。</p><h3 id="ep03"><a href="#ep03" class="headerlink" title="ep03"></a>ep03</h3><p>在那个时候我仿佛看到了我恐怖的后半生。（婆婆恐惧症）</p><p>干嘛这样，我们也是好意啊。（嘉玲似乎明白了什么）</p><p>谈恋爱的时候，你听歌的时候，歌都会变得很好听，树木，花朵，不管什么东西都会变得很漂亮。（这种形容很有意思）</p><blockquote><p>世界上最远的距离，不是我不能说我爱你</p><p>而是想你痛彻心脾，却只能深埋心底</p><p>世界上最远的距离，不是我不能说我想你</p><p>而是彼此相爱，却不能够在一起</p><p>世界上最远的距离，不是彼此相爱却不能够在一起</p><p>而实明知道真爱无敌，却装作毫不在意</p><p>—- 片中阿娟写给阿诚的信</p></blockquote><p>也许这件事情对于孩子的伤害是终生的，不仅影响了当事人，对于旁观者也是一种伤害。</p><p>父母对孩子不仅要有相对科学的性教育，应该还要要正确的爱教育。</p><h3 id="ep04"><a href="#ep04" class="headerlink" title="ep04"></a>ep04</h3><p>不必让孩子最好，不要让他最不一样是父母的责任。</p><p>你会发现，大人老是不愿意听小孩子的意见，以为他们什么都不懂，受苦的其实还是小孩子自己，知道错误后也不愿意公开承认错误，自己死要面子让家人活受罪。（小嘉玲咸鱼事件）</p><p>奶奶说，你要自己会想，妈妈说，你要自己会判断。</p><p>想起了孙杨听证会事件，想起了巨婴症，已经是两个孩子的爸爸了，对于从未学过医的母亲的话不敢反驳，我们的教育是不是出了什么问题。（帝爷公药方事件）</p><p>为什么遇到事情总是推卸自己的责任的，我也是如此么，我不要这个样子。</p><p>做一个聪明的孩子，也是有方法的，有的时候，你要找一个地方，毁尸灭迹；有的时候，你要算好时机，瞒天过海；更有的时候，你要心狠一点，辜负爸爸的爱。不听话会被人揍，听话也不一定有好下场。听话还是不听话，生存还是毁灭，这是个重大的问题。</p><h3 id="ep05"><a href="#ep05" class="headerlink" title="ep05"></a>ep05</h3><p>可能这就是成熟女性吧，勇于拒绝，多了许多魅力。</p><p>大人的一个玩笑，却被孩子深信不疑。</p><p>说话要抓重点，不要想说什么说什么，没人听得懂的，徒增笑料。</p><blockquote><p>今天的风湿湿的</p><p>今天的天暗暗的</p><p>今天的我需要一个人</p><p>来陪我风吹雨淋</p><p>人生就像一场梦</p><p>你是我最美的梦</p><p>你是台风天 冒烟的泡面</p><p>你是我最爱的人</p><p>若是有你和我做伴</p><p>有钱贫穷我都没差</p><p>拿着雨伞等待雨散</p><p>我要牵你的手 牵到手红红</p><p>– 旺福的《等待雨散》</p></blockquote><h3 id="ep06"><a href="#ep06" class="headerlink" title="ep06"></a>ep06</h3><p>悲伤五阶段：否认、愤怒、协商（讨价还价）、忧郁（抑郁）、接受。</p><h3 id="ep07"><a href="#ep07" class="headerlink" title="ep07"></a>ep07</h3><blockquote><p>这个年纪要奶奶替我安排相亲</p><p>妈妈帮我找工作</p><p>爸爸怕我…没钱</p><p>我是没用的人，让你们失望了</p></blockquote><p>你知道你女儿很有天分吗？应该比我更有天分。（情商啊）</p><h3 id="ep08"><a href="#ep08" class="headerlink" title="ep08"></a>ep08</h3><blockquote><p>生命会找到自己的出路。    ——《侏罗纪公园》</p></blockquote><p>到底是命运决定了我们的方向，还是我们自己决定了命运。</p><h3 id="ep09"><a href="#ep09" class="headerlink" title="ep09"></a>ep09</h3><p>走到人生这个阶段，不再见不一定是坏事，有时候清清楚楚，轻轻放下或许更好。</p><h3 id="ep10"><a href="#ep10" class="headerlink" title="ep10"></a>ep10</h3><p>你觉得快乐是什么？你想过十年后的自己是什么样么？</p><p>成熟男女就是干脆啊。</p><blockquote><p>亲爱的陈嘉玲</p><p>你是从几时开始忘记了，忘记了这辈子其实很长，长到你可以跌倒再站起来，做梦有醒过来；</p><p>你又是从即使开始忘记了，这辈子其实很短，短到你没时间再去勉强自己，没时间再去讨厌你自己；</p><p>亲爱的陈嘉玲</p><p>从现在开始，从这里开始，不要再忘记了，我想要对你说：对不起，谢谢你，还有..我爱你。</p></blockquote>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>《想见你》</title>
+      <link href="/2020/03/31/%E3%80%8A%E6%83%B3%E8%A7%81%E4%BD%A0%E3%80%8B/"/>
+      <url>/2020/03/31/%E3%80%8A%E6%83%B3%E8%A7%81%E4%BD%A0%E3%80%8B/</url>
+      <content type="html"><![CDATA[<p>《想见你》里面的几个主题：面对失去，面对成长，面对爱情，面对自我，面对世界</p><blockquote><p>莫俊杰，陈思源在面对困境时，都有人伸出援手，拯救了它们；假如有人在陈韶如，王诠胜他们遇到困境时伸出援手，是不是能够避免后面这些事情的发生呢。</p></blockquote><a id="more"></a><h4 id="第六集"><a href="#第六集" class="headerlink" title="第六集"></a>第六集</h4><p>莫俊杰看到黄雨萱对那幅画的表情后，肯定明白了，她已经不是他心中喜欢的那个女孩了</p><p>你喜欢的人，一定是你见过，听过的，看过的，某些品质或人</p><p>大哥哥我叫黄雨萱，你不可以忘记我哦（瓦特，这编剧脑洞大开啊）</p><h4 id="第七集"><a href="#第七集" class="headerlink" title="第七集"></a>第七集</h4><p>女主的眼泪说流就流，演技可以</p><h4 id="第八集"><a href="#第八集" class="headerlink" title="第八集"></a>第八集</h4><p>一直都是李子维和黄雨萱，没其他两个人啥事情</p><h4 id="第十集"><a href="#第十集" class="headerlink" title="第十集"></a>第十集</h4><p>它们真的能够改变过去么，又会以什么方式来改变呢，还是一切回零，继续循环</p><p>她等了两年已经如此难熬，他等了十五年，思考这一切，最后决定什么也不要改变，该发生的就让他发生</p><p>我们在一起总是能互相体谅，总是能牵着手，朝同一个方向前进。但不管距离多远，我们的心都是在一起的</p><p><strong>– Only if you asked to see me</strong><br><strong>– Our meeting would be meaningful to me</strong><br><strong>只有你想见我的时候，我们的相遇才有意义</strong></p><h4 id="第十一集"><a href="#第十一集" class="headerlink" title="第十一集"></a>第十一集</h4><p>两次离别，为何求死呢</p><p>原来哪些日记都是意有所指啊，做自己就好，不比学他人，邯郸学步，不如不学</p><p>这一切都是梦，我幻想一个我喜欢的人，刚好也喜欢我的梦</p><h4 id="第十二集"><a href="#第十二集" class="headerlink" title="第十二集"></a>第十二集</h4><p>我跟你们一样，我也不喜欢以前的自己。（泪目，可能这就是梦醒来的后遗症吧）</p><p>想到了变形记，那些主人公，回到了原来的环境，会对他的未来产生什么影响</p><h4 id="第十三集"><a href="#第十三集" class="headerlink" title="第十三集"></a>第十三集</h4><p>这就对了，历史根本不应该被改变</p><p>你想从这个世界消失，不是你对这个世界太失望，而是你对世界有太多的期望</p><p>被一个人放在心上，从来都不是理所当然的事情，不管那个人是谁，是家人，还是朋友，都是非常难得，应该被好好珍惜才对</p><p>最后这个场景，应该叫萝莉是怎样养成的</p><p>最后才知道，李子维的摩托为什么是那样的，原来是为了小黄雨萱啊</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>几本小说</title>
+      <link href="/2018/10/30/%E5%87%A0%E6%9C%AC%E5%B0%8F%E8%AF%B4/"/>
+      <url>/2018/10/30/%E5%87%A0%E6%9C%AC%E5%B0%8F%E8%AF%B4/</url>
+      <content type="html"><![CDATA[<p>最近利用工作闲时的时间看了几本小说，这些都是久经时间考验的书籍！</p><a id="more"></a><h2 id="《1984》"><a href="#《1984》" class="headerlink" title="《1984》"></a>《1984》</h2><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-30/19740370.jpg" alt></p><blockquote><p>战争就是和平，自由就是奴役，无知就是力量。</p><p>控制过去就能控制未来，控制现在就能控制过去。</p><p>世界有真理也有缪误，如果你坚持真理，即使你的对手是全世界，你也不是疯子。</p><p>寡头统治的精髓不是父子继承，二十死去的一代将某种世界观和生活方式施加给或者的一代，使之延续下去。</p><p>没有一种感情是纯粹的，因为一切都夹杂着恐惧和仇恨。他们的拥抱是一场战斗，高潮是一次胜利。这是给党的沉重的一击。这是一次政治行为。</p></blockquote><hr><p>1984虽已早过去，但是这本书里的景象，依然值得人们警醒。</p><h2 id="《了不起的盖茨比》"><a href="#《了不起的盖茨比》" class="headerlink" title="《了不起的盖茨比》"></a>《了不起的盖茨比》</h2><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-31/89042782.jpg" alt></p><blockquote><p>她认为我懂很多，因为我懂的和她懂的不一样。</p><p>咱们大家都应当学会在朋友活着的时候讲交情，而不要等到他死了之后。</p><p>你说过一个开车不小心的人只有在碰上另一个开车不小心的人之前才安全吧？瞧，我碰上了另一个开车不小心的人了，是不是？</p></blockquote><p><strong><em>在看同名电影的时候，时常想，盖茨比为什么了不起？了不起在哪里？</em></strong></p><hr><p>在读完书之后，我觉得可以把罗曼罗兰的那句话用在盖茨比身上——<strong>世上只有一种真正英雄主义，那就是认识生活的真相后依然爱它</strong>。</p><p>从五年的等待到事故当晚在黛西窗外整整一夜的守候，以及到后来成为她的独独的牺牲品，尽管他的幻梦以死亡作为结局，但他却是按照幻梦指的方向一直走。</p><h2 id="《基督山伯爵》"><a href="#《基督山伯爵》" class="headerlink" title="《基督山伯爵》"></a>《基督山伯爵》</h2><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-31/8237027.jpg" alt></p><blockquote><p>这世上无所谓幸福，也无所谓不幸，有的只是一种境况和另一种境况的比较如此而已。只有体验过极度不幸的人，才能品尝到极度的幸福。</p></blockquote><hr><p>有人说这本小说在一百多年前文学界的地位，就如同如今的网络小说，看完这本书之后，我对此毫不怀疑。</p><h2 id="《白夜行》和《嫌疑人X的献身》"><a href="#《白夜行》和《嫌疑人X的献身》" class="headerlink" title="《白夜行》和《嫌疑人X的献身》"></a>《白夜行》和《嫌疑人X的献身》</h2><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-31/46627563.jpg" alt></p><hr><p>之所以放在一起是因为，我觉得这两本书完全一个套路，并无二致。</p><p>一个人对异性毫无保留的付出，人们打把这种事情叫做“爱”，因为爱，所以可以原谅！</p><h2 id="《小王子》"><a href="#《小王子》" class="headerlink" title="《小王子》"></a>《小王子》</h2><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-31/52352104.jpg" alt></p><blockquote><p>如果一个人爱上了一株花，而珠花只长在成千上万颗星星中的一颗上，那么观看星星就足以让这个人感到快乐。</p><p>只有心灵才能洞察一切，肉眼是看不到事物的本质的。</p><p>你要对你所有认熟过的事物永远负责，你要对你的那朵玫瑰花负责……</p></blockquote><hr><p>这是给大人们的童话！</p><p>应该没有人不喜欢狐狸吧，她是如此的勇敢！</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 读书 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>送给自己的礼物</title>
+      <link href="/2018/10/30/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A4%BC%E7%89%A9/"/>
+      <url>/2018/10/30/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A4%BC%E7%89%A9/</url>
+      <content type="html"><![CDATA[<p>20岁了，在这之后的岁月里只能自己独自砥砺前行了，在这前方的路上，肯定不缺少挫折，愿自己如这场夜间慢跑一样咬牙坚持下去！</p><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-10-30/72381751.jpg" alt></p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>红雀大战游骑兵</title>
+      <link href="/2018/09/16/%E7%BA%A2%E9%9B%80%E5%A4%A7%E6%88%98%E6%B8%B8%E9%AA%91%E5%85%B5/"/>
+      <url>/2018/09/16/%E7%BA%A2%E9%9B%80%E5%A4%A7%E6%88%98%E6%B8%B8%E9%AA%91%E5%85%B5/</url>
+      <content type="html"><![CDATA[<p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg" alt></p><p>常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。</p><a id="more"></a><h2 id="点球成金"><a href="#点球成金" class="headerlink" title="点球成金"></a>点球成金</h2><p>昨天晚上看了布拉德皮特的电影《点球成金》，让我对棒球提起了兴趣。首先是了解棒球的规则，常用术语，以及棒球赛。</p><p>根据哔哩哔哩UP主的推荐看了这场《红雀大战游骑兵》的第六场，其实2011赛季《红雀大战游骑兵》7场都相当精彩，但是这一场根据喜剧性，对于我这个入门小生而言看的也更加爽。</p><p>红雀五次落后五次追平，两次被打到赛点，两次两次加时赛，长达四个小时的赛事，让人就如看了一场富有传奇色彩的电影。</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>东京爱情故事</title>
+      <link href="/2018/09/10/%E4%B8%9C%E4%BA%AC%E7%88%B1%E6%83%85%E6%95%85%E4%BA%8B/"/>
+      <url>/2018/09/10/%E4%B8%9C%E4%BA%AC%E7%88%B1%E6%83%85%E6%95%85%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-10/71721542.jpg" alt></p><blockquote><p>正是因为不知道明天会发生什么事，才会充满希望不是吗？          – 赤名莉香</p></blockquote><a id="more"></a><h2 id="初见"><a href="#初见" class="headerlink" title="初见"></a>初见</h2><p>之前就从各种渠道听人推荐这部电视剧，豆瓣评分也保持着傲人的9.4分，但网上资源很少，各种百度云的链接大多早已失效，日剧的资源不知道为什么被查禁的很厉害。最近终于找到了这部电视剧的资源，所以连着三天就刷完了，不是我想看这么快，而是被剧情所吸引。</p><p>找到的资源说是720P的，可是年代久远，画面依然有些模糊不清。看多了现在电视电影的男女主角，不禁觉得30年前的靓男婧女们真是朴素到家了，好在这部久经时间考验的“青春偶像剧”不是光靠脸吃饭的。</p><h2 id="最好的开始，最好的结局"><a href="#最好的开始，最好的结局" class="headerlink" title="最好的开始，最好的结局"></a>最好的开始，最好的结局</h2><p>有时候再努力又如何，那扇门是不会仅仅因为你的努力而打开的，剧情里埋了很多莉香和完治最终会分手的伏笔，但最重要的原因恐怕就是，那份爱来的太容易了吧。</p><p>三上和长崎的结局，恐怕是最具童话气息的了。你来我往，一来二去，不知不觉就真的爱上了；三上像《毕业生》里的本恩那样，想带她从婚礼上离开;长崎也勇敢的放下所有，回来寻找三上， 加上之前人物的铺垫，让人不禁会相信他们会永远幸福。</p><p>完治和里美最终走到一起，恐怕是最好的结局了，就如《一一》里面南骏那样，他和阿瑞的那份爱只要放在心底，才是最美好的。</p><p>高中时代的好朋友，都有点喜欢对方，外加五年的等候，中间的艰难抉择，终于修成正果，这不管在哪里都是大圆满的结局了。奈何半路遇到个赤名莉香，莉香那对生活的态度，那份真挚的笑容，以及在爱情中的勇敢付出，都令我们心生向往，更深层的原因可能是深埋我们心底里那份信念——有付出，应该有回报！莉香应该拥有这份感情。</p><p>所以对于里美算不上讨厌，但是对是莉香慢慢的总是慢慢的可惜，就算我知道，结局就是这样，这也是最好的结局，但还是有些失落，感谢网络上的UP主们，让我在这部电视诞生30年后依然能欣赏它，谢谢</p><p><strong>PS：但是日本的吃瓜群众在现实中向里美扔石头这种事情还是看不过去的；可要是在东京的街头碰见莉香请代我向她问好</strong></p><p><em>莉香那份真挚的笑容已经刻在了我的心里，相信短时间不会被抹去，不知道何时再看《东爱》，但希望是和那个她一起看。</em></p><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-10/44995450.jpg" alt></p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>我曾七次鄙视自己的灵魂</title>
+      <link href="/2018/08/22/%E6%88%91%E6%9B%BE%E4%B8%83%E6%AC%A1%E9%84%99%E8%A7%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%81%B5%E9%AD%82/"/>
+      <url>/2018/08/22/%E6%88%91%E6%9B%BE%E4%B8%83%E6%AC%A1%E9%84%99%E8%A7%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%81%B5%E9%AD%82/</url>
+      <content type="html"><![CDATA[<p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/91516578.jpg" alt></p><blockquote><p>良多一直想成为自己理想中的那个人，但理想很丰满，现实很骨感，最终他变成了他最讨厌的那种人！<br>良多：“你以为可以很容易成为想象中的人，那就大错特错了！”</p></blockquote><a id="more"></a><p><strong>《我曾七次鄙视自己的灵魂》</strong></p><p>第一次，当他本可进取时，却故作谦卑；</p><p>第二次，当它空虚时，用爱欲来填充；</p><p>第三次，在困难和容易之间，它选择了容易；</p><p>第四次，它犯了错，却借由别人也会犯错来宽慰自己；</p><p>第五次，它自由软弱，却把它认为是生命的坚韧；</p><p>第六次，当它鄙夷一张丑恶的嘴脸时，却不知那正是自己面具中的一副；</p><p>第七次，它侧身于生活的污泥中虽不甘心，却又畏首畏尾。</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>23种设计模式解析</title>
+      <link href="/2018/08/22/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
+      <url>/2018/08/22/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90/</url>
+      <content type="html"><![CDATA[<p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/30443178.jpg" alt></p><blockquote><p>设计模式(Design Pattern)是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。</p><p>使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。</p></blockquote><a id="more"></a><h2 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a>设计模式的分类</h2><p>总体来说设计模式分为三大类：</p><p>创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。</p><p>结构型模式，共七种：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p><p>行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p><p>其实还有两类：并发型模式和线程模式。用一个图片来整体描述一下：</p><p><img src="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/52453673.jpg" alt="http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/52453673.jpg"></p><h2 id="设计模式的六大原则"><a href="#设计模式的六大原则" class="headerlink" title="设计模式的六大原则"></a>设计模式的六大原则</h2><h4 id="总原则：开闭原则-Open-Close-Principle"><a href="#总原则：开闭原则-Open-Close-Principle" class="headerlink" title="总原则：开闭原则(Open Close Principle)"></a>总原则：开闭原则(Open Close Principle)</h4><p>开闭原则就是说<strong>对扩展开放，对修改关闭</strong>。在程序需要进行拓展的时候，不能去修改原有的代码，而是要扩展原有代码，实现一个热插拔的效果。所以一句话概括就是：为了使程序的扩展性号，易于维护和升级。想要达到这样的效果，我们需要使用接口和抽象类等，后面具体设计中我们会提到这点。</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>idea的使用技巧</title>
+      <link href="/2018/08/20/idea%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
+      <url>/2018/08/20/idea%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</url>
+      <content type="html"><![CDATA[<blockquote><p>idea在Java领域的强大编辑能力是毋庸置疑的，这是我近期学习idea的一些总结！</p></blockquote><a id="more"></a><h2 id="高效定位代码"><a href="#高效定位代码" class="headerlink" title="高效定位代码"></a>高效定位代码</h2><h3 id="无处不在的跳转"><a href="#无处不在的跳转" class="headerlink" title="无处不在的跳转"></a>无处不在的跳转</h3><h4 id="项目间的跳转"><a href="#项目间的跳转" class="headerlink" title="项目间的跳转"></a>项目间的跳转</h4><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>跳转到下一个项目窗口</td><td>Ctrl + Atl + ]</td></tr><tr><td>返回到上一个项目窗口</td><td>Ctrl + Atl + [</td></tr></tbody></table><h4 id="文件间的跳转"><a href="#文件间的跳转" class="headerlink" title="文件间的跳转"></a>文件间的跳转</h4><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>最近的文件</td><td>Ctrl + E</td></tr><tr><td>最近编辑的文件</td><td>Ctrl + Shift + E</td></tr></tbody></table><h4 id="浏览修改位置的跳转"><a href="#浏览修改位置的跳转" class="headerlink" title="浏览修改位置的跳转"></a>浏览修改位置的跳转</h4><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>最后一个修改位置</td><td>Ctrl + Shift + backspace</td></tr><tr><td>上一个浏览位置</td><td>Ctrl + Alt + 左箭头</td></tr><tr><td>下一个浏览位置</td><td>Ctrl + Alt + 右箭头</td></tr></tbody></table><h4 id="利用书签跳转"><a href="#利用书签跳转" class="headerlink" title="利用书签跳转"></a>利用书签跳转</h4><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>添加书签</td><td>F11</td></tr><tr><td>添加带有标记的书签</td><td>Ctrl + F11</td></tr><tr><td>添加带有标记的书签</td><td>Ctrl + Shift + 数字或字母</td></tr><tr><td>跳转到带有标记的书签</td><td>Ctrl + 书签编号（见上一条）</td></tr><tr><td>书签总览</td><td>Shift + F11</td></tr></tbody></table><h4 id="字符串跳转之插件emacsIdea"><a href="#字符串跳转之插件emacsIdea" class="headerlink" title="字符串跳转之插件emacsIdea"></a>字符串跳转之插件emacsIdea</h4><p>首先到idear商店安装emacsIdea插件，设置emacsIDEAS插件的快捷键：打开搜索功能，输入keymap，右边搜索框输入acejumpword，新增一个快捷键。</p><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>跳转需要查找的字符位置</td><td>Alt + J + 需要查找的字母</td></tr></tbody></table><h4 id="导航窗口的跳转"><a href="#导航窗口的跳转" class="headerlink" title="导航窗口的跳转"></a>导航窗口的跳转</h4><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>快速寻找功能快捷键</td><td>Ctrl + Shift + A</td></tr><tr><td>编辑区和文件区来回跳转</td><td>Alt + 1 &amp; Esc</td></tr></tbody></table><h3 id="精准搜索"><a href="#精准搜索" class="headerlink" title="精准搜索"></a>精准搜索</h3><p>快捷键按两次可以全局搜索</p><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>查找类</td><td>Ctrl + N</td></tr><tr><td>查找文件</td><td>Ctrl + Shift + N</td></tr><tr><td>查找符号</td><td>Chrl + Alt + Shift + N</td></tr><tr><td>查找字符串</td><td>Ctrl + Shift + F</td></tr></tbody></table><h2 id="代码小助手"><a href="#代码小助手" class="headerlink" title="代码小助手"></a>代码小助手</h2><h3 id="列操作"><a href="#列操作" class="headerlink" title="列操作"></a>列操作</h3><p>示例：使用建表语句快速创建枚举类</p><ol><li>选中单词 ==Ctrl + &gt;==</li><li>英文大小写切换 ==Ctrl + Shift + U==</li><li>对所有选中单词进行操作 ==Ctrl + Alt + Shift +J==</li></ol><h3 id="live-template"><a href="#live-template" class="headerlink" title="live template"></a>live template</h3><p>示例： main方法模板</p><ul><li>位置：菜单 –&gt; File –&gt; Setting –&gt; Editor –&gt; Live Templates</li><li>功能：定义模板，使用特定 “字符串” 快速敲击出某段代码</li><li>举例： psvm 敲出 public static void main(String[] args){ … }</li></ul><h3 id="postfix"><a href="#postfix" class="headerlink" title="postfix"></a>postfix</h3><p>示例：100.for</p><ul><li>位置： 菜单 –&gt; File –&gt; Setting –&gt; Editor –&gt; General –&gt; Postfix Completion</li><li>功能： 使用后缀，快速敲出代码块</li><li>举例： 100.fori 敲出 for(int i=0; i&lt;100; i++) {…}</li></ul><h3 id="alter-enter"><a href="#alter-enter" class="headerlink" title="alter + enter"></a>alter + enter</h3><ul><li>自动创建函数</li><li>自动生成参数化 String.format</li><li>实现接口</li><li>单词拼写，单词建议</li><li>导包</li></ul><h2 id="编译高质量代码"><a href="#编译高质量代码" class="headerlink" title="编译高质量代码"></a>编译高质量代码</h2><h3 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h3><ul><li>重构变量： Shift + F6</li><li>重构方法： Ctrl + F6</li></ul><h3 id="抽取"><a href="#抽取" class="headerlink" title="抽取"></a>抽取</h3><ul><li>抽取变量：Ctrl + Alt + V</li><li>抽取静态变量： Ctrl + Alt + C</li><li>抽取成员变量： Ctrl + Alt + F</li><li>抽取方法参数： Ctrl + Alt + P</li><li>抽取函数: Ctrl + Alt + M</li></ul><h2 id="关联一切"><a href="#关联一切" class="headerlink" title="关联一切"></a>关联一切</h2><h3 id="Spring的关联"><a href="#Spring的关联" class="headerlink" title="Spring的关联"></a>Spring的关联</h3><p>示例： 导入Spring的引用，通过bean查找实现类</p><ul><li>位置： 菜单 –&gt; File –&gt; Project Structure –&gt; Facets</li><li>功能： 帮助管理Spring容器。还提供了很多其他的管理，比如EJB</li><li>使用：<ol><li>点击 + 号，选择Spring，选择模块</li><li>在Spring中，点击 + 号，起一个名字，选择Spring配置文件。(SpringBoot中，选择类文件)</li><li>项目的各个文件中会出现Spring的Logo，其提供了很多功能。比如：查看该Bean是在哪里提供的。</li></ol></li></ul><h3 id="与数据库的关联"><a href="#与数据库的关联" class="headerlink" title="与数据库的关联"></a>与数据库的关联</h3><p>关联了数据库之后，如果需要重构字段或表名，不仅可以更改当前页面，还可以更改所有引用到该表的SQL以及数据库表名或字段。</p><h2 id="调试程序"><a href="#调试程序" class="headerlink" title="调试程序"></a>调试程序</h2><h3 id="断点调试"><a href="#断点调试" class="headerlink" title="断点调试"></a>断点调试</h3><table><thead><tr><th>功能</th><th>快捷键</th></tr></thead><tbody><tr><td>添加/取消断点</td><td>Ctrl + F8</td></tr><tr><td>调试当前类</td><td>Shift + F9</td></tr><tr><td>运行</td><td>Shift + F10</td></tr><tr><td>单步运行</td><td>F8</td></tr><tr><td>步入代码里面</td><td>F7</td></tr><tr><td>强制进入代码</td><td>Alt + Shift + F7</td></tr><tr><td>跳到下一个断点</td><td>F9</td></tr><tr><td>运行到光标出</td><td>Alt + F9</td></tr><tr><td>debug时查看选中值</td><td>Alt + F8</td></tr><tr><td>正常运行Java类</td><td>Ctrl + Shift + F10</td></tr><tr><td>debug运行Java类</td><td>Ctrl + Shift + F9</td></tr></tbody></table>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>婉婷，Welcome</title>
+      <link href="/2018/08/20/%E5%A9%89%E5%A9%B7%EF%BC%8CWelcome/"/>
+      <url>/2018/08/20/%E5%A9%89%E5%A9%B7%EF%BC%8CWelcome/</url>
+      <content type="html"><![CDATA[<p><strong>婉婷，你是我的第一个访客，欢迎你</strong>！</p><a id="more"></a><p>从昨儿下午忙活到现在，我的博客上线了，还没想好写些什么，网站也还有很多问题，但算是架子搭起来了，晚安，好梦！</p>]]></content>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Git常用指令</title>
+      <link href="/2018/08/19/Git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
+      <url>/2018/08/19/Git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
+      <content type="html"><![CDATA[<h1 id="Git常用指令（20180819初始版本）"><a href="#Git常用指令（20180819初始版本）" class="headerlink" title="Git常用指令（20180819初始版本）"></a>Git常用指令（20180819初始版本）</h1>]]></content>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+  
+  
 </search>
