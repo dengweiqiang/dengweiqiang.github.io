@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-05-06T10:17:26.417Z</updated>
+  <updated>2020-05-06T13:07:00.763Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ZooKeeper典型应用场景一览</title>
+    <link href="https://dengwq.top/2020/05/06/ZooKeeper%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%80%E8%A7%88/"/>
+    <id>https://dengwq.top/2020/05/06/ZooKeeper典型应用场景一览/</id>
+    <published>2020-05-06T12:56:20.000Z</published>
+    <updated>2020-05-06T13:07:00.763Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ZooKeeper是一个高可用的分布式数据管理与系统协调框架。基于对Paxos算法的实现，是该框架保证了分布式环境中数据的强一致性，也正是基于这样的特性，使得ZooKeeper解决很多分布式问题。&lt;/p&gt;
+&lt;p&gt;值得注意的是，ZK并非天生就是为了这些应用场景设计的，都是后来众多开发者根据其框架的特性，利用其提供的一系列API接口（或者称为原语集），摸索出来的典型使用方法。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring Cloud 基础</title>
