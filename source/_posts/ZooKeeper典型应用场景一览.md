@@ -11,5 +11,4 @@ ZooKeeper是一个高可用的分布式数据管理与系统协调框架。基�
 
 <!--more-->
 
-![](ZooKeeper典型应用场景一览_阿里中间件团队博客.png)
-
+![](https://raw.githubusercontent.com/dengweiqiang/BlogImages/master/ZooKeeper典型应用场景一览/ZooKeeper典型应用场景一览_阿里中间件团队博客.png)
