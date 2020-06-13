@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-05-06T13:38:29.576Z</updated>
+  <updated>2020-06-13T08:43:02.393Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>这些年看过的网文</title>
+    <link href="https://dengwq.top/2020/06/13/%E8%BF%99%E4%BA%9B%E5%B9%B4%E7%9C%8B%E8%BF%87%E7%9A%84%E7%BD%91%E6%96%87/"/>
+    <id>https://dengwq.top/2020/06/13/这些年看过的网文/</id>
+    <published>2020-06-13T07:53:23.000Z</published>
+    <updated>2020-06-13T08:43:02.393Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;从初中时拿着学习机，躲在被子里看网络小说，当时拷贝一部小说还是用手机蓝牙来传输，当时觉得真开心，一晃七八年过去了，看过的网文能记得主角名字的已经百中无一了，今天刚好闲下来，想把看过的这些小说记个名字。&lt;/p&gt;
+&lt;p&gt;我花了多少时间来看他们，他们带着我逃避时间，终于他们已经不能满足我了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://dengwq.top/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>ZooKeeper典型应用场景一览</title>
@@ -298,7 +317,7 @@
     <link href="https://dengwq.top/2018/08/22/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
     <id>https://dengwq.top/2018/08/22/23种设计模式解析/</id>
     <published>2018-08-21T16:35:52.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-06-13T07:55:08.111Z</updated>
     
     <summary type="html">
     
@@ -311,7 +330,7 @@
     </summary>
     
     
-      <category term="java" scheme="https://dengwq.top/tags/java/"/>
+      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -358,7 +377,7 @@
     <link href="https://dengwq.top/2018/08/19/Git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
     <id>https://dengwq.top/2018/08/19/Git常用指令/</id>
     <published>2018-08-19T15:33:32.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-06-13T07:55:30.593Z</updated>
     
     <summary type="html">
     
@@ -373,7 +392,7 @@
     </summary>
     
     
-      <category term="git" scheme="https://dengwq.top/tags/git/"/>
+      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
