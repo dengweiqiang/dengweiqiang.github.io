@@ -6,10 +6,10 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -48,9 +48,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="学习,spring,">
+  <meta name="keywords" content="学习,spring," />
 
 
 
@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="DengWeiQiang&#39;Blog">
 <meta property="og:description" content="一个分布式系统应该要有这些基础组件，注册中心，负载均衡，熔断器，网关，配置中心，SpringCloud在SpringBoot的基础上，实现了一套开箱即用的分布式系统架构，我对SpringCloud的这些基础应用的使用，做了一个汇总，主要是能快速让一个分布式应用跑起来。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-06T10:17:26.417Z">
+<meta property="og:updated_time" content="2020-07-03T12:59:00.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud 基础">
 <meta name="twitter:description" content="一个分布式系统应该要有这些基础组件，注册中心，负载均衡，熔断器，网关，配置中心，SpringCloud在SpringBoot的基础上，实现了一套开箱即用的分布式系统架构，我对SpringCloud的这些基础应用的使用，做了一个汇总，主要是能快速让一个分布式应用跑起来。">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="https://dengwq.top/2020/05/06/Spring-Cloud-基础/">
+  <link rel="canonical" href="https://dengwq.top/2020/05/06/Spring-Cloud-基础/"/>
 
 
 
@@ -154,7 +154,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">DengWeiQiang'Blog</span>
         <span class="logo-line-after"><i></i></span>
@@ -184,9 +184,19 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home                          //首页"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-home                          //首页"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags                     //标签"></i> <br />
+            
+            标签
           </a>
         </li>
       
@@ -194,7 +204,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive          //归档"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-archive          //归档"></i> <br />
             
             归档
           </a>
@@ -204,7 +214,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user                   //关于"></i> <br>
+              <i class="menu-item-icon fa fa-fw fa-user                   //关于"></i> <br />
             
             关于
           </a>
@@ -217,7 +227,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
             搜索
           </a>
@@ -238,7 +248,9 @@
       <i class="fa fa-times-circle"></i>
     </span>
     <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
     </div>
   </div>
   <div id="local-search-result"></div>
@@ -279,7 +291,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="邓伟强">
-      <meta itemprop="description" content>
+      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
@@ -570,7 +582,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

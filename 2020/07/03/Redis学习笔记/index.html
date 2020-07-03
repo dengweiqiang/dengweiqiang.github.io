@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。 Redis主要有这几部分知识，">
+<meta name="keywords" content="学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis学习笔记">
+<meta property="og:url" content="https://dengwq.top/2020/07/03/Redis学习笔记/index.html">
+<meta property="og:site_name" content="DengWeiQiang&#39;Blog">
+<meta property="og:description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。 Redis主要有这几部分知识，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-03T14:22:12.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis学习笔记">
+<meta name="twitter:description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。 Redis主要有这几部分知识，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://dengwq.top/2020/07/03/Redis学习笔记/"/>
+
+
+
+
+
+  <title>Redis学习笔记 | DengWeiQiang'Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DengWeiQiang'Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                          //首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags                     //标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive          //归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user                   //关于"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dengwq.top/2020/07/03/Redis学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="邓伟强">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DengWeiQiang'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-03T21:03:43+08:00">
+                2020-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。</p>
+<p>Redis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制+哨兵。</p>
+<a id="more"></a>
+<h2 id="Redis的安装"><a href="#Redis的安装" class="headerlink" title="Redis的安装"></a>Redis的安装</h2><h3 id="centos安装redis"><a href="#centos安装redis" class="headerlink" title="centos安装redis"></a>centos安装redis</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-6.0.5.tar.gz</span><br><span class="line">tar -zxvf redis-6.0.5.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-6.0.5</span><br><span class="line">sudo make</span><br><span class="line">sudo make install PREFIX=/opt/redis</span><br></pre></td></tr></table></figure>
+<h3 id="centos-设置redis开启自启动"><a href="#centos-设置redis开启自启动" class="headerlink" title="centos 设置redis开启自启动"></a>centos 设置redis开启自启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/lib/systemd/system/redis.service</span><br><span class="line"></span><br><span class="line"><span class="comment">## redis.service 内容</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=The redis-server Process Manager</span><br><span class="line">After=syslog.target network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/var/run/redis_6379.pid</span><br><span class="line">ExecStart=/opt/redis/bin/redis-server /opt/redis/bin/redis.conf</span><br><span class="line">ExecReload=/bin/<span class="built_in">kill</span> -USR2 <span class="variable">$MAINPID</span></span><br><span class="line">ExecStop=/bin/<span class="built_in">kill</span> -SIGINT <span class="variable">$MAINPID</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结束，保存退出</span></span><br><span class="line"><span class="comment"># 刷新守护进程列表</span></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">sudo systemctl start redis.service</span><br><span class="line"><span class="comment"># 设置服务开启自启</span></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> redis.service</span><br></pre></td></tr></table></figure>
+<h3 id="redis开启远程连接（redis-conf）"><a href="#redis开启远程连接（redis-conf）" class="headerlink" title="redis开启远程连接（redis.conf）"></a>redis开启远程连接（redis.conf）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## redis.conf 的一些配置</span></span><br><span class="line"><span class="comment"># 注释 bind 127.0.0.1</span></span><br><span class="line"><span class="built_in">bind</span> 127.0.0.1</span><br><span class="line"><span class="comment"># 关闭保护模式</span></span><br><span class="line">protected-mode no</span><br><span class="line"><span class="comment"># 允许后台启动</span></span><br><span class="line">daemonize yes</span><br></pre></td></tr></table></figure>
+<h2 id="五大数据类型"><a href="#五大数据类型" class="headerlink" title="五大数据类型"></a>五大数据类型</h2><p>redis中的数据都是以key/value的形式存储的，五大数据类型主要是指value的数据类型。</p>
+<h3 id="String字符串"><a href="#String字符串" class="headerlink" title="String字符串"></a>String字符串</h3><p>最基础的数据类型，需要注意的是redis中的字符串大小上限是512M。</p>
+<p><strong>APPEND</strong></p>
+<p>使用APPEND命令时，如果key已经存在，则会直接在value后追加值，如果key不存在，则会先创建一个value为空字符串的key，然后再追加。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">v1</span><br><span class="line">127.0.0.1:6379&gt; append k1 v1vv</span><br><span class="line">6</span><br><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">v1v1vv</span><br></pre></td></tr></table></figure>
+<p><strong>GET</strong></p>
+<p>GET命令用来获取对应key的value，如果key不存在则返回nil。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">v1v1vv</span><br></pre></td></tr></table></figure>
+<p><strong>GETRANGE</strong></p>
+<p>GETRANGE用来返回key所对应的value的子串，子串由start和end决定，从左往右计算，如果下标是负数，则从右往左计算，其中-1表示最后一个字符，-2是倒数第二个…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; getrange k1 1 3</span><br><span class="line">1v1</span><br></pre></td></tr></table></figure>
+<p><strong>GETSET</strong></p>
+<p>GETSET命令可以用来获取key所对应的value，并对key进行重置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">v2</span><br><span class="line">127.0.0.1:6379&gt; getset k2 v2set</span><br><span class="line">v2</span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">v2set</span><br></pre></td></tr></table></figure>
+<p><strong>SETRANGE</strong></p>
+<p>SETRANGE用来覆盖一个已经存在的key的value。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setrange k2 2 range</span><br><span class="line">7</span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">v2range</span><br></pre></td></tr></table></figure>
+<p><strong>SETEX</strong></p>
+<p>SETEX用来给key设置value，同时设置过期时间，等效于先给key设置value，再给key设置过期时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setex k4 5 v4</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p><strong>SETNX</strong></p>
+<p>SETNX是 <strong>SET</strong> if <strong>N</strong>ot e<strong>X</strong>ists的简写，SET命令在执行时，如果key已经存在，则新值会覆盖掉旧值，而对于SETNX命令，如果key已经存在，则不做任何操作，如果key不存在，则效果等同于SET命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setnx k4 v4v4</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<h3 id="List列表"><a href="#List列表" class="headerlink" title="List列表"></a>List列表</h3><p>LIST是一个简单的字符串列表，按照插入顺序进行排序，可以从头尾插入或弹出。</p>
+<p><strong>LPUSH</strong></p>
+<p>将一个或多个值value插入到列表key的表头，如果有多个value值，那么各个value值按从左到右的顺序依次插入到表头。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush l1 v1 v2 v3 v4 v5</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p><strong>LRANGE</strong></p>
+<p>返回列表key中指定区间内的元素，区间以偏移量start和stop指定，下标(index)参数start和stop都以0为底，即0表示列表的第一个元素，1表示列表的第二个元素，以此类推。我们也可以使用负数下标，以-1表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange l1 0 -1</span><br><span class="line">v5</span><br><span class="line">v4</span><br><span class="line">v3</span><br><span class="line">v2</span><br><span class="line">v1</span><br></pre></td></tr></table></figure>
+<p><strong>RPUSH</strong></p>
+<p>RPUSH与LPUSH的功能基本一致，不同的是RPUSH的中的value值是按照从右到左的顺序依次插入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush l1 v6 v7</span><br><span class="line">7</span><br><span class="line">127.0.0.1:6379&gt; lrange l1 0 -1</span><br><span class="line">v5</span><br><span class="line">v4</span><br><span class="line">v3</span><br><span class="line">v2</span><br><span class="line">v1</span><br><span class="line">v6</span><br><span class="line">v7</span><br></pre></td></tr></table></figure>
+<p><strong>RPOP</strong></p>
+<p>RPOP命令可以移除并返回列表key的尾元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpop l1</span><br><span class="line">v7</span><br><span class="line">127.0.0.1:6379&gt; rpop l1</span><br><span class="line">v6</span><br><span class="line">127.0.0.1:6379&gt; lrange l1 0 -1</span><br><span class="line">v5</span><br><span class="line">v4</span><br><span class="line">v3</span><br><span class="line">v2</span><br><span class="line">v1</span><br></pre></td></tr></table></figure>
+<p><strong>LPOP</strong></p>
+<p>LPOP和RPOP类似，不同的是LPOP移除并返回列表key的头元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpop l1</span><br><span class="line">v5</span><br><span class="line">127.0.0.1:6379&gt; lrange l1 0 -1</span><br><span class="line">v4</span><br><span class="line">v3</span><br><span class="line">v2</span><br><span class="line">v1</span><br></pre></td></tr></table></figure>
+<p><strong>LINDEX</strong></p>
+<p>LINDEX命令可以返回列表key中，下标为index的元素，正数下标0表示第一个元素，也可以使用负数下标，-1表示倒数第一个元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange l1 0 -1</span><br><span class="line">v4</span><br><span class="line">v3</span><br><span class="line">v2</span><br><span class="line">v1</span><br><span class="line">127.0.0.1:6379&gt; lindex l1 2</span><br><span class="line">v2</span><br></pre></td></tr></table></figure>
+<h3 id="Hash键值对"><a href="#Hash键值对" class="headerlink" title="Hash键值对"></a>Hash键值对</h3><p>HASH类似于Java中的Map，是一个键值对集合，在redis中可以用来存储对象。</p>
+<p><strong>HSET</strong></p>
+<p>HSET命令可以用来设置key指定的哈希集中指定字段的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hset hk1 k1 v1 k2 v2 k3 v3 k4 v4 k5 v5</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p><strong>HGET</strong></p>
+<p>HGET命令可以用来返回key指定的哈希集中该字段所关联的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hget hk1 k1</span><br><span class="line">v1</span><br></pre></td></tr></table></figure>
+<p><strong>HDEL</strong></p>
+<p>HDEL命令可以从key指定的哈希集中移除指定的域，在哈希集中不存在的域将被忽略。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hdel hk1 k1</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p><strong>HSETNX</strong></p>
+<p>HSETNX命令只在key指定的哈希集中不存在指定的字段时，设置字段的值，如果字段已存在，该操作无效果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hsetnx hk1 k1 v11</span><br><span class="line">1</span><br><span class="line">127.0.0.1:6379&gt; hget hk1 k1</span><br><span class="line">v11</span><br><span class="line">127.0.0.1:6379&gt; hsetnx hk1 k1 v12</span><br><span class="line">0</span><br><span class="line">127.0.0.1:6379&gt; hget hk1 k1</span><br><span class="line">v11</span><br></pre></td></tr></table></figure>
+<p><strong>HVALS</strong></p>
+<p>HVALS命令可以返回key指定的哈希集中所有字段的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hvals hk1</span><br><span class="line">v2</span><br><span class="line">v3</span><br><span class="line">v4</span><br><span class="line">v5</span><br><span class="line">v11</span><br></pre></td></tr></table></figure>
+<p><strong>HKEYS</strong></p>
+<p>HKEYS命令可以返回key指定的哈希集中所有字段的名字。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hkeys hk1</span><br><span class="line">k2</span><br><span class="line">k3</span><br><span class="line">k4</span><br><span class="line">k5</span><br><span class="line">k1</span><br></pre></td></tr></table></figure>
+<p><strong>HGETALL</strong></p>
+<p>HEXISTS命令可以返回hash里面field是否存在。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hgetall hk1</span><br><span class="line">k2</span><br><span class="line">v2</span><br><span class="line">k3</span><br><span class="line">v3</span><br><span class="line">k4</span><br><span class="line">v4</span><br><span class="line">k5</span><br><span class="line">v5</span><br><span class="line">k1</span><br><span class="line">v11</span><br></pre></td></tr></table></figure>
+<p><strong>HLEN</strong></p>
+<p>HSTRLEN可以返回hash指定field的value的字符串长度，如果hash或者field不存在，返回0。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hlen hk1</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<h3 id="Set集合"><a href="#Set集合" class="headerlink" title="Set集合"></a>Set集合</h3><p>SET是String类型的无序集合，不同于LIST，SET中的元素不可以重复。</p>
+<p><strong>SADD</strong></p>
+<p>SADD命令可以添加一个或多个指定的member元素到集合的key中，指定的一个或者多个元素member如果已经在集合key中存在则忽略，如果集合key不存在，则新建集合key,并添加member元素到集合key中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd sk1 v1 v2 v3 v3 v4</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p><strong>SREM</strong></p>
+<p>SREM命令可以在key集合中移除指定的元素，如果指定的元素不是key集合中的元素则忽略。如果key集合不存在则被视为一个空的集合，该命令返回0。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; srem sk1 v5</span><br><span class="line">0</span><br><span class="line">127.0.0.1:6379&gt; srem sk1 v4</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p><strong>SISMEMBER</strong></p>
+<p>SISMEMBER命令可以返回成员member是否是存储的集合key的成员。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sismember sk1 v4</span><br><span class="line">0</span><br><span class="line">127.0.0.1:6379&gt; sismember sk1 v3</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p><strong>SCARD</strong></p>
+<p>SCARD命令可以返回集合存储的key的基数(集合元素的数量)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; scard sk1</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p><strong>SMEMBERS</strong></p>
+<p>SMEMBERS命令可以返回key集合所有的元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; smembers sk1</span><br><span class="line">v3</span><br><span class="line">v1</span><br><span class="line">v2</span><br></pre></td></tr></table></figure>
+<p><strong>SPOP</strong></p>
+<p>SPOP命令的用法和SRANDMEMBER类似，不同的是，SPOP每次选择一个随机的元素之后，该元素会出栈，而SRANDMEMBER则不会出栈，只是将该元素展示出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; spop sk1</span><br><span class="line">v2</span><br><span class="line">127.0.0.1:6379&gt; smembers sk1</span><br><span class="line">v3</span><br><span class="line">v1</span><br></pre></td></tr></table></figure>
+<p><strong>SDIFF</strong></p>
+<p>SDIFF可以用来返回一个集合与给定集合的差集的元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; smembers sk1</span><br><span class="line">v3</span><br><span class="line">v1</span><br><span class="line">127.0.0.1:6379&gt; smembers sk2</span><br><span class="line">v1</span><br><span class="line">v4</span><br><span class="line">v2</span><br><span class="line">127.0.0.1:6379&gt; sdiff sk1 sk2</span><br><span class="line">v3</span><br></pre></td></tr></table></figure>
+<p><strong>SDIFFSTORE</strong></p>
+<p>SDIFFSTORE命令与SDIFF命令基本一致，不同的是SDIFFSTORE命令会将结果保存在一个集合中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sdiffstore sk3 sk2 sk1</span><br><span class="line">2</span><br><span class="line">127.0.0.1:6379&gt; smembers sk3</span><br><span class="line">v2</span><br><span class="line">v4</span><br></pre></td></tr></table></figure>
+<p><strong>SINTER</strong></p>
+<p>SINTER命令可以用来计算指定key之间元素的交集。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; smembers sk2</span><br><span class="line">v1</span><br><span class="line">v4</span><br><span class="line">v2</span><br><span class="line">127.0.0.1:6379&gt; smembers sk3</span><br><span class="line">v2</span><br><span class="line">v4</span><br><span class="line">127.0.0.1:6379&gt; sinter sk2 sk3</span><br><span class="line">v2</span><br><span class="line">v4</span><br></pre></td></tr></table></figure>
+<p><strong>SUNION</strong></p>
+<p>SUNION可以用来计算两个集合的并集。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sunion sk1 sk3</span><br><span class="line">v1</span><br><span class="line">v3</span><br><span class="line">v4</span><br><span class="line">v2</span><br></pre></td></tr></table></figure>
+<h3 id="ZSet有序集合"><a href="#ZSet有序集合" class="headerlink" title="ZSet有序集合"></a>ZSet有序集合</h3><p>ZSET和SET一样，也是STRING类型的元素的集合，不同的是ZSET中的每个元素都会关联一个double类型的分数，ZSET中的成员都是唯一的，但是所关联的分数可以重复。</p>
+<p><strong>ZADD</strong></p>
+<p>ZADD命令可以将所有指定成员添加到键为key的有序集合里面。添加时可以指定多个分数/成员（score/member）对。 如果指定添加的成员已经是有序集合里面的成员，则会更新该成员的分数（scrore）并更新到正确的排序位置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd zk1 10 v1 20 v2 30 v3 40 v4 10 v5</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p><strong>ZSCORE</strong></p>
+<p>ZSCORE命令可以返回有序集key中，成员member的score值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zscore zk1 v1</span><br><span class="line">10</span><br><span class="line">127.0.0.1:6379&gt; zscore zk1 v5</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+<p><strong>ZRANGE</strong></p>
+<p>ZRANGE命令可以根据index返回member，该命令在执行时加上withscores参数可以连同score一起返回。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrange zk1 0 -1</span><br><span class="line">v1</span><br><span class="line">v5</span><br><span class="line">v2</span><br><span class="line">v3</span><br><span class="line">v4</span><br><span class="line">127.0.0.1:6379&gt; zrange zk1 0 -1 withscores</span><br><span class="line">v1</span><br><span class="line">10</span><br><span class="line">v5</span><br><span class="line">10</span><br><span class="line">v2</span><br><span class="line">20</span><br><span class="line">v3</span><br><span class="line">30</span><br><span class="line">v4</span><br><span class="line">40</span><br></pre></td></tr></table></figure>
+<p><strong>ZCOUNT</strong></p>
+<p>ZCOUNT命令可以返回有序集key中，score值在min和max之间(默认包括score值等于min或max)的成员。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zcount zk1 10 30</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p><strong>ZRANGEBYSCORE</strong></p>
+<p>ZRANGEBYSCORE命令可以按照score范围范围元素，加上withscores可以连score一起返回。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrangebyscore zk1 10 30 </span><br><span class="line">v1</span><br><span class="line">v5</span><br><span class="line">v2</span><br><span class="line">v3</span><br><span class="line">127.0.0.1:6379&gt; zrangebyscore zk1 10 30 withscores</span><br><span class="line">v1</span><br><span class="line">10</span><br><span class="line">v5</span><br><span class="line">10</span><br><span class="line">v2</span><br><span class="line">20</span><br><span class="line">v3</span><br><span class="line">30</span><br></pre></td></tr></table></figure>
+<p><strong>ZRANK</strong></p>
+<p>ZRANK命令可以返回有序集key中成员member的排名。其中有序集成员按score值递增(从小到大)顺序排列。排名以0为底，即score值最小的成员排名为0。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrank zk1 v2</span><br><span class="line">2</span><br><span class="line">127.0.0.1:6379&gt; zrank zk1 v4</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p><strong>ZREM</strong></p>
+<p>ZREM命令可以从集合中弹出一个元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrem zk1 v1 v2</span><br><span class="line">2</span><br><span class="line">127.0.0.1:6379&gt; zrange zk1 0 -1</span><br><span class="line">v5</span><br><span class="line">v3</span><br><span class="line">v4</span><br></pre></td></tr></table></figure>
+<h3 id="Key相关命令"><a href="#Key相关命令" class="headerlink" title="Key相关命令"></a>Key相关命令</h3><p><strong>DEL命令</strong></p>
+<p>通过DEL命令我们可以删除一个已经存在的key。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">k2</span><br><span class="line">k4</span><br><span class="line">k3</span><br><span class="line">sk2</span><br><span class="line">zk1</span><br><span class="line">sk1</span><br><span class="line">hk1</span><br><span class="line">l1</span><br><span class="line">k1</span><br><span class="line">127.0.0.1:6379&gt; del sk2 k2 k3</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p><strong>DUMP命令</strong></p>
+<p>DUMP命令可以序列化给定的key，并返回序列化之后的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; dump k4</span><br><span class="line"><span class="string">"\x00\x02v4\t\x00tx\x19\x8c\xe4\xa9\xaa\xb3"</span></span><br></pre></td></tr></table></figure>
+<p><strong>EXISTS</strong></p>
+<p>EXISTS命令用来检测一个给定的key是否存在。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">1) <span class="string">"k4"</span></span><br><span class="line">2) <span class="string">"zk1"</span></span><br><span class="line">3) <span class="string">"sk1"</span></span><br><span class="line">4) <span class="string">"hk1"</span></span><br><span class="line">5) <span class="string">"l1"</span></span><br><span class="line">6) <span class="string">"k1"</span></span><br><span class="line">127.0.0.1:6379&gt; exists k4</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<p><strong>TTL命令</strong></p>
+<p>TTL命令可以查看一个给定key的有效时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ttl k4 </span><br><span class="line">(<span class="built_in">integer</span>) -1</span><br></pre></td></tr></table></figure>
+<p><strong>EXPIRE命令</strong></p>
+<p>EXPIRE命令可以给key设置有效期，在有效期过后，key会被销毁。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; expire k4 120</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; ttl k3</span><br><span class="line">(<span class="built_in">integer</span>) -2  <span class="comment"># 永久存在</span></span><br><span class="line">127.0.0.1:6379&gt; ttl k4</span><br><span class="line">(<span class="built_in">integer</span>) 107 <span class="comment"># 存活107秒</span></span><br></pre></td></tr></table></figure>
+<p><strong>PERSIST命令</strong></p>
+<p>PERSIST命令表示移除一个key的过期时间，这样该key就永远不会过期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; persist k4</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; ttl k4</span><br><span class="line">(integer) -1</span><br></pre></td></tr></table></figure>
+<p><strong>KEYS 命令</strong></p>
+<p>KEYS命令可以获取满足给定模式的所有key。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KEYS *（*表示所有的key，*也可以是一个正在表达式）</span><br></pre></td></tr></table></figure>
+<h2 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h2><p><strong>SUBSCRIBE </strong></p>
+<p>订阅频道</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; subscribe c1 c2 c3</span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line">1) <span class="string">"subscribe"</span></span><br><span class="line">2) <span class="string">"c1"</span></span><br><span class="line">3) (<span class="built_in">integer</span>) 1</span><br><span class="line">1) <span class="string">"subscribe"</span></span><br><span class="line">2) <span class="string">"c2"</span></span><br><span class="line">3) (<span class="built_in">integer</span>) 2</span><br><span class="line">1) <span class="string">"subscribe"</span></span><br><span class="line">2) <span class="string">"c3"</span></span><br><span class="line">3) (<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+<p><strong>PUBLISH </strong></p>
+<p>发布消息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PUBLISH c1 <span class="string">"hello redis!"</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<p><strong>PSUBSCRIBE </strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PSUBSCRIBE c*</span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line">1) <span class="string">"psubscribe"</span></span><br><span class="line">2) <span class="string">"c*"</span></span><br><span class="line">3) (<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>不同于关系型数据库，redis中的事务出错时没有回滚，对此，官方的解释如下：</p>
+<p>Redis 命令只会因为错误的语法而失败（并且这些问题不能在入队时发现），或是命令用在了错误类型的键上面：这也就是说，从实用性的角度来说，失败的命令是由编程错误造成的，而这些错误应该在开发的过程中被发现，而不应该出现在生产环境中。因为不需要对回滚进行支持，所以 Redis 的内部可以保持简单且快速。</p>
+<p><strong>MULTI</strong></p>
+<p>开启事物</p>
+<p><strong>EXEC</strong></p>
+<p>结束事物并执行</p>
+<p><strong>WATCH</strong></p>
+<p>事务中的WATCH命令可以用来监控一个key，通过这种监控，我们可以为redis事务提供(CAS)行为。 如果有至少一个被WATCH监视的键在EXEC执行之前被修改了，那么整个事务都会被取消，EXEC返回nil-reply来表示事务已经失败。</p>
+<p><strong>事物中的异常行为</strong></p>
+<p>redis中事务的异常情况总的来说分为两类：</p>
+<p>1.进入队列之前就能发现的错误，比如命令输错；（拒绝执行并自动放弃这个事务）<br>2.执行EXEC之后才能发现的错误，比如给一个非数字字符加1；（执行产生错误，其他命令继续执行）</p>
+<h2 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h2><p>整体上来说，redis持久化有两种方式，快照持久化和AOF，在项目中我们可以根据实际情况选择合适的持久化方式，也可以不用持久化，这关键看我们的redis在项目中扮演了什么样的角色。</p>
+<h3 id="快照持久化"><a href="#快照持久化" class="headerlink" title="快照持久化"></a>快照持久化</h3><p>redis可以在某个时间点上对内存中的数据创建一个副本文件，副本文件中的数据在redis重启时会被自动加载，我们也可以将副本文件拷贝到其他地方一样可以使用。</p>
+<h4 id="如何配置快照持久化（redis-conf）"><a href="#如何配置快照持久化（redis-conf）" class="headerlink" title="如何配置快照持久化（redis.conf）"></a>如何配置快照持久化（redis.conf）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">save 900 1		# 900秒内至少一个key变更</span><br><span class="line">save 300 10		# 100秒内至少10个key变更</span><br><span class="line">save 60 10000   # 60秒内10000个key变更</span><br><span class="line">stop-writes-on-bgsave-error yes  # 快照出错后，是否继续执行写命令</span><br><span class="line">rdbcompression yes   # 快照文件是否压缩</span><br><span class="line">dbfilename dump.rdb  # 快照文件名字</span><br><span class="line">dir ./   # 快照文件存放目录</span><br></pre></td></tr></table></figure>
+<h4 id="手动创建快照"><a href="#手动创建快照" class="headerlink" title="手动创建快照"></a>手动创建快照</h4><p><strong>SAVE</strong></p>
+<p>save命令是一个阻塞命令，在这个命令执行完成之前，不在处理其他请求，其他请求将被挂起。</p>
+<p><strong>BGSAVE</strong></p>
+<p>bgsave命令会fork一个子进程，用这个子进程将快照写入硬盘，而父进程则继续处理客户端发来的请求。</p>
+<h4 id="自动创建快照时机"><a href="#自动创建快照时机" class="headerlink" title="自动创建快照时机"></a>自动创建快照时机</h4><ol>
+<li>当条件满足时，如900秒内有一个key被操作，redis会触发bgsave命令进行备份；</li>
+<li>当我们执行shutdown命令时，redis会执行save命令进行备份操作，备份完成后关闭服务器；</li>
+<li>在主从模式中，当从机第一次连接上主机后会发一条sync命令来开始一次复制操作，此时主机会开始一次bgsave操作，并在bgsave操作结束后向从机发送快照数据实现数据同步；</li>
+</ol>
+<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p>与快照持久化不同，AOF持久化是将被执行的命令写到aof文件末尾，在恢复时只需要从头到尾执行一遍写命令即可恢复数据，AOF在redis中默认也是没有开启的，需要我们手动开启，开启方式为将redis.conf中的修改appendonly属性值为yes。</p>
+<h4 id="aof配置（redis-conf）"><a href="#aof配置（redis-conf）" class="headerlink" title="aof配置（redis.conf）"></a>aof配置（redis.conf）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">appendonly yes   # 开启aof持久化</span><br><span class="line"></span><br><span class="line">appendfilename "appendonly.aof"   # aof备份文件名</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> appendfsync always   <span class="comment"># 每执行一次写操作备份一次</span></span></span><br><span class="line">appendfsync everysec   # 每秒备份一次（最常用）</span><br><span class="line"><span class="meta">#</span><span class="bash"> appendfsync no       <span class="comment"># 由操作系统决定备份时机</span></span></span><br><span class="line"></span><br><span class="line">no-appendfsync-on-rewrite no   # 对aof文件进行压缩时，是否执行同步操作</span><br><span class="line">auto-aof-rewrite-percentage 100   # 重写aof文件的百分比，基准为上一次重写文件大小或启动时文件大小</span><br><span class="line">auto-aof-rewrite-min-size 64mb    # 最少要大于64m才对aof文件进行重写</span><br></pre></td></tr></table></figure>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li>如果redis只做缓存服务器，那么可以不使用任何持久化方式；</li>
+<li>同时开启两种持久化方式，redis重启时优先载入aof文件来恢复原始的数据。rdb更适合用于备份数据库，快速重启，不会有aof可能潜在的bug，但是aof数据会更加完整；</li>
+<li>因为rdb文件只用作后备用途，建议只在slave上持久化rdb文件，而且只要15分钟备份一次就够了，只保留save 900 1这条规则；</li>
+<li>如果开启aof，一是会带来持续的io，二是rewrite过程中产生的新数据写到新文件造成的阻塞几乎不可避免。所以只要硬盘允许，尽量减少rewrite的频率，重写的基础可以设置5G以上。</li>
+<li>如果不开启aof，紧靠master-slave replication也可以实现高可用性。能省掉一大笔io，也减少了rewrite带来的系统波动。代价是master/slave同时倒掉，会丢失十几分钟的数据。</li>
+</ol>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p>主从复制可以在一定程度上扩展redis性能，redis的主从复制和关系型数据库的主从复制类似，从机能够精确的复制主机上的内容。实现了主从复制之后，一方面能够实现数据的读写分离，降低master的压力，另一方面也能实现数据的备份。</p>
+<h3 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h3><ol>
+<li><p>启动三个实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost redis-4.0.8]# redis-server redis6379.conf</span><br><span class="line">[root@localhost redis-4.0.8]# redis-server redis6380.conf</span><br><span class="line">[root@localhost redis-4.0.8]# redis-server redis6381.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h IP -p 端口  --raw      //登陆redis服务器时，增加参数 --raw（避免命令行中文乱码）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从机上执行slaveof</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看每个实例当前状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO replication</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="主从复制注意点"><a href="#主从复制注意点" class="headerlink" title="主从复制注意点"></a>主从复制注意点</h3><ol>
+<li>如果主机运行一段时间了，从机连接上来，会备份主机所有的数据；</li>
+<li>主从复制后，master可读可写，slave可读不可写；</li>
+<li>主从结构运行中，主机不行挂掉，重启之后，他依然是主机；</li>
+</ol>
+<h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.slave启动成功连接到master后会发送一个sync命令。  </span><br><span class="line">2.Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令。  </span><br><span class="line">3.在后台进程执行完毕之后，master将传送整个数据文件到slave,以完成一次完全同步。  </span><br><span class="line">4.全量复制：而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。  </span><br><span class="line">5.增量复制：Master继续将新的所有收集到的修改命令依次传给slave,完成同步。  </span><br><span class="line">6.但是只要是重新连接master,一次完全同步（全量复制)将被自动执行。</span><br></pre></td></tr></table></figure>
+<h3 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h3><p><strong>sentinel.conf</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 127.0.0.1 6379 1</span><br></pre></td></tr></table></figure>
+<p><strong>启动哨兵</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-sentinel sentinel.conf</span><br></pre></td></tr></table></figure>
+<p><strong>注意点</strong></p>
+<p>当master挂掉之后，哨兵会重新选举一个slave当master，之前的master重启之后，也只能当slave了。</p>
+<p>由于所有的写都是在master上操作的，master和slave会有一定的延迟，当系统繁忙，slave机器较多时问题会更严重，所以我们可以通过集群来进一步提示redis性能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习/" rel="tag"># 学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/13/这些年看过的网文/" rel="next" title="这些年看过的网文">
+                <i class="fa fa-chevron-left"></i> 这些年看过的网文
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">邓伟强</p>
+              <p class="site-description motion-element" itemprop="description">己所不欲，勿施于人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis的安装"><span class="nav-number">1.</span> <span class="nav-text">Redis的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#centos安装redis"><span class="nav-number">1.1.</span> <span class="nav-text">centos安装redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#centos-设置redis开启自启动"><span class="nav-number">1.2.</span> <span class="nav-text">centos 设置redis开启自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis开启远程连接（redis-conf）"><span class="nav-number">1.3.</span> <span class="nav-text">redis开启远程连接（redis.conf）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五大数据类型"><span class="nav-number">2.</span> <span class="nav-text">五大数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String字符串"><span class="nav-number">2.1.</span> <span class="nav-text">String字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List列表"><span class="nav-number">2.2.</span> <span class="nav-text">List列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash键值对"><span class="nav-number">2.3.</span> <span class="nav-text">Hash键值对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set集合"><span class="nav-number">2.4.</span> <span class="nav-text">Set集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZSet有序集合"><span class="nav-number">2.5.</span> <span class="nav-text">ZSet有序集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Key相关命令"><span class="nav-number">2.6.</span> <span class="nav-text">Key相关命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布订阅"><span class="nav-number">3.</span> <span class="nav-text">发布订阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">4.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化"><span class="nav-number">5.</span> <span class="nav-text">持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#快照持久化"><span class="nav-number">5.1.</span> <span class="nav-text">快照持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何配置快照持久化（redis-conf）"><span class="nav-number">5.1.1.</span> <span class="nav-text">如何配置快照持久化（redis.conf）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动创建快照"><span class="nav-number">5.1.2.</span> <span class="nav-text">手动创建快照</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动创建快照时机"><span class="nav-number">5.1.3.</span> <span class="nav-text">自动创建快照时机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF持久化"><span class="nav-number">5.2.</span> <span class="nav-text">AOF持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#aof配置（redis-conf）"><span class="nav-number">5.2.1.</span> <span class="nav-text">aof配置（redis.conf）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳实践"><span class="nav-number">5.3.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主从复制"><span class="nav-number">6.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置方式"><span class="nav-number">6.1.</span> <span class="nav-text">配置方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制注意点"><span class="nav-number">6.2.</span> <span class="nav-text">主从复制注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制原理"><span class="nav-number">6.3.</span> <span class="nav-text">主从复制原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哨兵模式"><span class="nav-number">6.4.</span> <span class="nav-text">哨兵模式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">邓伟强</span>
+
+  
+</div>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

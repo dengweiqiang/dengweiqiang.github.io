@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-06-13T08:43:02.393Z</updated>
+  <updated>2020-07-03T14:22:12.463Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -17,11 +17,30 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Redis学习笔记</title>
+    <link href="https://dengwq.top/2020/07/03/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://dengwq.top/2020/07/03/Redis学习笔记/</id>
+    <published>2020-07-03T13:03:43.000Z</published>
+    <updated>2020-07-03T14:22:12.463Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。&lt;/p&gt;
+&lt;p&gt;Redis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制+哨兵。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>这些年看过的网文</title>
     <link href="https://dengwq.top/2020/06/13/%E8%BF%99%E4%BA%9B%E5%B9%B4%E7%9C%8B%E8%BF%87%E7%9A%84%E7%BD%91%E6%96%87/"/>
     <id>https://dengwq.top/2020/06/13/这些年看过的网文/</id>
     <published>2020-06-13T07:53:23.000Z</published>
-    <updated>2020-06-13T08:43:02.393Z</updated>
+    <updated>2020-07-03T12:59:00.941Z</updated>
     
     <summary type="html">
     
@@ -40,7 +59,7 @@
     <link href="https://dengwq.top/2020/05/06/ZooKeeper%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%80%E8%A7%88/"/>
     <id>https://dengwq.top/2020/05/06/ZooKeeper典型应用场景一览/</id>
     <published>2020-05-06T12:56:20.000Z</published>
-    <updated>2020-05-06T13:38:29.576Z</updated>
+    <updated>2020-07-03T12:59:00.921Z</updated>
     
     <summary type="html">
     
@@ -59,7 +78,7 @@
     <link href="https://dengwq.top/2020/05/06/Spring-Cloud-%E5%9F%BA%E7%A1%80/"/>
     <id>https://dengwq.top/2020/05/06/Spring-Cloud-基础/</id>
     <published>2020-05-06T10:11:01.000Z</published>
-    <updated>2020-05-06T10:17:26.417Z</updated>
+    <updated>2020-07-03T12:59:00.920Z</updated>
     
     <summary type="html">
     
@@ -79,7 +98,7 @@
     <link href="https://dengwq.top/2020/04/24/%E5%88%AB%E5%BF%98%E8%AE%B0%E9%82%A3%E4%BA%9B%E4%BA%BA%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
     <id>https://dengwq.top/2020/04/24/别忘记那些人那些事/</id>
     <published>2020-04-23T23:00:07.000Z</published>
-    <updated>2020-05-06T10:17:18.030Z</updated>
+    <updated>2020-07-03T12:59:00.940Z</updated>
     
     <summary type="html">
     
@@ -99,7 +118,7 @@
     <link href="https://dengwq.top/2020/04/14/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%B0%8F%E7%BB%93/"/>
     <id>https://dengwq.top/2020/04/14/Hexo常用命令小结/</id>
     <published>2020-04-14T13:08:37.000Z</published>
-    <updated>2020-04-14T13:37:06.255Z</updated>
+    <updated>2020-07-03T12:59:00.920Z</updated>
     
     <summary type="html">
     
@@ -117,7 +136,7 @@
     <link href="https://dengwq.top/2020/04/14/Git%E6%8E%A8%E9%80%81%E9%A1%B9%E7%9B%AE%E5%88%B0GitHub/"/>
     <id>https://dengwq.top/2020/04/14/Git推送项目到GitHub/</id>
     <published>2020-04-14T13:03:29.000Z</published>
-    <updated>2020-04-14T13:07:28.775Z</updated>
+    <updated>2020-07-03T12:59:00.919Z</updated>
     
     <summary type="html">
     
@@ -135,7 +154,7 @@
     <link href="https://dengwq.top/2020/04/14/SpringBoot%E9%A1%B9%E7%9B%AECRUD%E5%AE%9E%E8%B7%B5/"/>
     <id>https://dengwq.top/2020/04/14/SpringBoot项目CRUD实践/</id>
     <published>2020-04-14T12:57:50.000Z</published>
-    <updated>2020-04-14T13:35:05.916Z</updated>
+    <updated>2020-07-03T12:59:00.921Z</updated>
     
     <summary type="html">
     
@@ -153,7 +172,7 @@
     <link href="https://dengwq.top/2020/03/31/%E3%80%8A%E9%BB%91%E9%95%9C%E3%80%8B/"/>
     <id>https://dengwq.top/2020/03/31/《黑镜》/</id>
     <published>2020-03-31T07:15:38.000Z</published>
-    <updated>2020-03-31T07:57:24.247Z</updated>
+    <updated>2020-07-03T12:59:00.939Z</updated>
     
     <summary type="html">
     
@@ -171,7 +190,7 @@
     <link href="https://dengwq.top/2020/03/31/%E3%80%8A%E4%BF%97%E5%A5%B3%E5%85%BB%E6%88%90%E8%AE%B0%E3%80%8B/"/>
     <id>https://dengwq.top/2020/03/31/《俗女养成记》/</id>
     <published>2020-03-31T07:15:23.000Z</published>
-    <updated>2020-03-31T07:31:35.260Z</updated>
+    <updated>2020-07-03T12:59:00.937Z</updated>
     
     <summary type="html">
     
@@ -192,7 +211,7 @@
     <link href="https://dengwq.top/2020/03/31/%E3%80%8A%E6%83%B3%E8%A7%81%E4%BD%A0%E3%80%8B/"/>
     <id>https://dengwq.top/2020/03/31/《想见你》/</id>
     <published>2020-03-31T07:07:25.000Z</published>
-    <updated>2020-03-31T07:11:41.349Z</updated>
+    <updated>2020-07-03T12:59:00.938Z</updated>
     
     <summary type="html">
     
@@ -213,7 +232,7 @@
     <link href="https://dengwq.top/2018/10/30/%E5%87%A0%E6%9C%AC%E5%B0%8F%E8%AF%B4/"/>
     <id>https://dengwq.top/2018/10/30/几本小说/</id>
     <published>2018-10-30T15:50:32.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-07-03T12:59:00.939Z</updated>
     
     <summary type="html">
     
@@ -231,7 +250,7 @@
     <link href="https://dengwq.top/2018/10/30/%E9%80%81%E7%BB%99%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A4%BC%E7%89%A9/"/>
     <id>https://dengwq.top/2018/10/30/送给自己的礼物/</id>
     <published>2018-10-30T15:21:13.000Z</published>
-    <updated>2020-03-31T03:53:53.204Z</updated>
+    <updated>2020-07-03T12:59:00.941Z</updated>
     
     <summary type="html">
     
@@ -256,11 +275,11 @@
     <link href="https://dengwq.top/2018/09/16/%E7%BA%A2%E9%9B%80%E5%A4%A7%E6%88%98%E6%B8%B8%E9%AA%91%E5%85%B5/"/>
     <id>https://dengwq.top/2018/09/16/红雀大战游骑兵/</id>
     <published>2018-09-15T19:34:24.000Z</published>
-    <updated>2020-03-31T03:53:53.204Z</updated>
+    <updated>2020-07-03T12:59:00.941Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg&quot; alt&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-16/33119955.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;常说不到最后一刻，你永远不知道结果是什么！2011年MLB季后赛总决赛“红雀对游骑兵”第六场，无疑是对这句话的最好诠释了。&lt;/p&gt;
     
     </summary>
@@ -275,11 +294,11 @@
     <link href="https://dengwq.top/2018/09/10/%E4%B8%9C%E4%BA%AC%E7%88%B1%E6%83%85%E6%95%85%E4%BA%8B/"/>
     <id>https://dengwq.top/2018/09/10/东京爱情故事/</id>
     <published>2018-09-10T13:48:19.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-07-03T12:59:00.939Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-10/71721542.jpg&quot; alt&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-9-10/71721542.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;正是因为不知道明天会发生什么事，才会充满希望不是吗？          – 赤名莉香&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -296,11 +315,11 @@
     <link href="https://dengwq.top/2018/08/22/%E6%88%91%E6%9B%BE%E4%B8%83%E6%AC%A1%E9%84%99%E8%A7%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%81%B5%E9%AD%82/"/>
     <id>https://dengwq.top/2018/08/22/我曾七次鄙视自己的灵魂/</id>
     <published>2018-08-21T16:41:17.000Z</published>
-    <updated>2020-03-31T03:53:53.204Z</updated>
+    <updated>2020-07-03T12:59:00.941Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/91516578.jpg&quot; alt&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/91516578.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;良多一直想成为自己理想中的那个人，但理想很丰满，现实很骨感，最终他变成了他最讨厌的那种人！&lt;br&gt;良多：“你以为可以很容易成为想象中的人，那就大错特错了！”&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -317,11 +336,11 @@
     <link href="https://dengwq.top/2018/08/22/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
     <id>https://dengwq.top/2018/08/22/23种设计模式解析/</id>
     <published>2018-08-21T16:35:52.000Z</published>
-    <updated>2020-06-13T07:55:08.111Z</updated>
+    <updated>2020-07-03T12:59:00.918Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/30443178.jpg&quot; alt&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/30443178.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;设计模式(Design Pattern)是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。&lt;/p&gt;
 &lt;p&gt;使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。&lt;/p&gt;
@@ -339,7 +358,7 @@
     <link href="https://dengwq.top/2018/08/20/idea%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
     <id>https://dengwq.top/2018/08/20/idea的使用技巧/</id>
     <published>2018-08-20T15:31:01.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-07-03T12:59:00.937Z</updated>
     
     <summary type="html">
     
@@ -359,7 +378,7 @@
     <link href="https://dengwq.top/2018/08/20/%E5%A9%89%E5%A9%B7%EF%BC%8CWelcome/"/>
     <id>https://dengwq.top/2018/08/20/婉婷，Welcome/</id>
     <published>2018-08-19T18:10:45.000Z</published>
-    <updated>2020-03-31T03:53:53.203Z</updated>
+    <updated>2020-07-03T12:59:00.940Z</updated>
     
     <summary type="html">
     
@@ -377,7 +396,7 @@
     <link href="https://dengwq.top/2018/08/19/Git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
     <id>https://dengwq.top/2018/08/19/Git常用指令/</id>
     <published>2018-08-19T15:33:32.000Z</published>
-    <updated>2020-06-13T07:55:30.593Z</updated>
+    <updated>2020-07-03T12:59:00.918Z</updated>
     
     <summary type="html">
     
