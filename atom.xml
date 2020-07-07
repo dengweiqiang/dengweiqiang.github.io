@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-07-03T14:22:12.463Z</updated>
+  <updated>2020-07-07T00:41:57.637Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot学习笔记</title>
+    <link href="https://dengwq.top/2020/07/07/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://dengwq.top/2020/07/07/SpringBoot学习笔记/</id>
+    <published>2020-07-07T00:36:34.000Z</published>
+    <updated>2020-07-07T00:41:57.637Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;基于javaboy的springboot快速练习，内容包括springboot静态资源配置，自定义starter，异常处理，持久层的整合，nosql的整合，thymeleaf的整合，邮件的发送等内容。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis学习笔记</title>
@@ -388,30 +406,6 @@
     
     
       <category term="随笔" scheme="https://dengwq.top/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git常用指令</title>
-    <link href="https://dengwq.top/2018/08/19/Git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
-    <id>https://dengwq.top/2018/08/19/Git常用指令/</id>
-    <published>2018-08-19T15:33:32.000Z</published>
-    <updated>2020-07-03T12:59:00.918Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Git常用指令（20180819初始版本）&quot;&gt;&lt;a href=&quot;#Git常用指令（20180819初始版本）&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
