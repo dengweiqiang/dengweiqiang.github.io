@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="自考," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库原理学习笔记，祝自己考试顺利。">
+<meta name="keywords" content="自考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理(04735)">
+<meta property="og:url" content="https://dengwq.top/2020/08/01/数据库原理-04735/index.html">
+<meta property="og:site_name" content="DengWeiQiang&#39;Blog">
+<meta property="og:description" content="数据库原理学习笔记，祝自己考试顺利。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200728002558931.png">
+<meta property="og:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200730125257146.png">
+<meta property="og:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200730134522426.png">
+<meta property="og:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200730142908955.png">
+<meta property="og:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200731230724966.png">
+<meta property="og:updated_time" content="2020-07-31T19:42:00.099Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库原理(04735)">
+<meta name="twitter:description" content="数据库原理学习笔记，祝自己考试顺利。">
+<meta name="twitter:image" content="c:/Users/haixi/AppData/Roaming/Typora/typora-user-images/image-20200728002558931.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://dengwq.top/2020/08/01/数据库原理-04735/"/>
+
+
+
+
+
+  <title>数据库原理(04735) | DengWeiQiang'Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DengWeiQiang'Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home                          //首页"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags                     //标签"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive          //归档"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user                   //关于"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dengwq.top/2020/08/01/数据库原理-04735/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="邓伟强">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DengWeiQiang'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库原理(04735)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-01T03:39:37+08:00">
+                2020-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>数据库原理学习笔记，祝自己考试顺利。</p>
+<a id="more"></a>
+<h2 id="课程导学"><a href="#课程导学" class="headerlink" title="课程导学"></a>课程导学</h2><p><strong>课程知识脉络</strong><br>第一章，数据库系统概述<br>第二章，关系数据库<br>第三章，数据库设计<br>第四章，SQL与关系数据库基本操作<br>第五章，数据库编程<br>第六章，数据库安全与保护<br>第七章，数据库应用涉及与开发实践<br>第八章，数据库管理技术的发展<br>PS：数据库系统概述，关系数据库，数据库设计占选择题的百分之六十。</p>
+<p><strong>试卷题型</strong><br>对不同能力层次要求的分数比例大致为识记占20%，领会占30%，简单应用占30%，综合应用占20%；<br>易、较易、较难和难比例：2:3:3:2；<br>主要题型：单项选择题、填空题、简答题、设计题、综合题。</p>
+<h2 id="第一章-数据库系统概述"><a href="#第一章-数据库系统概述" class="headerlink" title="第一章 数据库系统概述"></a>第一章 数据库系统概述</h2><h3 id="第一节-数据库基本概念"><a href="#第一节-数据库基本概念" class="headerlink" title="第一节 数据库基本概念"></a>第一节 数据库基本概念</h3><h4 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h4><p>数据（Data）是描述事物的符号记录，是指用物理符号，记录下来的，可以鉴别的信息。</p>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>数据库（Database，简称DB）是长期存储在计算机内、有组织的、可共享的大量数据集合。</p>
+<p>数据库中存储的数据具有永久存储、有组织和可共享的三个基本特点。</p>
+<h4 id="数据库管理系统"><a href="#数据库管理系统" class="headerlink" title="数据库管理系统"></a>数据库管理系统</h4><p>数据库管理系统（Database Management System，简称DBMS）是位于用户与操作系统之间的一层数据管理软件。</p>
+<p>主要功能：</p>
+<ol>
+<li><p>数据定义功能</p>
+<p>提供数据定义语言（DDL），定义数据库中的数据对象。</p>
+<p>例如：表、视图、存储过程、触发器等</p>
+</li>
+<li><p>数据操纵功能</p>
+<p>提供数据操纵语言（DML）操纵数据实现对数据库基本操作。</p>
+<p>例如：查询、插入、删除和修改。</p>
+</li>
+<li><p>数据库的运行管理</p>
+<p>保证数据的安全性、完整性、多用户对数据的并发使用以及发生故障后的系统恢复。</p>
+</li>
+<li><p>数据库的建立和维护功能</p>
+<p>创建数据库及对数据库空间的维护、数据库的备份与恢复功能、数据库的重组织功能和性能监视、分析等。</p>
+</li>
+<li><p>数据组织、存储和管理功能</p>
+<p>例如：索引查找、顺序查找。</p>
+</li>
+<li><p>其他功能</p>
+<p>主要包括与其他软件的网络通信功能、不同数据库系统之间的数据传输以及互相访问功能等。</p>
+</li>
+</ol>
+<h4 id="数据库系统"><a href="#数据库系统" class="headerlink" title="数据库系统"></a>数据库系统</h4><p>数据库系统（Database System，DBS）是指在计算机中引入数据库技术之后的系统。</p>
+<p>通常一个完成的数据库系统包括<strong>数据库、数据库管理系统及相关实用工具、应用程序、数据库管理员和用户</strong>。</p>
+<p>数据库管理员（Database Administrator，DBA）专门负责对数据库进行维护，并保证数据库正常、高效运行。</p>
+<h3 id="第二节-数据管理技术的发展"><a href="#第二节-数据管理技术的发展" class="headerlink" title="第二节 数据管理技术的发展"></a>第二节 数据管理技术的发展</h3><h4 id="人工管理阶段"><a href="#人工管理阶段" class="headerlink" title="人工管理阶段"></a>人工管理阶段</h4><p>特点：</p>
+<ol>
+<li>数据不保存；</li>
+<li>应用程序管理数据；</li>
+<li>数据面向应用；</li>
+</ol>
+<p>注意：记录能无结构，整体无结构。</p>
+<h4 id="文件系统阶段"><a href="#文件系统阶段" class="headerlink" title="文件系统阶段"></a>文件系统阶段</h4><p>特点：</p>
+<ul>
+<li>数据的管理者：文件系统，数据可长期保存；</li>
+<li>数据面向的对象：某一应用程序；</li>
+<li>数据的共享程度：共享性差、冗余度大；</li>
+<li>数据的结构化：记录内有结构，整体无结构；</li>
+<li>数据的独立性：独立性差，数据的逻辑结构改变必须修改应用程序；</li>
+<li>数据控制能力：应用程序自己控制；</li>
+</ul>
+<h4 id="数据库系统阶段"><a href="#数据库系统阶段" class="headerlink" title="数据库系统阶段"></a>数据库系统阶段</h4><p>特点：</p>
+<ol>
+<li><strong>数据集成；</strong></li>
+<li><strong>数据共享性高；</strong></li>
+<li><strong>数据冗余小；</strong></li>
+<li><strong>数据一致性；</strong></li>
+<li><strong>数据独立性高；</strong></li>
+<li><strong>实施统一管理与控制；</strong></li>
+<li>减少应用程序开发与维护的工作量；</li>
+</ol>
+<h3 id="第三节-数据库系统的结构"><a href="#第三节-数据库系统的结构" class="headerlink" title="第三节 数据库系统的结构"></a>第三节 数据库系统的结构</h3><h4 id="数据库系统的三级模式结构"><a href="#数据库系统的三级模式结构" class="headerlink" title="数据库系统的三级模式结构"></a>数据库系统的三级模式结构</h4><p><strong>1.模式</strong></p>
+<p>模式也称为概念模式或逻辑模式，它是数据库中全体数据的逻辑结构和特征的描述，是所有用户的公共数据视图。</p>
+<p><strong>2. 外模式</strong></p>
+<p>外模式也称为子模式（Subschema）或用户模式，它是数据库用户（包括应用程序员和最终用户）能够看见和使用的局部数据的逻辑结构和特征的描述。</p>
+<p>DBMS提供子模式的描述语言（Subschema DDL）来严格地定义子模式。</p>
+<p><strong>3.内模式</strong></p>
+<p>内模式也称为存储模式（Storage Schema），它是对数据库中物理结构和存储方式的描述，是数据在数据库内部的表示形式。</p>
+<p><strong>4.三级模式结构的两层映像与数据独立性</strong></p>
+<ol>
+<li>外模式/模式映像（逻辑独立性）</li>
+<li>模式/内模式映像（物理独立性）</li>
+</ol>
+<h4 id="数据库系统的运行与应用结构"><a href="#数据库系统的运行与应用结构" class="headerlink" title="数据库系统的运行与应用结构"></a>数据库系统的运行与应用结构</h4><p><strong>1. 客户/服务器（Client/Server，简称C/S）模式</strong></p>
+<p>例如：QQ、桌面客户端游戏、微信。</p>
+<p><strong>2.浏览器/服务器（Browser/Server，简称B/S）模式</strong></p>
+<p>例如：网站、在线web游戏。</p>
+<h3 id="第四节-数据模型"><a href="#第四节-数据模型" class="headerlink" title="第四节 数据模型"></a>第四节 数据模型</h3><h4 id="数据特征与数据模型组成要素"><a href="#数据特征与数据模型组成要素" class="headerlink" title="数据特征与数据模型组成要素"></a>数据特征与数据模型组成要素</h4><ol>
+<li><p>数据结构</p>
+<p>数据结构描述的是系统的静态特性，即数据对象的数据类型、内容、属性以及数据对象之间的联系。</p>
+</li>
+<li><p>数据操作</p>
+<p>数据操作描述的是系统的动态特性，是对各种对象的实例允许执行的操作的集合，包括操作及有关的操作规则。</p>
+</li>
+<li><p>数据的约束条件</p>
+<p>数据约束描述数据结构中数据间的语法和语义关联，包括相互制约与依存关系以及数据动态变化规则，以保证数据的正确性、有效性与相容性。</p>
+</li>
+</ol>
+<h4 id="数据模型的分类"><a href="#数据模型的分类" class="headerlink" title="数据模型的分类"></a>数据模型的分类</h4><p><strong>1.概念层数据模型</strong></p>
+<ul>
+<li><p>信息世界中的基本概念</p>
+<ul>
+<li><p>实体（Entity）</p>
+<p>客观存在并可相互区别的事物称为实体。可以是具体的人、事、物或抽象的概念。</p>
+</li>
+<li><p>属性（Attribute）</p>
+<p>实体所具有的某一特性称为属性。一个实体可以由若干个属性来刻画。</p>
+</li>
+<li><p>码（Key）</p>
+<p>唯一标识实体的属性集称为码。</p>
+</li>
+<li><p>域（Domain）</p>
+<p>属性的取值范围称为该属性的域。</p>
+</li>
+<li><p>实体型（Entity Type）</p>
+<p>用实体名及其属性名集合来抽象和刻画。同类实体称为实体型。</p>
+</li>
+<li><p>实体集（Entity Set）</p>
+<p>同型实体的集合称为实体集。</p>
+</li>
+<li><p>联系（Relationship）</p>
+<p>现实世界中事物内部以及事物之间的联系在信息世界中反映为实体内部联系，和实体之间的联系。</p>
+<p>实体型间联系：</p>
+<pre><code>**一对多  1:N**
+
+**一对一  1:1**
+
+**多对多  N:M**
+</code></pre></li>
+</ul>
+</li>
+<li><p>概念模型的表示方法</p>
+<p>概念模型：用来描述现实世界的事物，与具体的计算机系统无关。</p>
+<p>最典型的概念模型是实体联系（E-R）。</p>
+<p><img src="C:\Users\haixi\AppData\Roaming\Typora\typora-user-images\image-20200728002558931.png" alt="E-R图"></p>
+</li>
+</ul>
+<p><strong>2.逻辑层数据模型</strong></p>
+<ul>
+<li>层次模型；</li>
+<li>网状模型；</li>
+<li><strong>关系模型</strong>；（重点）</li>
+<li>面向对象模型；</li>
+</ul>
+<p><strong>3.物理层数据模型</strong></p>
+<p>物理层数据模型，也称为数据的物理模型（Physical Model），其描述数据在存储介质上的组织结构，是逻辑模型的物理实现，即每一种逻辑模型在实现时都有与其相对应的物理模型。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>本章概述了数据库相关的基本概念，并通过对数据管理技术发展历程的介绍，阐述了数据库技术产生和发展的背景，以及数据库系统的特点，同时详细介绍了数据库的三级模式结构和运行与应用结构，最后重点介绍了数据模型的概念、组成要素与分类。</p>
+<p><strong>本章学习重点</strong></p>
+<ol>
+<li>数据库系统的三级模式结构；</li>
+<li>数据模型中概念层模型（E-R模型）与逻辑层模型（关系模型）；</li>
+</ol>
+<h2 id="第二章-关系数据库"><a href="#第二章-关系数据库" class="headerlink" title="第二章 关系数据库"></a>第二章 关系数据库</h2><h3 id="第一节-关系数据库概述"><a href="#第一节-关系数据库概述" class="headerlink" title="第一节 关系数据库概述"></a>第一节 关系数据库概述</h3><ol>
+<li>1970年，E·F·Codd 提出关系数据模型；</li>
+<li>之后，提出了关系代数和关系演算的概念；</li>
+<li>1972年，提出了关系的第一范式，第二范式，第三范式；</li>
+<li>1974年，提出了关系的BC范式；</li>
+</ol>
+<h3 id="第二节-关系数据库模型"><a href="#第二节-关系数据库模型" class="headerlink" title="第二节 关系数据库模型"></a>第二节 关系数据库模型</h3><h4 id="关系数据结构"><a href="#关系数据结构" class="headerlink" title="关系数据结构"></a>关系数据结构</h4><p>关系模型的数据结构非常简单，只包含单一的数据结构，即关系。</p>
+<p>基础属于</p>
+<ol>
+<li><p>表（Table）</p>
+<p>表，也称为关系，是一个二维的数据结构。</p>
+</li>
+<li><p>关系（Relation）</p>
+<p>一个关系逻辑上对应一张二维表，可以为每个关系取一个名称进行标识。</p>
+</li>
+<li><p>列（Column）</p>
+<p>表中的列，也称作字段（Field）或属性（Attibute）</p>
+</li>
+<li><p>属性（Attribute）</p>
+<p>同“列”；表中属性的个数称为关系的元或度。</p>
+</li>
+<li><p>行（Row）</p>
+<p>表中的行（Row），也称作元组（Tuple）或记录（Record）。</p>
+</li>
+<li><p>元组（Tuple）</p>
+<p>表中的一行即为元组。</p>
+</li>
+<li><p>分量（Component）</p>
+<p>元组中的一个属性值，称为分量。</p>
+</li>
+<li><p>码或键（Key）</p>
+<p>在一个关系中，能唯一标识该元组的属性称为该关系的码或键。</p>
+</li>
+<li><p>超码或超键（Super Key）</p>
+<p>如果在关系的一个码中移去某个属性，它仍然是这个关系的码，则称这样的码或键为该关系的超码或超键。</p>
+</li>
+<li><p>候选码或候选键（Candidate Key）</p>
+<p>如果在关系的一个码或键中，不能从中移去任何一个属性，否则它就不是这个关系的码或键，则称这样的码或键为该关系的候选码或候选键。</p>
+</li>
+<li><p>主码或主键（Primary Key）</p>
+<p>在一个关系的若干个候选码或候选键中指定一个用来唯一标识关系的元组，则称这个被指定的候选码或候选键为该关系的主码或主键。</p>
+</li>
+<li><p>全码或全键（All-Key）</p>
+<p>一个关系模式的所有属性集合是这个关系的主码或主键，则成这样的主码或主键为全码或全键。</p>
+</li>
+<li><p>主属性（Primary Attribute）和非主属性（Nonprimary Attribute）</p>
+<p>关系中包含在任何一个候选码中的属性称为主属性，不包含在任何一个候选码中的属性称为非主属性。</p>
+</li>
+<li><p>外码或外键（Foreign Key）</p>
+<p>当关系中的某个属性不是这个关系的主码或候选码，而是另一关系的主码时，称该属性为这个关系的外码或外键。</p>
+</li>
+<li><p>参照关系和被参照关系</p>
+</li>
+<li><p>域（Domain）</p>
+<p>表示属性的取值范围。</p>
+</li>
+<li><p>数据类型（Data Type）</p>
+<p>表中每个列都有相应的数据类型，它用于限制该列中存储的数据。</p>
+</li>
+<li><p>关系模式（Relation Schema）</p>
+</li>
+<li><p>关系数据库（Relation Database）</p>
+<p>关系数据库是以关系模型作为数据的逻辑模型，并采用关系作为数据组织方式的一类数据库，其数据库操作建立在关系代数的基础上。 </p>
+</li>
+</ol>
+<h4 id="关系操作集合"><a href="#关系操作集合" class="headerlink" title="关系操作集合"></a>关系操作集合</h4><p><strong>1.基本的关系操作</strong></p>
+<ul>
+<li><p>查询</p>
+<p>选择、投影、连接、除、并、交、差、笛卡尔积</p>
+</li>
+<li><p>数据更新</p>
+<p>插入、删除、修改</p>
+<p>查询的表达能力很强，是其中最重要的部分。</p>
+</li>
+<li><p>关系操作的特点</p>
+<p>集合操作方式，即操作的对象和结果都是集合。</p>
+</li>
+</ul>
+<p><strong>2.关系数据语言的分类</strong></p>
+<p>关系操作的能力可以用两种方式来表达：代数方式和逻辑方式。</p>
+<p>代数方式主要有关系代数，它是通过对关系的操作来表达查询要求的方式；</p>
+<p>逻辑方式主要有关系演算，它是用谓词来表达查询要求的方式。</p>
+<p>具有关系代数和关系演算双重特点的语言：<strong>SQL</strong>。</p>
+<p><strong>3.关系的完整性约束</strong></p>
+<ul>
+<li><p>实体完整性约束（Entity Integrity Constraint）</p>
+<p>实体完整性约束是指关系的主属性，即主码的组成不能为空，也就是关系的主属性不能是空值NULL。 </p>
+</li>
+<li><p>参照完整性约束（Referential Integrity Constraint）</p>
+<p>参照完整性主要保证表与表之间的数据正确，限制属性关系。</p>
+</li>
+<li><p>用户定义完整性约束（User-defined Integrity Constraint）</p>
+</li>
+<li><p>关系模型完整性约束的检验</p>
+</li>
+</ul>
+<h3 id="第三节-关系数据库的规范化理论（重点）"><a href="#第三节-关系数据库的规范化理论（重点）" class="headerlink" title="第三节 关系数据库的规范化理论（重点）"></a>第三节 关系数据库的规范化理论（重点）</h3><h4 id="关系模式中可能存在的冗余和异常问题"><a href="#关系模式中可能存在的冗余和异常问题" class="headerlink" title="关系模式中可能存在的冗余和异常问题"></a>关系模式中可能存在的冗余和异常问题</h4><ol>
+<li>数据冗余</li>
+<li>更新异常</li>
+<li>插入异常</li>
+<li>删除异常</li>
+</ol>
+<h4 id="函数依赖与关键字"><a href="#函数依赖与关键字" class="headerlink" title="函数依赖与关键字"></a>函数依赖与关键字</h4><p>设R为任一给定关系，如果对于R中属性X的每一个值，R中的属性Y只有唯一值与之对应，则称X函数决定Y或称Y函数依赖于X，记作X–&gt;Y。其中，X称为决定因素。</p>
+<p><strong>1.完全函数依赖</strong></p>
+<p><strong>2.部分函数依赖</strong></p>
+<p><strong>3.传递函数依赖</strong></p>
+<p><strong>4.关键字</strong></p>
+<h4 id="范式与关系规范化过程"><a href="#范式与关系规范化过程" class="headerlink" title="范式与关系规范化过程"></a>范式与关系规范化过程</h4><p>满足最低要求的称为第一范式，简称1NF，这是最基本的范式；</p>
+<p>在第一范式的基础上进一步满足一些新要求的称为第二范式（2NF）；</p>
+<p>以此类推，再进一步的范式是第三范式（3NF）及其改进形式BCNF（Boyce-Codd Normal Form）；</p>
+<p>1NF</p>
+<p>2NF（消除非主属性对码的部分函数依赖）</p>
+<p>3NF（消除非主属性对码的传递函数依赖）</p>
+<h4 id="关系规范化理论的应用"><a href="#关系规范化理论的应用" class="headerlink" title="关系规范化理论的应用"></a>关系规范化理论的应用</h4><p>关系规范化理论主要应用于数据库设计中的概念设计趵段，对所产生的概念设计，可用它来分析其实体划分是否适合，判断属性分配到哪个实体中更为合理。在实现设计中当将E-R图向关系模型转换时，还可以用它来分析并发现概念设计中可能存在的遗漏或不当之处，特别是练习实体是否不单独转换为一独立关系而集成到与之相联的基本实体中去处理时，规范化理论是最有效的评价标准。</p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><p>本章首相概述了关系数据库的基本特征、产生和发展历程，然后分别介绍了关系数据模型的三个要素，即关系数据结构、关系操作集合和关系完整性约束，最后详细介绍了关系数据库的规范化理论。</p>
+<p><strong>学习重点</strong></p>
+<ol>
+<li>关系数据库的相关概念；</li>
+<li>关系规范化理论，各个范式之间的转化关系；</li>
+</ol>
+<h2 id="第三章-数据库设计"><a href="#第三章-数据库设计" class="headerlink" title="第三章 数据库设计"></a>第三章 数据库设计</h2><h3 id="第一节-数据库设计概述"><a href="#第一节-数据库设计概述" class="headerlink" title="第一节 数据库设计概述"></a>第一节 数据库设计概述</h3><h4 id="数据库的生命周期"><a href="#数据库的生命周期" class="headerlink" title="数据库的生命周期"></a>数据库的生命周期</h4><p>数据库的生命周期可分为两个阶段，分别是数据库分析与设计阶段、数据库实现与操作阶段。</p>
+<p>其中，数据库分析与设计阶段包括需求分析、概念设计、逻辑设计和物理设计四个环节；数据库实现与操作阶段包含数据库的实现、操作与监督、修改与调整三个子阶段。</p>
+<h4 id="数据库设计的目标"><a href="#数据库设计的目标" class="headerlink" title="数据库设计的目标"></a>数据库设计的目标</h4><p>数据库涉及具有两个十分重要的目标，即<strong>满足应用功能需求</strong>和<strong>良好的数据库性能</strong>。</p>
+<h4 id="数据库设计的内容"><a href="#数据库设计的内容" class="headerlink" title="数据库设计的内容"></a>数据库设计的内容</h4><p>数据库设计是从用户对数据的需求出发，研究并构造数据库的过程，其中包含两个方面的内容：</p>
+<ol>
+<li>数据库结构设计；</li>
+<li>数据库行为设计；</li>
+</ol>
+<h4 id="数据库设计的方法"><a href="#数据库设计的方法" class="headerlink" title="数据库设计的方法"></a>数据库设计的方法</h4><ol>
+<li>直观设计法</li>
+<li><strong>规范设计法</strong><ul>
+<li>新奥尔良设计方法</li>
+<li>基于E-R模型的数据库设计方法</li>
+<li>基于第三范式的设计方法</li>
+</ul>
+</li>
+<li><strong>计算机辅助设计法</strong><ul>
+<li>UML（visio，powerdesigner）</li>
+</ul>
+</li>
+</ol>
+<h4 id="数据库设计的过程"><a href="#数据库设计的过程" class="headerlink" title="数据库设计的过程"></a>数据库设计的过程</h4><p><img src="C:\Users\haixi\AppData\Roaming\Typora\typora-user-images\image-20200730125257146.png" alt="image-20200730125257146" style="zoom: 33%;"></p>
+<h3 id="第二节-数据库涉及的基本步骤"><a href="#第二节-数据库涉及的基本步骤" class="headerlink" title="第二节 数据库涉及的基本步骤"></a>第二节 数据库涉及的基本步骤</h3><h4 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h4><p><strong>1.确定数据库范围</strong></p>
+<p>数据库涉及的第一项工作就是要确定数据库范围，即确定数据库应支持哪些应用功能。</p>
+<p><strong>2.应用过程分析</strong></p>
+<p>应用过程分析是指了解并分析数据与数据处理间的关系。</p>
+<p>在数据库范围确定之后，数据库涉及人员应逐次地了解和分析每一部门或功能要用到哪些数据、数据使用的顺序、对数据作何处理和处理策略以及处理的结果等。</p>
+<p><strong>3.收集与分析数据</strong></p>
+<ol>
+<li><p>静态结构</p>
+<p>数据的静态结构是指不施加应用操作于其上时数据的原始状况，这可通过数据分类表和数据元素表进行说明。</p>
+</li>
+<li><p>动态结构</p>
+<p>动态结构是指将应用操作施加于数据之上后数据的状况，可通过任务分类表和数据操作特征表进行说明。</p>
+</li>
+<li><p>数据约束</p>
+<p>数据约束是指使用数据时的特殊要求。</p>
+</li>
+</ol>
+<p><strong>4.编写需求分析报告</strong></p>
+<p>需求分析报告通常包含如下内容：</p>
+<ol>
+<li>数据库的应用功能目标；</li>
+<li>标明不同用户视图范围；</li>
+<li>应用处理过程需求说明；</li>
+<li>数据字典；</li>
+<li>数据量；</li>
+<li>数据约束；</li>
+</ol>
+<h4 id="概念结构设计"><a href="#概念结构设计" class="headerlink" title="概念结构设计"></a>概念结构设计</h4><p>概念结构设计的任务是在需求分析中产生的需求分析报告的基础上，按照特定的方法设计满足应用需求的用户信息结构，该信息结构通常称为概念模型。</p>
+<p>其中采用E-R图作为概念模型的描述工具。</p>
+<h4 id="逻辑结构设计"><a href="#逻辑结构设计" class="headerlink" title="逻辑结构设计"></a>逻辑结构设计</h4><p><img src="C:\Users\haixi\AppData\Roaming\Typora\typora-user-images\image-20200730134522426.png" style="zoom:33%;"></p>
+<h4 id="物理设计"><a href="#物理设计" class="headerlink" title="物理设计"></a>物理设计</h4><p>物理设计是指对于一个给定的数据库<strong>逻辑结构</strong>，研究并构造<strong>物理结构</strong>的过程，其具体任务主要是确定数据库在存储设备上的<strong>存储结构及存取方法</strong>，因DBMS的不同还可能包括建立索引和聚焦，以及物理块大小、缓冲区个数和大小、数据压缩的选择等。</p>
+<h4 id="数据库实施"><a href="#数据库实施" class="headerlink" title="数据库实施"></a>数据库实施</h4><ol>
+<li>加载数据</li>
+<li>应用程序设计</li>
+<li>数据库试运行</li>
+</ol>
+<h4 id="数据库运行和维护"><a href="#数据库运行和维护" class="headerlink" title="数据库运行和维护"></a>数据库运行和维护</h4><p>只有经过试运行之后，确认系统无故障或暂未发现故障时，系统才能投入到生产实际中运行。数据库系统投入实际运行标志着数据库设计和应用开发的基本完成，但绝不意味着设计和应用开发工作的终止。</p>
+<p>系统维护中最困难的工作是数据库重组与重构。</p>
+<h3 id="第三节关系数据库设计方法"><a href="#第三节关系数据库设计方法" class="headerlink" title="第三节关系数据库设计方法"></a>第三节关系数据库设计方法</h3><h4 id="关系数据库涉及过程与各级模式"><a href="#关系数据库涉及过程与各级模式" class="headerlink" title="关系数据库涉及过程与各级模式"></a>关系数据库涉及过程与各级模式</h4><p><img src="C:\Users\haixi\AppData\Roaming\Typora\typora-user-images\image-20200730142908955.png" style="zoom:33%;"></p>
+<h4 id="概念结构设计方法"><a href="#概念结构设计方法" class="headerlink" title="概念结构设计方法"></a>概念结构设计方法</h4><p><strong>1.关系</strong></p>
+<p>一对一；一对多；多对多；</p>
+<p><strong>2.局部信息结构设计</strong></p>
+<ol>
+<li>确定局部范围；</li>
+<li>选择实体；</li>
+<li>选择实体的关键字属性；</li>
+<li>确定实体间的联系；</li>
+<li>确定实体的属性；</li>
+</ol>
+<p><strong>3.全局信息结构设计</strong></p>
+<ul>
+<li>属性冲突</li>
+<li>命名冲突</li>
+<li>结构冲突</li>
+</ul>
+<h4 id="逻辑结构设计方法"><a href="#逻辑结构设计方法" class="headerlink" title="逻辑结构设计方法"></a>逻辑结构设计方法</h4><ol>
+<li>E-R图向关系模型的转换；</li>
+<li>数据模型的优化；</li>
+<li>设计用户子模式；</li>
+</ol>
+<h4 id="物理设计方法"><a href="#物理设计方法" class="headerlink" title="物理设计方法"></a>物理设计方法</h4><ul>
+<li>建立索引</li>
+<li>建立聚集</li>
+</ul>
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><p>本章首先概述了数据库设计相关的知识，包括<strong>数据库的生命周期</strong>、<strong>数据库设计的目标</strong>、<strong>内容</strong>、<strong>方法与过程</strong>，然后具体介绍了数据库设计的几个基本步骤，即<strong>需求分析</strong>、<strong>概念结构设计</strong>、<strong>逻辑结构设计</strong>、<strong>物理结构设计</strong>、<strong>数据库实施</strong>、<strong>数据库的运行和维护</strong>，最后重点介绍了关系数据库的概念结构设计与逻辑结构设计过程中所涉及的关键技术与方法。</p>
+<p><strong>学习重点</strong></p>
+<p>关系数据库设计的具体方法与步骤。</p>
+<p>难点：使用E-R图进行数据库概念设计的过程，以及其向关系模型转换的方法。</p>
+<h2 id="第四章-SQL与关系数据库基本操作"><a href="#第四章-SQL与关系数据库基本操作" class="headerlink" title="第四章 SQL与关系数据库基本操作"></a>第四章 SQL与关系数据库基本操作</h2><h3 id="第一节-SQL概述"><a href="#第一节-SQL概述" class="headerlink" title="第一节 SQL概述"></a>第一节 SQL概述</h3><h4 id="SQL的发展"><a href="#SQL的发展" class="headerlink" title="SQL的发展"></a>SQL的发展</h4><p>结构化查询语言（Structured Query Language，简称SQL）是一种介于关系代数和关系演算之间的语言。</p>
+<h4 id="SQL的特点"><a href="#SQL的特点" class="headerlink" title="SQL的特点"></a>SQL的特点</h4><ol>
+<li>SQL不是某个特定数据库供应商专有的语言。</li>
+<li>SQL简单易学；</li>
+<li>SQL尽管看上去很简单，但它实际上是一种强有力的语言，灵活使用其语言元素，可以进行非常复杂和高级的数据库操作</li>
+</ol>
+<h4 id="SQL的组成"><a href="#SQL的组成" class="headerlink" title="SQL的组成"></a>SQL的组成</h4><ol>
+<li>数据定义语言（Data Definition Language，DDL）</li>
+<li>数据操纵语言（Data Manipulation Language，DML）</li>
+<li>数据控制语言（Data Control Language，DCL）</li>
+<li>嵌入式和动态SQL规则</li>
+<li>SQL调用和会话规则</li>
+</ol>
+<h3 id="第二节-MySQL预备知识"><a href="#第二节-MySQL预备知识" class="headerlink" title="第二节 MySQL预备知识"></a>第二节 MySQL预备知识</h3><h4 id="MySQL使用基础"><a href="#MySQL使用基础" class="headerlink" title="MySQL使用基础"></a>MySQL使用基础</h4><p>LAMP（Linux+Apache+MySQL+PHP）</p>
+<p>WAMP（Windows+Apache+MySQL+PHP）</p>
+<h4 id="MySQL中的SQL"><a href="#MySQL中的SQL" class="headerlink" title="MySQL中的SQL"></a>MySQL中的SQL</h4><p><img src="C:\Users\haixi\AppData\Roaming\Typora\typora-user-images\image-20200731230724966.png" alt="image-20200731230724966" style="zoom:33%;"></p>
+<p><strong>1. 常量</strong></p>
+<p>字符串常量，数值常量（整数常量和浮点数常量），十六进制常量，日期时间常量，位字段值，布尔值，NULL值</p>
+<p><strong>2. 变量</strong></p>
+<p>用户变量（set @xxx=10），系统变量（@@xxx）</p>
+<p><strong>3.运算符</strong></p>
+<p>算数运算符（+, -, * /, %），位运算符（&amp;, |, ^, ~, &gt;&gt;, &lt;&lt;）,比较运算符（=, &lt;=, &gt;=, &gt;, &lt;, &lt;&gt;|!=），逻辑运算符（not，and，or）</p>
+<p><strong>4.表达式</strong></p>
+<p>表达式就是常量、变量、列名、复杂计算、运算符和函数的组合。一个表达式通常可以得到一个值。</p>
+<p><strong>5. 内置函数</strong></p>
+<p>聚合函数，例如count()函数；类型转换函数，例如cast()函数；系统信息函数，例如user()函数和version()函数。</p>
+<h3 id="第三节-数据定义"><a href="#第三节-数据定义" class="headerlink" title="第三节 数据定义"></a>第三节 数据定义</h3><h4 id="数据库模式定义"><a href="#数据库模式定义" class="headerlink" title="数据库模式定义"></a>数据库模式定义</h4><p><strong>1. 创建数据库</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> &#123;<span class="keyword">database</span>|<span class="keyword">schema</span>&#125; [<span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span>] db_name </span><br><span class="line"><span class="built_in">character</span> <span class="keyword">set</span> charset_name</span><br><span class="line"><span class="keyword">collate</span> collation_name</span><br></pre></td></tr></table></figure>
+<p><strong>2. 选择数据库</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> db_name;</span><br></pre></td></tr></table></figure>
+<p><strong>3. 修改数据库</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> &#123;<span class="keyword">database</span>|<span class="keyword">schema</span>&#125; [db_name] <span class="keyword">alter</span> alter_specification[,alter_specification]</span><br></pre></td></tr></table></figure>
+<p><strong>4. 删除数据库</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> [<span class="keyword">if</span> <span class="keyword">exists</span>] db_name;</span><br></pre></td></tr></table></figure>
+<p><strong>5. 查看数据库</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show [databases|schemas];</span><br></pre></td></tr></table></figure>
+<h4 id="表定义"><a href="#表定义" class="headerlink" title="表定义"></a>表定义</h4><p><strong>数据库的类型</strong></p>
+<ul>
+<li>数值类型<ul>
+<li>整数类型  int</li>
+<li>浮点类型  float double decimal</li>
+</ul>
+</li>
+<li><p>日期和时间类型</p>
+<ul>
+<li>日期类型  date(yyyy-mm-dd) year</li>
+<li>日期时间类型  datetime time</li>
+<li>时间戳类型  timestamp</li>
+</ul>
+</li>
+<li><p>字符串类型</p>
+<ul>
+<li>固定长度类型  char 最大长度255</li>
+<li>可变长度类型  varchar 最大长度65535</li>
+<li>文本类型  text</li>
+</ul>
+</li>
+</ul>
+<p><strong>1. 创建表</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create table [if not exists] tbl_name(字段名 数据类型[列级完整性约束],....</span><br><span class="line">,[表级完整性约束])[engine=引擎类型];</span><br></pre></td></tr></table></figure>
+<p><strong>2. 添加字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_name <span class="keyword">add</span> [<span class="keyword">column</span>] 新字段名 数据类型[约束条件] [<span class="keyword">first</span>|<span class="keyword">after</span> 已有字段名]</span><br></pre></td></tr></table></figure>
+<p><strong>3. 修改字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_name <span class="keyword">modify</span> 新字段名 数据类型[约束条件]</span><br></pre></td></tr></table></figure>
+<p><strong>4. 删除字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_name <span class="keyword">drop</span> 字段名</span><br></pre></td></tr></table></figure>
+<p><strong>5. 重命名表</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">rename</span> <span class="keyword">table</span> 原表名 <span class="keyword">to</span> 新表名;</span><br></pre></td></tr></table></figure>
+<p><strong>6. 删除表</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> [<span class="keyword">if</span> <span class="keyword">exists</span>] tb_name;</span><br></pre></td></tr></table></figure>
+<p><strong>7. 查看表</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">tables</span> [&#123;<span class="keyword">from</span>|<span class="keyword">in</span>&#125; db_name];</span><br></pre></td></tr></table></figure>
+<p><strong>8. 查看表结构</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> &#123;<span class="keyword">from</span>|<span class="keyword">in</span>&#125; tb_name [&#123;<span class="keyword">from</span>|<span class="keyword">in</span>&#125; db_name];</span><br><span class="line">desc tb_name;</span><br></pre></td></tr></table></figure>
+<h4 id="索引定义"><a href="#索引定义" class="headerlink" title="索引定义"></a>索引定义</h4><p>索引可以理解成目录，在查找时有目录查找速度会加快。</p>
+<p><strong>索引的种类</strong></p>
+<ul>
+<li>用途划分<ul>
+<li>普通索引（INDEX）</li>
+<li>唯一性索引（UNIQUE）</li>
+<li>主键索引（PRIMARY KEY）</li>
+<li>全文索引（FULLTEXT） [myisam引擎]</li>
+<li>聚簇索引 [innodb引擎]</li>
+</ul>
+</li>
+<li>列级索引<ul>
+<li>单列索引</li>
+<li>组合索引</li>
+</ul>
+</li>
+</ul>
+<p><strong>1. 索引的创建</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> idnex_name <span class="keyword">on</span> tbl_name(col_name[(<span class="keyword">length</span>)][<span class="keyword">asc</span>|<span class="keyword">desc</span>],...);</span><br></pre></td></tr></table></figure>
+<p><strong>2. 索引的查看</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> &#123;<span class="keyword">index</span>|indexs|<span class="keyword">keys</span>&#125; &#123;<span class="keyword">from</span>|<span class="keyword">in</span>&#125; tbl_name [&#123;<span class="keyword">from</span>|<span class="keyword">in</span>&#125; db_name];</span><br></pre></td></tr></table></figure>
+<p><strong>3. 索引的删除</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">index</span> index_name <span class="keyword">on</span> tbl_name;</span><br></pre></td></tr></table></figure>
+<h3 id="第四节-数据更新"><a href="#第四节-数据更新" class="headerlink" title="第四节 数据更新"></a>第四节 数据更新</h3><h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_name(column_list) <span class="keyword">values</span> (value_list);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_name(column_list) <span class="keyword">select</span> (column_list) <span class="keyword">from</span> tb_name <span class="keyword">where</span> .... ;</span><br></pre></td></tr></table></figure>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> tb_name [<span class="keyword">where</span> &lt;condition&gt;];</span><br><span class="line"><span class="keyword">truncate</span> tb_name; <span class="comment">-- 删除整张表，重建一张表</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> tbl_name <span class="keyword">set</span> col_name=expr [<span class="keyword">where</span> where_definition];</span><br></pre></td></tr></table></figure>
+<h3 id="第五节-数据查询"><a href="#第五节-数据查询" class="headerlink" title="第五节 数据查询"></a>第五节 数据查询</h3><h4 id="SLECT语句"><a href="#SLECT语句" class="headerlink" title="SLECT语句"></a>SLECT语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> </span><br><span class="line">	[all | <span class="keyword">distinct</span> | <span class="keyword">distinctrow</span>]</span><br><span class="line">select_expr, ...</span><br><span class="line">[<span class="keyword">from</span> table_reference]		<span class="comment">-- 查询表</span></span><br><span class="line">[<span class="keyword">where</span> where_definition]	<span class="comment">-- where子句</span></span><br><span class="line">[<span class="keyword">group</span> <span class="keyword">by</span> &#123;col_name | expr | <span class="keyword">position</span>&#125; [<span class="keyword">ASC</span> | <span class="keyword">DESC</span>], ... [<span class="keyword">with</span> <span class="keyword">rollup</span>]]  <span class="comment">-- group by 子句</span></span><br><span class="line">[<span class="keyword">having</span> where_definition]	<span class="comment">-- group by子句</span></span><br><span class="line">[<span class="keyword">order</span> <span class="keyword">by</span> &#123;col_name | expr | <span class="keyword">position</span>&#125; [<span class="keyword">asc</span> | <span class="keyword">desc</span>]]	<span class="comment">-- order by子句</span></span><br><span class="line">[<span class="keyword">limit</span> &#123;[<span class="keyword">offset</span>,] <span class="keyword">row_count</span> | <span class="keyword">row_count</span> <span class="keyword">offset</span> <span class="keyword">offset</span>&#125;] <span class="comment">-- limit子句</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>子句</th>
+<th>说明</th>
+<th>是否必须使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SELECT</td>
+<td>要返回的列或表达式</td>
+<td>是</td>
+</tr>
+<tr>
+<td>FROM</td>
+<td>从中检索数据的表</td>
+<td>仅在从表选择数据时使用</td>
+</tr>
+<tr>
+<td>WHERE</td>
+<td>行级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>GROUP BY</td>
+<td>分组说明</td>
+<td>仅在按组计算聚合时使用</td>
+</tr>
+<tr>
+<td>HAVING</td>
+<td>组级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>输出排序顺序</td>
+<td>否</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>要检索的行数</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h4 id="列的选择与指定"><a href="#列的选择与指定" class="headerlink" title="列的选择与指定"></a>列的选择与指定</h4><p><strong>1. 选择指定的列</strong></p>
+<p><strong>2. 定义并使用列的别名</strong></p>
+<p><strong>3. 替换查询结果集中的数据</strong></p>
+<p><strong>4. 计算列值</strong></p>
+<p><strong>5. 聚合函数</strong></p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count</td>
+<td>求组中项数，返回int类型整数</td>
+</tr>
+<tr>
+<td>max</td>
+<td>求最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>求最小值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>返回表达式中所有值的和</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>求组中值的平均值</td>
+</tr>
+<tr>
+<td>std</td>
+<td>返回给定表达式中所有值的标准值</td>
+</tr>
+<tr>
+<td>variance</td>
+<td>返回给定表达式中所有值的方差</td>
+</tr>
+<tr>
+<td>group_concat</td>
+<td>返回由属于一组的列植连接组合而成的结果</td>
+</tr>
+</tbody>
+</table>
+<h4 id="FROM子句与多表连接查询"><a href="#FROM子句与多表连接查询" class="headerlink" title="FROM子句与多表连接查询"></a>FROM子句与多表连接查询</h4><ol>
+<li>交叉连接</li>
+<li>内连接</li>
+<li>外连接（左连接，右连接）</li>
+</ol>
+<h4 id="WHERE子句与条件查询"><a href="#WHERE子句与条件查询" class="headerlink" title="WHERE子句与条件查询"></a>WHERE子句与条件查询</h4><table>
+<thead>
+<tr>
+<th>查询条件</th>
+<th>操作符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>比较</td>
+<td>=, &lt;&gt;, !=, &lt;, &lt;=, &gt;, &gt;=, !&lt;, !&gt;, not</td>
+</tr>
+<tr>
+<td>确定范围</td>
+<td>between and, not between and</td>
+</tr>
+<tr>
+<td>确定集合</td>
+<td>in, not in</td>
+</tr>
+<tr>
+<td>字符匹配</td>
+<td>like, not like</td>
+</tr>
+<tr>
+<td>空值</td>
+<td>is null, is not null</td>
+</tr>
+<tr>
+<td>多重条件</td>
+<td>and, or</td>
+</tr>
+</tbody>
+</table>
+<p><strong>子查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">where 列名 in （值列表或者子<span class="keyword">select</span>[但必须只有一列]）</span><br></pre></td></tr></table></figure>
+<h4 id="HAVING子句"><a href="#HAVING子句" class="headerlink" title="HAVING子句"></a>HAVING子句</h4><p>在select语句中，除了能使用GROUP BY子句分组数据之外，还可以使用HAVING子句来过滤分组，即在结果集中规定包含哪些分组和排除哪些分组。</p>
+<h4 id="ORDER-BY子句"><a href="#ORDER-BY子句" class="headerlink" title="ORDER BY子句"></a>ORDER BY子句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[order by 字段 [asc | desc]]</span><br></pre></td></tr></table></figure>
+<h4 id="LIMIT子句"><a href="#LIMIT子句" class="headerlink" title="LIMIT子句"></a>LIMIT子句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit [位置偏移量] 行数</span><br></pre></td></tr></table></figure>
+<h2 id="第五章-数据库编程"><a href="#第五章-数据库编程" class="headerlink" title="第五章 数据库编程"></a>第五章 数据库编程</h2><h3 id="第一节-存储过程"><a href="#第一节-存储过程" class="headerlink" title="第一节 存储过程"></a>第一节 存储过程</h3><h4 id="存储过程的基本概念"><a href="#存储过程的基本概念" class="headerlink" title="存储过程的基本概念"></a>存储过程的基本概念</h4><h4 id="创建存储过程"><a href="#创建存储过程" class="headerlink" title="创建存储过程"></a>创建存储过程</h4><h4 id="存储过程体"><a href="#存储过程体" class="headerlink" title="存储过程体"></a>存储过程体</h4><h4 id="调用存储过程"><a href="#调用存储过程" class="headerlink" title="调用存储过程"></a>调用存储过程</h4><h4 id="删除存储过程"><a href="#删除存储过程" class="headerlink" title="删除存储过程"></a>删除存储过程</h4><h3 id="第二节-存储函数"><a href="#第二节-存储函数" class="headerlink" title="第二节 存储函数"></a>第二节 存储函数</h3><h4 id="创建存储函数"><a href="#创建存储函数" class="headerlink" title="创建存储函数"></a>创建存储函数</h4><h4 id="调用存储函数"><a href="#调用存储函数" class="headerlink" title="调用存储函数"></a>调用存储函数</h4><h4 id="删除存储函数"><a href="#删除存储函数" class="headerlink" title="删除存储函数"></a>删除存储函数</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自考/" rel="tag"># 自考</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/13/MySQL学习笔记/" rel="next" title="MySQL学习笔记">
+                <i class="fa fa-chevron-left"></i> MySQL学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">邓伟强</p>
+              <p class="site-description motion-element" itemprop="description">己所不欲，勿施于人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#课程导学"><span class="nav-number">1.</span> <span class="nav-text">课程导学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-数据库系统概述"><span class="nav-number">2.</span> <span class="nav-text">第一章 数据库系统概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-数据库基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">第一节 数据库基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库"><span class="nav-number">2.1.2.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库管理系统"><span class="nav-number">2.1.3.</span> <span class="nav-text">数据库管理系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统"><span class="nav-number">2.1.4.</span> <span class="nav-text">数据库系统</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二节-数据管理技术的发展"><span class="nav-number">2.2.</span> <span class="nav-text">第二节 数据管理技术的发展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#人工管理阶段"><span class="nav-number">2.2.1.</span> <span class="nav-text">人工管理阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统阶段"><span class="nav-number">2.2.2.</span> <span class="nav-text">文件系统阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统阶段"><span class="nav-number">2.2.3.</span> <span class="nav-text">数据库系统阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三节-数据库系统的结构"><span class="nav-number">2.3.</span> <span class="nav-text">第三节 数据库系统的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统的三级模式结构"><span class="nav-number">2.3.1.</span> <span class="nav-text">数据库系统的三级模式结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统的运行与应用结构"><span class="nav-number">2.3.2.</span> <span class="nav-text">数据库系统的运行与应用结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四节-数据模型"><span class="nav-number">2.4.</span> <span class="nav-text">第四节 数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据特征与数据模型组成要素"><span class="nav-number">2.4.1.</span> <span class="nav-text">数据特征与数据模型组成要素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据模型的分类"><span class="nav-number">2.4.2.</span> <span class="nav-text">数据模型的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">2.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-关系数据库"><span class="nav-number">3.</span> <span class="nav-text">第二章 关系数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-关系数据库概述"><span class="nav-number">3.1.</span> <span class="nav-text">第一节 关系数据库概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二节-关系数据库模型"><span class="nav-number">3.2.</span> <span class="nav-text">第二节 关系数据库模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关系数据结构"><span class="nav-number">3.2.1.</span> <span class="nav-text">关系数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系操作集合"><span class="nav-number">3.2.2.</span> <span class="nav-text">关系操作集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三节-关系数据库的规范化理论（重点）"><span class="nav-number">3.3.</span> <span class="nav-text">第三节 关系数据库的规范化理论（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关系模式中可能存在的冗余和异常问题"><span class="nav-number">3.3.1.</span> <span class="nav-text">关系模式中可能存在的冗余和异常问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数依赖与关键字"><span class="nav-number">3.3.2.</span> <span class="nav-text">函数依赖与关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#范式与关系规范化过程"><span class="nav-number">3.3.3.</span> <span class="nav-text">范式与关系规范化过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系规范化理论的应用"><span class="nav-number">3.3.4.</span> <span class="nav-text">关系规范化理论的应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">3.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-数据库设计"><span class="nav-number">4.</span> <span class="nav-text">第三章 数据库设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-数据库设计概述"><span class="nav-number">4.1.</span> <span class="nav-text">第一节 数据库设计概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库的生命周期"><span class="nav-number">4.1.1.</span> <span class="nav-text">数据库的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计的目标"><span class="nav-number">4.1.2.</span> <span class="nav-text">数据库设计的目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计的内容"><span class="nav-number">4.1.3.</span> <span class="nav-text">数据库设计的内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计的方法"><span class="nav-number">4.1.4.</span> <span class="nav-text">数据库设计的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计的过程"><span class="nav-number">4.1.5.</span> <span class="nav-text">数据库设计的过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二节-数据库涉及的基本步骤"><span class="nav-number">4.2.</span> <span class="nav-text">第二节 数据库涉及的基本步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#需求分析"><span class="nav-number">4.2.1.</span> <span class="nav-text">需求分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#概念结构设计"><span class="nav-number">4.2.2.</span> <span class="nav-text">概念结构设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑结构设计"><span class="nav-number">4.2.3.</span> <span class="nav-text">逻辑结构设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#物理设计"><span class="nav-number">4.2.4.</span> <span class="nav-text">物理设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库实施"><span class="nav-number">4.2.5.</span> <span class="nav-text">数据库实施</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库运行和维护"><span class="nav-number">4.2.6.</span> <span class="nav-text">数据库运行和维护</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三节关系数据库设计方法"><span class="nav-number">4.3.</span> <span class="nav-text">第三节关系数据库设计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关系数据库涉及过程与各级模式"><span class="nav-number">4.3.1.</span> <span class="nav-text">关系数据库涉及过程与各级模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#概念结构设计方法"><span class="nav-number">4.3.2.</span> <span class="nav-text">概念结构设计方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑结构设计方法"><span class="nav-number">4.3.3.</span> <span class="nav-text">逻辑结构设计方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#物理设计方法"><span class="nav-number">4.3.4.</span> <span class="nav-text">物理设计方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-2"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-SQL与关系数据库基本操作"><span class="nav-number">5.</span> <span class="nav-text">第四章 SQL与关系数据库基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-SQL概述"><span class="nav-number">5.1.</span> <span class="nav-text">第一节 SQL概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的发展"><span class="nav-number">5.1.1.</span> <span class="nav-text">SQL的发展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的特点"><span class="nav-number">5.1.2.</span> <span class="nav-text">SQL的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的组成"><span class="nav-number">5.1.3.</span> <span class="nav-text">SQL的组成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二节-MySQL预备知识"><span class="nav-number">5.2.</span> <span class="nav-text">第二节 MySQL预备知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL使用基础"><span class="nav-number">5.2.1.</span> <span class="nav-text">MySQL使用基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL中的SQL"><span class="nav-number">5.2.2.</span> <span class="nav-text">MySQL中的SQL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三节-数据定义"><span class="nav-number">5.3.</span> <span class="nav-text">第三节 数据定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库模式定义"><span class="nav-number">5.3.1.</span> <span class="nav-text">数据库模式定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表定义"><span class="nav-number">5.3.2.</span> <span class="nav-text">表定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引定义"><span class="nav-number">5.3.3.</span> <span class="nav-text">索引定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四节-数据更新"><span class="nav-number">5.4.</span> <span class="nav-text">第四节 数据更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入数据"><span class="nav-number">5.4.1.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">5.4.2.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改数据"><span class="nav-number">5.4.3.</span> <span class="nav-text">修改数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五节-数据查询"><span class="nav-number">5.5.</span> <span class="nav-text">第五节 数据查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SLECT语句"><span class="nav-number">5.5.1.</span> <span class="nav-text">SLECT语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列的选择与指定"><span class="nav-number">5.5.2.</span> <span class="nav-text">列的选择与指定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FROM子句与多表连接查询"><span class="nav-number">5.5.3.</span> <span class="nav-text">FROM子句与多表连接查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WHERE子句与条件查询"><span class="nav-number">5.5.4.</span> <span class="nav-text">WHERE子句与条件查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HAVING子句"><span class="nav-number">5.5.5.</span> <span class="nav-text">HAVING子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ORDER-BY子句"><span class="nav-number">5.5.6.</span> <span class="nav-text">ORDER BY子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LIMIT子句"><span class="nav-number">5.5.7.</span> <span class="nav-text">LIMIT子句</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章-数据库编程"><span class="nav-number">6.</span> <span class="nav-text">第五章 数据库编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-存储过程"><span class="nav-number">6.1.</span> <span class="nav-text">第一节 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储过程的基本概念"><span class="nav-number">6.1.1.</span> <span class="nav-text">存储过程的基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建存储过程"><span class="nav-number">6.1.2.</span> <span class="nav-text">创建存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储过程体"><span class="nav-number">6.1.3.</span> <span class="nav-text">存储过程体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用存储过程"><span class="nav-number">6.1.4.</span> <span class="nav-text">调用存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除存储过程"><span class="nav-number">6.1.5.</span> <span class="nav-text">删除存储过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二节-存储函数"><span class="nav-number">6.2.</span> <span class="nav-text">第二节 存储函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建存储函数"><span class="nav-number">6.2.1.</span> <span class="nav-text">创建存储函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用存储函数"><span class="nav-number">6.2.2.</span> <span class="nav-text">调用存储函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除存储函数"><span class="nav-number">6.2.3.</span> <span class="nav-text">删除存储函数</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">邓伟强</span>
+
+  
+</div>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

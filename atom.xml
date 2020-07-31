@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-07-13T02:27:31.524Z</updated>
+  <updated>2020-07-31T19:42:00.099Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据库原理(04735)</title>
+    <link href="https://dengwq.top/2020/08/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86-04735/"/>
+    <id>https://dengwq.top/2020/08/01/数据库原理-04735/</id>
+    <published>2020-07-31T19:39:37.000Z</published>
+    <updated>2020-07-31T19:42:00.099Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;数据库原理学习笔记，祝自己考试顺利。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="自考" scheme="https://dengwq.top/tags/%E8%87%AA%E8%80%83/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL学习笔记</title>
@@ -386,26 +404,6 @@
     
     
       <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>idea的使用技巧</title>
-    <link href="https://dengwq.top/2018/08/20/idea%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"/>
-    <id>https://dengwq.top/2018/08/20/idea的使用技巧/</id>
-    <published>2018-08-20T15:31:01.000Z</published>
-    <updated>2020-07-03T12:59:00.937Z</updated>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;idea在Java领域的强大编辑能力是毋庸置疑的，这是我近期学习idea的一些总结！&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="工具" scheme="https://dengwq.top/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
