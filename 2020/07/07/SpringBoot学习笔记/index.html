@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="DengWeiQiang&#39;Blog">
 <meta property="og:description" content="基于javaboy的springboot快速练习，内容包括springboot静态资源配置，自定义starter，异常处理，持久层的整合，nosql的整合，thymeleaf的整合，邮件的发送等内容。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s1.ax1x.com/2020/07/03/NO4osf.jpg">
-<meta property="og:image" content="https://s1.ax1x.com/2020/07/07/UFGtl8.png">
-<meta property="og:image" content="https://s1.ax1x.com/2020/07/07/UFGUOg.png">
-<meta property="og:updated_time" content="2020-07-07T00:41:57.637Z">
+<meta property="og:image" content="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032316.jpg">
+<meta property="og:image" content="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032450.png">
+<meta property="og:image" content="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032541.png">
+<meta property="og:updated_time" content="2021-06-26T19:25:47.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot学习笔记">
 <meta name="twitter:description" content="基于javaboy的springboot快速练习，内容包括springboot静态资源配置，自定义starter，异常处理，持久层的整合，nosql的整合，thymeleaf的整合，邮件的发送等内容。">
-<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/03/NO4osf.jpg">
+<meta name="twitter:image" content="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032316.jpg">
 
 
 
@@ -476,7 +476,7 @@
 <p>dao</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserDao</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">User</span>,<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">List&lt;User&gt; <span class="title">getUserByAddressEqualsAndIdLessThanEqual</span><span class="params">(String address, Integer id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query</span>(value = <span class="string">"select * from t_user where id=(select max(id) from t_user)"</span>,nativeQuery = <span class="keyword">true</span>)</span><br><span class="line">    <span class="function">User <span class="title">maxIdUser</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>jpa关键字参考图</p>
-<p><a href="https://imgchr.com/i/NO4osf" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/07/03/NO4osf.jpg" alt="NO4osf.jpg"></a></p>
+<p><img src="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032316.jpg" alt="jpa关键字参考图"></p>
 <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">spring.cache.cache-names=c1</span><br><span class="line"></span><br><span class="line">#要连接的数据是哪个</span><br><span class="line">spring.redis.database=1</span><br><span class="line">#数据连接地址</span><br><span class="line">spring.redis.host=localhost</span><br><span class="line">#端口号</span><br><span class="line">spring.redis.port=6379</span><br><span class="line">#连接超时时间</span><br><span class="line">spring.redis.timeout=1s</span><br><span class="line">#最大连接数</span><br><span class="line">spring.redis.jedis.pool.max-active=20</span><br><span class="line">#最大空闲连接</span><br><span class="line">spring.redis.jedis.pool.max-idle=20</span><br><span class="line">#最小空闲连接</span><br><span class="line">spring.redis.jedis.pool.min-idle=10</span><br><span class="line">#最大等待阻塞等待时间</span><br><span class="line">spring.redis.jedis.pool.max-wait=-1ms</span><br><span class="line">#在写入Redis时是否要使用key前缀</span><br><span class="line">spring.cache.redis.use-key-prefix=true</span><br><span class="line">#key前缀</span><br><span class="line">spring.cache.redis.key-prefix=dev</span><br><span class="line">#是否允许有null值</span><br><span class="line">spring.cache.redis.cache-null-values=false</span><br><span class="line">#设置缓存存在时间，只针对cacheable存入数据有用</span><br><span class="line">spring.cache.redis.time-to-live=120s</span><br></pre></td></tr></table></figure>
 <p><strong>application</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br></pre></td></tr></table></figure>
@@ -496,13 +496,13 @@
 <h3 id="可执行jar"><a href="#可执行jar" class="headerlink" title="可执行jar"></a><strong>可执行jar</strong></h3><p><strong>打包</strong></p>
 <p><code>repackage</code> 命令，对第一步 打包成的 <code>jar</code> 进行再次打包，将之打成一个 可执行 <code>jar</code> ，通过将第一步打成的 <code>jar</code> 重命名为 <code>*.original</code> 文件</p>
 <p><strong>目录结构</strong></p>
-<p><img src="https://s1.ax1x.com/2020/07/07/UFGtl8.png" alt="UFGtl8.png"></p>
+<p><img src="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032450.png" alt="可执行jar目录结构"></p>
 <p><strong>MF-INF/MANIFEST.MF文件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Manifest-Version: 1.0</span><br><span class="line">Implementation-Title: restful</span><br><span class="line">Implementation-Version: 0.0.1-SNAPSHOT</span><br><span class="line">Start-Class: org.javaboy.restful.RestfulApplication</span><br><span class="line">Spring-Boot-Classes: BOOT-INF/classes/</span><br><span class="line">Spring-Boot-Lib: BOOT-INF/lib/</span><br><span class="line">Build-Jdk-Spec: 1.8</span><br><span class="line">Spring-Boot-Version: 2.1.6.RELEASE</span><br><span class="line">Created-By: Maven Archiver 3.4.0</span><br><span class="line">Main-Class: org.springframework.boot.loader.JarLauncher</span><br></pre></td></tr></table></figure>
 <h3 id="普通jar"><a href="#普通jar" class="headerlink" title="普通jar"></a>普通jar</h3><p><strong>打包</strong></p>
 <p>首先 <code>mvn package</code> 命令 对项目进行打包，打成一个 <code>jar</code>，这个 <code>jar</code> 就是一个普通的 <code>jar</code>，可以被其他项目依赖，但是不可以被执行。</p>
 <p><strong>目录结构</strong></p>
-<p><img src="https://s1.ax1x.com/2020/07/07/UFGUOg.png" alt="UFGUOg.png"></p>
+<p><img src="https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032541.png" alt="UFGUOg"></p>
 <p><strong>MF-INF/MANIFEST.MF文件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Manifest-Version: 1.0</span><br><span class="line">Implementation-Title: restful</span><br><span class="line">Implementation-Version: 0.0.1-SNAPSHOT</span><br><span class="line">Build-Jdk-Spec: 1.8</span><br><span class="line">Created-By: Maven Archiver 3.4.0</span><br><span class="line"># 没有启动类</span><br></pre></td></tr></table></figure>
 <h2 id="Mail发送"><a href="#Mail发送" class="headerlink" title="Mail发送"></a>Mail发送</h2><p>生活中我们投递一封邮件要经过如下几个步骤：</p>
