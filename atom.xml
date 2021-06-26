@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dengwq.top/"/>
-  <updated>2020-08-01T02:20:04.074Z</updated>
+  <updated>2021-06-26T18:44:42.547Z</updated>
   <id>https://dengwq.top/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Typora+PicGo+阿里云OSS搭建私人图床</title>
+    <link href="https://dengwq.top/2021/06/27/Typora-PicGo-%E9%98%BF%E9%87%8C%E4%BA%91OSS%E6%90%AD%E5%BB%BA%E7%A7%81%E4%BA%BA%E5%9B%BE%E5%BA%8A/"/>
+    <id>https://dengwq.top/2021/06/27/Typora-PicGo-阿里云OSS搭建私人图床/</id>
+    <published>2021-06-26T17:39:22.000Z</published>
+    <updated>2021-06-26T18:44:42.547Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近又开始维护这个博客了，上一篇博客还是2020年8月份更新的，时隔一年胡三汉又回来了，中间换过一段时间域名，当时买了腾讯云的ESC服务器，就顺便买了个域名，后来这边工作一直在用阿里云，刚好腾讯云的服务器也快到期了，就又迁移回来了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="https://dengwq.top/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>数据库原理(04735)</title>
@@ -382,28 +400,6 @@
     
     
       <category term="随笔" scheme="https://dengwq.top/tags/%E9%9A%8F%E7%AC%94/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>23种设计模式解析</title>
-    <link href="https://dengwq.top/2018/08/22/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
-    <id>https://dengwq.top/2018/08/22/23种设计模式解析/</id>
-    <published>2018-08-21T16:35:52.000Z</published>
-    <updated>2020-07-03T12:59:00.918Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;http://dengwq.oss-cn-hangzhou.aliyuncs.com/18-8-22/30443178.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;设计模式(Design Pattern)是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。&lt;/p&gt;
-&lt;p&gt;使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://dengwq.top/tags/%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
