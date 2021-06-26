@@ -780,7 +780,7 @@ public interface UserDao extends JpaRepository<User,Integer> {
 
 jpa关键字参考图
 
-[![NO4osf.jpg](https://s1.ax1x.com/2020/07/03/NO4osf.jpg)](https://imgchr.com/i/NO4osf)
+![jpa关键字参考图](https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032316.jpg)
 
 ## Redis
 
@@ -961,7 +961,7 @@ Spring Boot 打包成的可执行 jar ，为什么不能被其他项目依赖？
 
 **目录结构**
 
-![UFGtl8.png](https://s1.ax1x.com/2020/07/07/UFGtl8.png)
+![可执行jar目录结构](https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032450.png)
 
 **MF-INF/MANIFEST.MF文件**
 
@@ -986,7 +986,7 @@ Main-Class: org.springframework.boot.loader.JarLauncher
 
 **目录结构**
 
-![UFGUOg.png](https://s1.ax1x.com/2020/07/07/UFGUOg.png)
+![UFGUOg](https://dengwq.oss-cn-hangzhou.aliyuncs.com/img/20210627032541.png)
 
 **MF-INF/MANIFEST.MF文件**
 
