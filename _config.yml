@@ -8,7 +8,7 @@ subtitle: #网站副标题
 description: 己所不欲，勿施于人 #网站描述
 keywords:
 author: 邓伟强 #你的名字
-language: zh-Hans #网站使用的语言
+language: zh-CN #网站使用的语言
 timezone: Asia/Shanghai #网站时区
 
 # URL #可以不用配置
@@ -32,7 +32,10 @@ skip_render: #跳过指定文件的渲染，你可使用glob来配置路径
 new_post_name: :title.md # File name of new posts 新文章的文件名称
 default_layout: post #默认布局
 titlecase: false # Transform title into titlecase 
-external_link: true # Open external links in new tab
+external_link:
+  enable: true # Open external links in new tab
+  field: site # Apply to the whole site
+  exclude: ''
 filename_case: 0 #把文件名称转换为(1)小写或(2)大写
 render_drafts: false #显示草稿
 post_asset_folder: false #是否启动资源文件夹
