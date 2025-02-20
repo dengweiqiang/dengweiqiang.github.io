@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.144.1"><meta name="theme-color" content="#16171d" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>Redis学习笔记 | DengWeiQiang&#39;Blog</title>
+
+    <link rel="stylesheet" href="/css/meme.min.8944b51646f486f3fb1bb25ecddd4f3b2b950e434c4834d3d31c327765cca873.css"/>
+
+    
+    
+        
+            <script src="/js/meme.min.93caf51ca41a6ed5e468d2ac73c7cdfe253a756a2192255cf28aaa8da5ea4209.js"></script>
+
+        
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Serif&#43;SC:wght@400;500;700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="dengweiqiang" /><meta name="description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。
+Redis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制&#43;哨兵。
+" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DengWeiQiang&#39;Blog" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="DengWeiQiang&#39;Blog" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+        <link rel="canonical" href="http://localhost:1313/posts/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2020-07-03T21:03:43+00:00",
+        "dateModified": "2025-02-20T16:54:51+08:00",
+        "url": "http://localhost:1313/posts/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/",
+        "headline": "Redis学习笔记",
+        "description": "Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。\nRedis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制+哨兵。\n",
+        "inLanguage" : "zh-CN",
+        "articleSection": "posts",
+        "wordCount":  6346 ,
+        "image": "http://localhost:1313/icons/apple-touch-icon.png",
+        "author": {
+            "@type": "Person",
+            "url": "http://localhost:1313/",
+            "name": "dengweiqiang"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "DengWeiQiang'Blog",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://localhost:1313/icons/apple-touch-icon.png"
+            },
+            "url": "http://localhost:1313/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "http://localhost:1313/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary" />
+
+<meta name="twitter:site" content="@reuixiy" />
+
+    
+
+
+
+<meta property="og:title" content="Redis学习笔记" />
+<meta property="og:description" content="Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。
+Redis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制&#43;哨兵。
+" />
+<meta property="og:url" content="http://localhost:1313/posts/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+<meta property="og:site_name" content="DengWeiQiang&#39;Blog" />
+<meta property="og:locale" content="zh-cn" /><meta property="og:image" content="http://localhost:1313/icons/apple-touch-icon.png" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2020-07-03T21:03:43&#43;00:00" />
+    <meta property="article:modified_time" content="2025-02-20T16:54:51&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">DengWeiQiang&#39;Blog</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+
+        
+            
+                <li class="menu-item"><a href="/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon home"><path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/></svg><span class="menu-item-name">首页</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon tags"><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg><span class="menu-item-name">标签</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/posts/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon archive"><path d="M32 448c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32V160H32v288zm160-212c0-6.6 5.4-12 12-12h104c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H204c-6.6 0-12-5.4-12-12v-8zM480 32H32C14.3 32 0 46.3 0 64v48c0 8.8 7.2 16 16 16h480c8.8 0 16-7.2 16-16V64c0-17.7-14.3-32-32-32z"/></svg><span class="menu-item-name">归档</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="icon user-circle"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><span class="menu-item-name">关于</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">Redis学习笔记</h1>
+
+            
+
+            
+                
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2020-07-03T21:03:43&#43;00:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2020.7.3</time>
+    
+    
+        
+        <time datetime="2025-02-20T16:54:51&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2025.2.20</time>
+    
+    
+    
+        
+        
+        
+            
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;6346</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;13&nbsp;分钟</span>
+    
+    
+    
+</div>
+
+            
+
+            <div class="post-body e-content">
+                <p>Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。</p>
+<p>Redis主要有这几部分知识，五大数据类型，持久化方式，发布订阅，主从复制+哨兵。</p>
+<h2 id="redis的安装"><a href="#redis的安装" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Redis的安装</h2>
+<h3 id="centos安装redis"><a href="#centos安装redis" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>centos安装redis</h3>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://download.redis.io/releases/redis-6.0.5.tar.gz
+</span></span><span class="line"><span class="cl">tar -zxvf redis-6.0.5.tar.gz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> redis-6.0.5
+</span></span><span class="line"><span class="cl">sudo make
+</span></span><span class="line"><span class="cl">sudo make install <span class="nv">PREFIX</span><span class="o">=</span>/opt/redis
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="centos-设置redis开启自启动"><a href="#centos-设置redis开启自启动" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>centos 设置redis开启自启动</h3>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /usr/lib/systemd/system/redis.service
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## redis.service 内容</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>The redis-server Process Manager
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>syslog.target network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>forking
+</span></span><span class="line"><span class="cl"><span class="nv">PIDFile</span><span class="o">=</span>/var/run/redis_6379.pid
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/opt/redis/bin/redis-server /opt/redis/bin/redis.conf
+</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -USR2 <span class="nv">$MAINPID</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStop</span><span class="o">=</span>/bin/kill -SIGINT <span class="nv">$MAINPID</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 结束，保存退出</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 刷新守护进程列表</span>
+</span></span><span class="line"><span class="cl">sudo systemctl daemon-reload
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动服务</span>
+</span></span><span class="line"><span class="cl">sudo systemctl start redis.service
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置服务开启自启</span>
+</span></span><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> redis.service
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="redis开启远程连接redisconf"><a href="#redis开启远程连接redisconf" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>redis开启远程连接（redis.conf）</h3>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## redis.conf 的一些配置</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 注释 bind 127.0.0.1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 127.0.0.1
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭保护模式</span>
+</span></span><span class="line"><span class="cl">protected-mode no
+</span></span><span class="line"><span class="cl"><span class="c1"># 允许后台启动</span>
+</span></span><span class="line"><span class="cl">daemonize yes
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h2 id="五大数据类型"><a href="#五大数据类型" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>五大数据类型</h2>
+<p>redis中的数据都是以key/value的形式存储的，五大数据类型主要是指value的数据类型。</p>
+<h3 id="string字符串"><a href="#string字符串" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>String字符串</h3>
+<p>最基础的数据类型，需要注意的是redis中的字符串大小上限是512M。</p>
+<p><strong>APPEND</strong></p>
+<p>使用APPEND命令时，如果key已经存在，则会直接在value后追加值，如果key不存在，则会先创建一个value为空字符串的key，然后再追加。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">127.0.0.1:6379&gt; get k1
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; append k1 v1vv
+</span></span><span class="line"><span class="cl"><span class="m">6</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; get k1
+</span></span><span class="line"><span class="cl">v1v1vv
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>GET</strong></p>
+<p>GET命令用来获取对应key的value，如果key不存在则返回nil。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; get k1
+</span></span><span class="line"><span class="cl">v1v1vv
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>GETRANGE</strong></p>
+<p>GETRANGE用来返回key所对应的value的子串，子串由start和end决定，从左往右计算，如果下标是负数，则从右往左计算，其中-1表示最后一个字符，-2是倒数第二个…</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; getrange k1 <span class="m">1</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">1v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>GETSET</strong></p>
+<p>GETSET命令可以用来获取key所对应的value，并对key进行重置。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; get k2
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; getset k2 v2set
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; get k2
+</span></span><span class="line"><span class="cl">v2set
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SETRANGE</strong></p>
+<p>SETRANGE用来覆盖一个已经存在的key的value。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; setrange k2 <span class="m">2</span> range
+</span></span><span class="line"><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; get k2
+</span></span><span class="line"><span class="cl">v2range
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SETEX</strong></p>
+<p>SETEX用来给key设置value，同时设置过期时间，等效于先给key设置value，再给key设置过期时间。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; setex k4 <span class="m">5</span> v4
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SETNX</strong></p>
+<p>SETNX是 <strong>SET</strong> if <strong>N</strong>ot e<strong>X</strong>ists的简写，SET命令在执行时，如果key已经存在，则新值会覆盖掉旧值，而对于SETNX命令，如果key已经存在，则不做任何操作，如果key不存在，则效果等同于SET命令。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; setnx k4 v4v4
+</span></span><span class="line"><span class="cl"><span class="m">0</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="list列表"><a href="#list列表" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>List列表</h3>
+<p>LIST是一个简单的字符串列表，按照插入顺序进行排序，可以从头尾插入或弹出。</p>
+<p><strong>LPUSH</strong></p>
+<p>将一个或多个值value插入到列表key的表头，如果有多个value值，那么各个value值按从左到右的顺序依次插入到表头。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; lpush l1 v1 v2 v3 v4 v5
+</span></span><span class="line"><span class="cl"><span class="m">5</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>LRANGE</strong></p>
+<p>返回列表key中指定区间内的元素，区间以偏移量start和stop指定，下标(index)参数start和stop都以0为底，即0表示列表的第一个元素，1表示列表的第二个元素，以此类推。我们也可以使用负数下标，以-1表示列表的最后一个元素， -2 表示列表的倒数第二个元素，以此类推。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; lrange l1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>RPUSH</strong></p>
+<p>RPUSH与LPUSH的功能基本一致，不同的是RPUSH的中的value值是按照从右到左的顺序依次插入。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; rpush l1 v6 v7
+</span></span><span class="line"><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; lrange l1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v6
+</span></span><span class="line"><span class="cl">v7
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>RPOP</strong></p>
+<p>RPOP命令可以移除并返回列表key的尾元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; rpop l1
+</span></span><span class="line"><span class="cl">v7
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; rpop l1
+</span></span><span class="line"><span class="cl">v6
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; lrange l1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>LPOP</strong></p>
+<p>LPOP和RPOP类似，不同的是LPOP移除并返回列表key的头元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; lpop l1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; lrange l1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>LINDEX</strong></p>
+<p>LINDEX命令可以返回列表key中，下标为index的元素，正数下标0表示第一个元素，也可以使用负数下标，-1表示倒数第一个元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; lrange l1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; lindex l1 <span class="m">2</span>
+</span></span><span class="line"><span class="cl">v2
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="hash键值对"><a href="#hash键值对" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Hash键值对</h3>
+<p>HASH类似于Java中的Map，是一个键值对集合，在redis中可以用来存储对象。</p>
+<p><strong>HSET</strong></p>
+<p>HSET命令可以用来设置key指定的哈希集中指定字段的值。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hset hk1 k1 v1 k2 v2 k3 v3 k4 v4 k5 v5
+</span></span><span class="line"><span class="cl"><span class="m">5</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HGET</strong></p>
+<p>HGET命令可以用来返回key指定的哈希集中该字段所关联的值。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hget hk1 k1
+</span></span><span class="line"><span class="cl">v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HDEL</strong></p>
+<p>HDEL命令可以从key指定的哈希集中移除指定的域，在哈希集中不存在的域将被忽略。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hdel hk1 k1
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HSETNX</strong></p>
+<p>HSETNX命令只在key指定的哈希集中不存在指定的字段时，设置字段的值，如果字段已存在，该操作无效果。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hsetnx hk1 k1 v11
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; hget hk1 k1
+</span></span><span class="line"><span class="cl">v11
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; hsetnx hk1 k1 v12
+</span></span><span class="line"><span class="cl"><span class="m">0</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; hget hk1 k1
+</span></span><span class="line"><span class="cl">v11
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HVALS</strong></p>
+<p>HVALS命令可以返回key指定的哈希集中所有字段的值。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hvals hk1
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v11
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HKEYS</strong></p>
+<p>HKEYS命令可以返回key指定的哈希集中所有字段的名字。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hkeys hk1
+</span></span><span class="line"><span class="cl">k2
+</span></span><span class="line"><span class="cl">k3
+</span></span><span class="line"><span class="cl">k4
+</span></span><span class="line"><span class="cl">k5
+</span></span><span class="line"><span class="cl">k1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HGETALL</strong></p>
+<p>HEXISTS命令可以返回hash里面field是否存在。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hgetall hk1
+</span></span><span class="line"><span class="cl">k2
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">k3
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">k4
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">k5
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">k1
+</span></span><span class="line"><span class="cl">v11
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>HLEN</strong></p>
+<p>HSTRLEN可以返回hash指定field的value的字符串长度，如果hash或者field不存在，返回0。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; hlen hk1
+</span></span><span class="line"><span class="cl"><span class="m">5</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="set集合"><a href="#set集合" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Set集合</h3>
+<p>SET是String类型的无序集合，不同于LIST，SET中的元素不可以重复。</p>
+<p><strong>SADD</strong></p>
+<p>SADD命令可以添加一个或多个指定的member元素到集合的key中，指定的一个或者多个元素member如果已经在集合key中存在则忽略，如果集合key不存在，则新建集合key,并添加member元素到集合key中。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; sadd sk1 v1 v2 v3 v3 v4
+</span></span><span class="line"><span class="cl"><span class="m">4</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SREM</strong></p>
+<p>SREM命令可以在key集合中移除指定的元素，如果指定的元素不是key集合中的元素则忽略。如果key集合不存在则被视为一个空的集合，该命令返回0。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; srem sk1 v5
+</span></span><span class="line"><span class="cl"><span class="m">0</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; srem sk1 v4
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SISMEMBER</strong></p>
+<p>SISMEMBER命令可以返回成员member是否是存储的集合key的成员。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; sismember sk1 v4
+</span></span><span class="line"><span class="cl"><span class="m">0</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; sismember sk1 v3
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SCARD</strong></p>
+<p>SCARD命令可以返回集合存储的key的基数(集合元素的数量)。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; scard sk1
+</span></span><span class="line"><span class="cl"><span class="m">3</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SMEMBERS</strong></p>
+<p>SMEMBERS命令可以返回key集合所有的元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk1
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v2
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SPOP</strong></p>
+<p>SPOP命令的用法和SRANDMEMBER类似，不同的是，SPOP每次选择一个随机的元素之后，该元素会出栈，而SRANDMEMBER则不会出栈，只是将该元素展示出来。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; spop sk1
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk1
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SDIFF</strong></p>
+<p>SDIFF可以用来返回一个集合与给定集合的差集的元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk1
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk2
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; sdiff sk1 sk2
+</span></span><span class="line"><span class="cl">v3
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SDIFFSTORE</strong></p>
+<p>SDIFFSTORE命令与SDIFF命令基本一致，不同的是SDIFFSTORE命令会将结果保存在一个集合中。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; sdiffstore sk3 sk2 sk1
+</span></span><span class="line"><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v4
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SINTER</strong></p>
+<p>SINTER命令可以用来计算指定key之间元素的交集。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk2
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; smembers sk3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; sinter sk2 sk3
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v4
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>SUNION</strong></p>
+<p>SUNION可以用来计算两个集合的并集。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; sunion sk1 sk3
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">v2
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="zset有序集合"><a href="#zset有序集合" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>ZSet有序集合</h3>
+<p>ZSET和SET一样，也是STRING类型的元素的集合，不同的是ZSET中的每个元素都会关联一个double类型的分数，ZSET中的成员都是唯一的，但是所关联的分数可以重复。</p>
+<p><strong>ZADD</strong></p>
+<p>ZADD命令可以将所有指定成员添加到键为key的有序集合里面。添加时可以指定多个分数/成员（score/member）对。 如果指定添加的成员已经是有序集合里面的成员，则会更新该成员的分数（scrore）并更新到正确的排序位置。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zadd zk1 <span class="m">10</span> v1 <span class="m">20</span> v2 <span class="m">30</span> v3 <span class="m">40</span> v4 <span class="m">10</span> v5
+</span></span><span class="line"><span class="cl"><span class="m">5</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZSCORE</strong></p>
+<p>ZSCORE命令可以返回有序集key中，成员member的score值。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zscore zk1 v1
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; zscore zk1 v5
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZRANGE</strong></p>
+<p>ZRANGE命令可以根据index返回member，该命令在执行时加上withscores参数可以连同score一起返回。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zrange zk1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; zrange zk1 <span class="m">0</span> -1 withscores
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl"><span class="m">20</span>
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl"><span class="m">30</span>
+</span></span><span class="line"><span class="cl">v4
+</span></span><span class="line"><span class="cl"><span class="m">40</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZCOUNT</strong></p>
+<p>ZCOUNT命令可以返回有序集key中，score值在min和max之间(默认包括score值等于min或max)的成员。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zcount zk1 <span class="m">10</span> <span class="m">30</span>
+</span></span><span class="line"><span class="cl"><span class="m">4</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZRANGEBYSCORE</strong></p>
+<p>ZRANGEBYSCORE命令可以按照score范围范围元素，加上withscores可以连score一起返回。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zrangebyscore zk1 <span class="m">10</span> <span class="m">30</span> 
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; zrangebyscore zk1 <span class="m">10</span> <span class="m">30</span> withscores
+</span></span><span class="line"><span class="cl">v1
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="cl">v2
+</span></span><span class="line"><span class="cl"><span class="m">20</span>
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl"><span class="m">30</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZRANK</strong></p>
+<p>ZRANK命令可以返回有序集key中成员member的排名。其中有序集成员按score值递增(从小到大)顺序排列。排名以0为底，即score值最小的成员排名为0。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zrank zk1 v2
+</span></span><span class="line"><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; zrank zk1 v4
+</span></span><span class="line"><span class="cl"><span class="m">4</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>ZREM</strong></p>
+<p>ZREM命令可以从集合中弹出一个元素。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; zrem zk1 v1 v2
+</span></span><span class="line"><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; zrange zk1 <span class="m">0</span> -1
+</span></span><span class="line"><span class="cl">v5
+</span></span><span class="line"><span class="cl">v3
+</span></span><span class="line"><span class="cl">v4
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="key相关命令"><a href="#key相关命令" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Key相关命令</h3>
+<p><strong>DEL命令</strong></p>
+<p>通过DEL命令我们可以删除一个已经存在的key。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; keys *
+</span></span><span class="line"><span class="cl">k2
+</span></span><span class="line"><span class="cl">k4
+</span></span><span class="line"><span class="cl">k3
+</span></span><span class="line"><span class="cl">sk2
+</span></span><span class="line"><span class="cl">zk1
+</span></span><span class="line"><span class="cl">sk1
+</span></span><span class="line"><span class="cl">hk1
+</span></span><span class="line"><span class="cl">l1
+</span></span><span class="line"><span class="cl">k1
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; del sk2 k2 k3
+</span></span><span class="line"><span class="cl"><span class="m">3</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>DUMP命令</strong></p>
+<p>DUMP命令可以序列化给定的key，并返回序列化之后的值。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; dump k4
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;\x00\x02v4\t\x00tx\x19\x8c\xe4\xa9\xaa\xb3&#34;</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>EXISTS</strong></p>
+<p>EXISTS命令用来检测一个给定的key是否存在。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; keys *
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;k4&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;zk1&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="s2">&#34;sk1&#34;</span>
+</span></span><span class="line"><span class="cl">4<span class="o">)</span> <span class="s2">&#34;hk1&#34;</span>
+</span></span><span class="line"><span class="cl">5<span class="o">)</span> <span class="s2">&#34;l1&#34;</span>
+</span></span><span class="line"><span class="cl">6<span class="o">)</span> <span class="s2">&#34;k1&#34;</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; exists k4
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> <span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>TTL命令</strong></p>
+<p>TTL命令可以查看一个给定key的有效时间。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; ttl k4 
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> -1
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>EXPIRE命令</strong></p>
+<p>EXPIRE命令可以给key设置有效期，在有效期过后，key会被销毁。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; expire k4 <span class="m">120</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; ttl k3
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> -2  <span class="c1"># 永久存在</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:6379&gt; ttl k4
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> <span class="m">107</span> <span class="c1"># 存活107秒</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>PERSIST命令</strong></p>
+<p>PERSIST命令表示移除一个key的过期时间，这样该key就永远不会过期。</p>
+<pre tabindex="0"><code>127.0.0.1:6379&gt; persist k4
+(integer) 1
+127.0.0.1:6379&gt; ttl k4
+(integer) -1
+</code></pre><p><strong>KEYS 命令</strong></p>
+<p>KEYS命令可以获取满足给定模式的所有key。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">KEYS *（*表示所有的key，*也可以是一个正在表达式）
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h2 id="发布订阅"><a href="#发布订阅" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>发布订阅</h2>
+<p>**SUBSCRIBE **</p>
+<p>订阅频道</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; subscribe c1 c2 c3
+</span></span><span class="line"><span class="cl">Reading messages... <span class="o">(</span>press Ctrl-C to quit<span class="o">)</span>
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;subscribe&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;c1&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;subscribe&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;c2&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> <span class="m">2</span>
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;subscribe&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;c3&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> <span class="m">3</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p>**PUBLISH **</p>
+<p>发布消息</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; PUBLISH c1 <span class="s2">&#34;hello redis!&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>integer<span class="o">)</span> <span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p>**PSUBSCRIBE **</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1:6379&gt; PSUBSCRIBE c*
+</span></span><span class="line"><span class="cl">Reading messages... <span class="o">(</span>press Ctrl-C to quit<span class="o">)</span>
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;psubscribe&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;c*&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> <span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h2 id="事务"><a href="#事务" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>事务</h2>
+<p>不同于关系型数据库，redis中的事务出错时没有回滚，对此，官方的解释如下：</p>
+<p>Redis 命令只会因为错误的语法而失败（并且这些问题不能在入队时发现），或是命令用在了错误类型的键上面：这也就是说，从实用性的角度来说，失败的命令是由编程错误造成的，而这些错误应该在开发的过程中被发现，而不应该出现在生产环境中。因为不需要对回滚进行支持，所以 Redis 的内部可以保持简单且快速。</p>
+<p><strong>MULTI</strong></p>
+<p>开启事物</p>
+<p><strong>EXEC</strong></p>
+<p>结束事物并执行</p>
+<p><strong>WATCH</strong></p>
+<p>事务中的WATCH命令可以用来监控一个key，通过这种监控，我们可以为redis事务提供(CAS)行为。 如果有至少一个被WATCH监视的键在EXEC执行之前被修改了，那么整个事务都会被取消，EXEC返回nil-reply来表示事务已经失败。</p>
+<p><strong>事物中的异常行为</strong></p>
+<p>redis中事务的异常情况总的来说分为两类：</p>
+<p>1.进入队列之前就能发现的错误，比如命令输错；（拒绝执行并自动放弃这个事务）
+2.执行EXEC之后才能发现的错误，比如给一个非数字字符加1；（执行产生错误，其他命令继续执行）</p>
+<h2 id="持久化"><a href="#持久化" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>持久化</h2>
+<p>整体上来说，redis持久化有两种方式，快照持久化和AOF，在项目中我们可以根据实际情况选择合适的持久化方式，也可以不用持久化，这关键看我们的redis在项目中扮演了什么样的角色。</p>
+<h3 id="快照持久化"><a href="#快照持久化" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>快照持久化</h3>
+<p>redis可以在某个时间点上对内存中的数据创建一个副本文件，副本文件中的数据在redis重启时会被自动加载，我们也可以将副本文件拷贝到其他地方一样可以使用。</p>
+<h4 id="如何配置快照持久化redisconf"><a href="#如何配置快照持久化redisconf" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>如何配置快照持久化（redis.conf）</h4>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">save <span class="m">900</span> 1		<span class="c1"># 900秒内至少一个key变更</span>
+</span></span><span class="line"><span class="cl">save <span class="m">300</span> 10		<span class="c1"># 100秒内至少10个key变更</span>
+</span></span><span class="line"><span class="cl">save <span class="m">60</span> <span class="m">10000</span>   <span class="c1"># 60秒内10000个key变更</span>
+</span></span><span class="line"><span class="cl">stop-writes-on-bgsave-error yes  <span class="c1"># 快照出错后，是否继续执行写命令</span>
+</span></span><span class="line"><span class="cl">rdbcompression yes   <span class="c1"># 快照文件是否压缩</span>
+</span></span><span class="line"><span class="cl">dbfilename dump.rdb  <span class="c1"># 快照文件名字</span>
+</span></span><span class="line"><span class="cl">dir ./   <span class="c1"># 快照文件存放目录</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h4 id="手动创建快照"><a href="#手动创建快照" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>手动创建快照</h4>
+<p><strong>SAVE</strong></p>
+<p>save命令是一个阻塞命令，在这个命令执行完成之前，不在处理其他请求，其他请求将被挂起。</p>
+<p><strong>BGSAVE</strong></p>
+<p>bgsave命令会fork一个子进程，用这个子进程将快照写入硬盘，而父进程则继续处理客户端发来的请求。</p>
+<h4 id="自动创建快照时机"><a href="#自动创建快照时机" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>自动创建快照时机</h4>
+<ol>
+<li>当条件满足时，如900秒内有一个key被操作，redis会触发bgsave命令进行备份；</li>
+<li>当我们执行shutdown命令时，redis会执行save命令进行备份操作，备份完成后关闭服务器；</li>
+<li>在主从模式中，当从机第一次连接上主机后会发一条sync命令来开始一次复制操作，此时主机会开始一次bgsave操作，并在bgsave操作结束后向从机发送快照数据实现数据同步；</li>
+</ol>
+<h3 id="aof持久化"><a href="#aof持久化" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>AOF持久化</h3>
+<p>与快照持久化不同，AOF持久化是将被执行的命令写到aof文件末尾，在恢复时只需要从头到尾执行一遍写命令即可恢复数据，AOF在redis中默认也是没有开启的，需要我们手动开启，开启方式为将redis.conf中的修改appendonly属性值为yes。</p>
+<h4 id="aof配置redisconf"><a href="#aof配置redisconf" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>aof配置（redis.conf）</h4>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">appendonly yes   <span class="c1"># 开启aof持久化</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">appendfilename <span class="s2">&#34;appendonly.aof&#34;</span>   <span class="c1"># aof备份文件名</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># appendfsync always   # 每执行一次写操作备份一次</span>
+</span></span><span class="line"><span class="cl">appendfsync everysec   <span class="c1"># 每秒备份一次（最常用）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># appendfsync no       # 由操作系统决定备份时机</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">no-appendfsync-on-rewrite no   <span class="c1"># 对aof文件进行压缩时，是否执行同步操作</span>
+</span></span><span class="line"><span class="cl">auto-aof-rewrite-percentage <span class="m">100</span>   <span class="c1"># 重写aof文件的百分比，基准为上一次重写文件大小或启动时文件大小</span>
+</span></span><span class="line"><span class="cl">auto-aof-rewrite-min-size 64mb    <span class="c1"># 最少要大于64m才对aof文件进行重写</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="最佳实践"><a href="#最佳实践" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>最佳实践</h3>
+<ol>
+<li>如果redis只做缓存服务器，那么可以不使用任何持久化方式；</li>
+<li>同时开启两种持久化方式，redis重启时优先载入aof文件来恢复原始的数据。rdb更适合用于备份数据库，快速重启，不会有aof可能潜在的bug，但是aof数据会更加完整；</li>
+<li>因为rdb文件只用作后备用途，建议只在slave上持久化rdb文件，而且只要15分钟备份一次就够了，只保留save 900 1这条规则；</li>
+<li>如果开启aof，一是会带来持续的io，二是rewrite过程中产生的新数据写到新文件造成的阻塞几乎不可避免。所以只要硬盘允许，尽量减少rewrite的频率，重写的基础可以设置5G以上。</li>
+<li>如果不开启aof，紧靠master-slave replication也可以实现高可用性。能省掉一大笔io，也减少了rewrite带来的系统波动。代价是master/slave同时倒掉，会丢失十几分钟的数据。</li>
+</ol>
+<h2 id="主从复制"><a href="#主从复制" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>主从复制</h2>
+<p>主从复制可以在一定程度上扩展redis性能，redis的主从复制和关系型数据库的主从复制类似，从机能够精确的复制主机上的内容。实现了主从复制之后，一方面能够实现数据的读写分离，降低master的压力，另一方面也能实现数据的备份。</p>
+<h3 id="配置方式"><a href="#配置方式" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>配置方式</h3>
+<ol>
+<li>
+<p>启动三个实例</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>root@localhost redis-4.0.8<span class="o">]</span><span class="c1"># redis-server redis6379.conf</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@localhost redis-4.0.8<span class="o">]</span><span class="c1"># redis-server redis6380.conf</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@localhost redis-4.0.8<span class="o">]</span><span class="c1"># redis-server redis6381.conf</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>连接服务</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">redis-cli -h IP -p 端口  --raw      //登陆redis服务器时，增加参数 --raw（避免命令行中文乱码）
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>从机上执行slaveof</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">slaveof 127.0.0.1 <span class="m">6379</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>查看每个实例当前状态</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">INFO replication
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div></li>
+</ol>
+<h3 id="主从复制注意点"><a href="#主从复制注意点" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>主从复制注意点</h3>
+<ol>
+<li>如果主机运行一段时间了，从机连接上来，会备份主机所有的数据；</li>
+<li>主从复制后，master可读可写，slave可读不可写；</li>
+<li>主从结构运行中，主机不行挂掉，重启之后，他依然是主机；</li>
+</ol>
+<h3 id="主从复制原理"><a href="#主从复制原理" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>主从复制原理</h3>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">1.slave启动成功连接到master后会发送一个sync命令。  
+</span></span><span class="line"><span class="cl">2.Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令。  
+</span></span><span class="line"><span class="cl">3.在后台进程执行完毕之后，master将传送整个数据文件到slave,以完成一次完全同步。  
+</span></span><span class="line"><span class="cl">4.全量复制：而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。  
+</span></span><span class="line"><span class="cl">5.增量复制：Master继续将新的所有收集到的修改命令依次传给slave,完成同步。  
+</span></span><span class="line"><span class="cl">6.但是只要是重新连接master,一次完全同步（全量复制)将被自动执行。  
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h3 id="哨兵模式"><a href="#哨兵模式" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>哨兵模式</h3>
+<p><strong>sentinel.conf</strong></p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sentinel monitor mymaster 127.0.0.1 <span class="m">6379</span> <span class="m">1</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>启动哨兵</strong></p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">redis-sentinel sentinel.conf
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p><strong>注意点</strong></p>
+<p>当master挂掉之后，哨兵会重新选举一个slave当master，之前的master重启之后，也只能当slave了。</p>
+<p>由于所有的写都是在master上操作的，master和slave会有一定的延迟，当系统繁忙，slave机器较多时问题会更严重，所以我们可以通过集群来进一步提示redis性能。</p>
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="http://localhost:1313/" class="p-author h-card" target="_blank" rel="noopener">dengweiqiang</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/posts/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener">http://localhost:1313/posts/redis学习笔记/</a></li>
+            
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2025-02-20 16:54:51 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2025-02-20</text><text x="915" y="140" textLength="650" transform="scale(.1)">2025-02-20</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        
+
+
+        
+    
+    
+        <div class="related-posts">
+            <h2 class="related-title">相关文章：<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"/></svg></h2>
+            <ul class="related-list">
+                
+                    <li class="related-item">
+                        <a href="/posts/mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="related-link">MySQL学习笔记</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/springboot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="related-link">SpringBoot学习笔记</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/zookeeper%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%80%E8%A7%88/" class="related-link">ZooKeeper典型应用场景一览</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/spring-cloud-%E5%9F%BA%E7%A1%80/" class="related-link">Spring Cloud 基础</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/git%E6%8E%A8%E9%80%81%E9%A1%B9%E7%9B%AE%E5%88%B0github/" class="related-link">Git推送项目到GitHub</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+
+
+        
+    
+        <div class="post-tags">
+            
+                
+                
+                
+                
+                    
+                    <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag" class="post-tags-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon tag-icon"><path d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z"/></svg>学习</a>
+                
+            
+        </div>
+    
+
+
+
+        
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+                <li class="post-nav-prev">
+                    <a href="/posts/springboot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev">&lt; SpringBoot学习笔记</a>
+                </li>
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/%E8%BF%99%E4%BA%9B%E5%B9%B4%E7%9C%8B%E8%BF%87%E7%9A%84%E7%BD%91%E6%96%87/" rel="next">这些年看过的网文 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="site-info">©&nbsp;2018–2025&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;dengweiqiang</div><div class="powered-by">Powered by <a href="https://github.com/gohugoio/hugo" target="_blank" rel="noopener">Hugo</a> | Theme is <a href="https://github.com/reuixiy/hugo-theme-meme" target="_blank" rel="noopener">MemE</a></div><div class="site-copyright"></div>
+
+            
+
+
+            
+        </div>
+    </footer>
+
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+
+<script>
+    let imgNodes = document.querySelectorAll('div.post-body img');
+    imgNodes = Array.from(imgNodes).filter(node => node.parentNode.tagName !== "A");
+
+    mediumZoom(imgNodes, {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+    </body>
+</html>
