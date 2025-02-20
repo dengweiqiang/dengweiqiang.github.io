@@ -1,38 +1,34 @@
-name: Deploy Hugo Site to Master
+name: Deploy Hugo Site to GitHub Pages
 
-# 当 push 到 hugo 分支时触发该工作流
 on:
   push:
     branches:
-      - hugo
-    workflow_dispatch:  # 允许手动触发
+      - hugo  # 当推送到 hugo 分支时触发
+
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. 检出 hugo 分支的代码
       - name: Checkout hugo branch
         uses: actions/checkout@v3
         with:
           ref: hugo
 
-      # 2. 设置 Hugo 环境（安装最新版本的 Hugo Extended）
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
           extended: true
 
-      # 3. 生成静态文件到 public 目录
       - name: Build site with Hugo
         run: hugo --minify
 
-      # 4. 使用 peaceiris 的 gh-pages Action 将 public 目录内容部署到 master 分支
       - name: Deploy to GitHub Pages (master branch)
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          target_branch: master
+          publish_branch: master  # ✅ 这里用 publish_branch，而不是 target_branch
           force_orphan: true
