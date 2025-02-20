@@ -5,6 +5,4 @@ title = '从Hexo切换到Hugo'
 
 +++
 
-# 从Hexo切换到Hugo
-
 测试hugo的部署
