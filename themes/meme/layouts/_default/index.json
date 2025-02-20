@@ -1,0 +1,9 @@
+[
+  {{- range .Site.RegularPages }}
+    {
+      "title": {{ .Title | jsonify }},
+      "content": {{ .Content | plainify | jsonify }},
+      "url": {{ .RelPermalink | jsonify }}
+    }{{- if not (eq .Last .) -}},{{- end }}
+  {{- end }}
+]
