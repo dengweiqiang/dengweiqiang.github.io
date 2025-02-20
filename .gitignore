@@ -1,0 +1,20 @@
+# 忽略名为 "temp" 的文件夹
+public/
+
+
+# 忽略所有以 ".log" 结尾的文件
+# *.log
+
+# 忽略 "node_modules" 文件夹及其所有内容
+# node_modules/
+
+# 但不忽略 "node_modules" 文件夹中的 "package.json" 文件
+# !node_modules/package.json
+
+# 语法规则
+# #：注释
+# *：匹配任意字符
+# ?：匹配单个字符
+# []：匹配指定范围内的字符
+# {}：匹配多个模式
+# !：取反

@@ -1,0 +1,38 @@
+name: Deploy Hugo Site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - hugo  # 当推送到 hugo 分支时触发自动部署
+
+  workflow_dispatch:  # 允许手动运行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout hugo branch
+        uses: actions/checkout@v3
+        with:
+          ref: hugo  # 拉取 hugo 分支的源码
+
+      - name: 🛠️ Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true  # 使用 Hugo 扩展版（适用于 SCSS 等）
+
+      - name: 🚀 Build the site
+        run: hugo --minify  # 生成 public/ 目录
+
+      - name: 📂 Deploy to master branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public  # 指定 Hugo 生成的静态网站目录
+          publish_branch: master  # 将内容推送到 master 分支
+          force_orphan: true  # 强制创建新的提交，避免历史提交影响
+
+      - name: ✅ Deployment Complete
+        run: echo "Hugo site deployed successfully to GitHub Pages!"
