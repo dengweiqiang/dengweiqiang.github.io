@@ -32,3 +32,4 @@ jobs:
           publish_dir: ./public
           publish_branch: master  # ✅ 这里用 publish_branch，而不是 target_branch
           force_orphan: true
+          cname: dengwq.top  # ✅ 添加这个字段，确保 CNAME 不会丢失
