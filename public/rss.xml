@@ -17,10 +17,32 @@
         
         
         
-        <lastBuildDate>Thu, 20 Feb 2025 21:36:35 &#43;0800</lastBuildDate>
+        <lastBuildDate>Thu, 20 Feb 2025 21:42:00 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://example.com/rss.xml" />
         
+        
+            <item>
+                <title>从Hexo切换到Hugo</title>
+                <link>https://example.com/posts/%E4%BB%8Ehexo%E5%88%87%E6%8D%A2%E5%88%B0hugo/</link>
+                <guid isPermaLink="true">https://example.com/posts/%E4%BB%8Ehexo%E5%88%87%E6%8D%A2%E5%88%B0hugo/</guid>
+                <pubDate>Thu, 20 Feb 2025 19:12:35 &#43;0800</pubDate>
+                
+                
+                <description>&lt;p&gt;测试hugo的部署&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                    
+                
+            </item>
         
             <item>
                 <title>关于《三体》的一点感想</title>
