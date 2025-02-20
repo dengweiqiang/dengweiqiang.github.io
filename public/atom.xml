@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">DengWeiQiang&#39;Blog</title>
     <subtitle type="html">MemE 是一个强大且可高度定制的 GoHugo 博客主题，专为个人博客设计。</subtitle>
-    <updated>2025-02-20T19:18:55&#43;08:00</updated>
+    <updated>2025-02-20T20:17:35&#43;08:00</updated>
     <id>https://example.com/</id>
     <link rel="alternate" type="text/html" href="https://example.com/" />
     <link rel="self" type="application/atom&#43;xml" href="https://example.com/atom.xml" />
@@ -13,7 +13,7 @@
             <uri>https://example.com/</uri>
             </author>
     
-    <generator uri="https://gohugo.io/" version="0.144.1">Hugo</generator>
+    <generator uri="https://gohugo.io/" version="0.144.2">Hugo</generator>
         <entry>
             <title type="text">关于《三体》的一点感想</title>
             <link rel="alternate" type="text/html" href="https://example.com/posts/%E5%85%B3%E4%BA%8E%E4%B8%89%E4%BD%93%E7%9A%84%E4%B8%80%E7%82%B9%E6%84%9F%E6%83%B3/" />
